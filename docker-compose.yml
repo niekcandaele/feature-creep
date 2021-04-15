@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  redis:
+    image: 'redislabs/redismod'
+    ports: 
+      - 127.0.0.1:6379:6379
+    volumes: 
+      - redis:/data
+  insight:
+    image: 'redislabs/redisinsight'
+    ports: 
+      - 127.0.0.1:8001:8001
+    volumes: 
+      - redisinsight:/db
+
+volumes: 
+  redisinsight:
+  redis:
