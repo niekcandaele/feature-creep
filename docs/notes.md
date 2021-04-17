@@ -3,12 +3,12 @@
 ## Possible structure:
 
 
-'Organisation' -> Has several 'teams' -> has several 'persons'
+'Organisation' -> Has several 'Squads' -> has several 'persons'
 
 
-persons can belong to multiple teams 
+persons can belong to multiple Squads 
 
-teams belong to one (or more ?) organisations
+Squads belong to one (or more ?) organisations
 
 
 Person
@@ -20,7 +20,7 @@ Person
 Organisation
 - name
 
-Teams
+Squads
 - name
 
 Session
@@ -36,11 +36,3 @@ Answer
 - Text
 - Number (1-5 or something? For the 'smiley' integration)
 
-
-## Queries
-
-Show entire graph:
-
-```
-MATCH (n)-[]->(m) RETURN n,m LIMIT 40
-```
