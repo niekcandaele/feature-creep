@@ -1,6 +1,11 @@
+## Redis hackathon Agile tool
+
+![ci](https://github.com/niekcandaele/redis-hackathon/actions/workflows/ci.yml/badge.svg)
+
+
 ### Agile
 
-#### Squad
+#### What is a squad?
 
 You and your fellow squad members are on the same long-term mission and spend your days in each other's company. This self-organiz$ing entity possesses all the skills and tools needed to cover the entire workflow, from design to release.
 
