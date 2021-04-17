@@ -2,7 +2,6 @@ import Redis from 'ioredis';
 
 let client: Redis.Redis;
 
-
 export function getDb() {
   if (client) {
     return client;
@@ -23,8 +22,7 @@ export async function clearDb() {
   }
 }
 
-
 // TODO: Catch more events maybe?
 process.on('SIGINT', async () => {
-  client.disconnect()
-})
+  client.disconnect();
+});

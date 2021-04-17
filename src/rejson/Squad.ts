@@ -5,10 +5,10 @@ import { Person } from './Person';
 
 interface SquadOpts {
   name: string;
+  // TODO: product owner.
 }
 
 export class Squad extends BaseModel {
-
   public name: string;
 
   constructor(opts: SquadOpts) {
@@ -17,7 +17,6 @@ export class Squad extends BaseModel {
   }
 
   public async getMembers(): Promise<Person[]> {
-
     // check if members array exists
     const exists = await getDb().send_command(COMMANDS.JSON_ARR_LEN, `Squad:${this.id}`, '.members');
     if (exists === null) return [];
@@ -25,11 +24,11 @@ export class Squad extends BaseModel {
     const personIds: string[] = JSON.parse(await getDb().send_command(COMMANDS.JSON_GET, `Squad:${this.id}`, '.members'));
     if (personIds.length === 0) return [];
 
-    const mapIds = personIds.map(_ => `Person:${_}`)
+    const mapIds = personIds.map(_ => `Person:${_}`);
     const res = await getDb().send_command(COMMANDS.JSON_MGET, ...mapIds, '.');
     return Promise.all(res.map((_: string) => {
       return Person.create(JSON.parse(_));
-    }))
+    }));
   }
 
   public async edit(editProps: Partial<Squad>) {
@@ -38,9 +37,8 @@ export class Squad extends BaseModel {
   }
 
   public async addMember(person: Person) {
-
     // creates members array, only if it doesn't exist already.
-    await getDb().send_command(COMMANDS.JSON_SET, `Squad:${this.id}`, '.members', "[]", 'NX');
+    await getDb().send_command(COMMANDS.JSON_SET, `Squad:${this.id}`, '.members', '[]', 'NX');
 
     const index: number = await getDb().send_command(COMMANDS.JSON_ARR_INDEX, `Squad:${this.id}`, '.members', JSON.stringify(person.id));
     if (index === -1) { // person not found in array

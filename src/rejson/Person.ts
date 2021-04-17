@@ -9,7 +9,6 @@ interface PersonOpts {
 }
 
 export class Person extends BaseModel {
-
   public firstName: string;
   public lastName: string;
   public email: string;
@@ -25,5 +24,4 @@ export class Person extends BaseModel {
     const person = await getDb().send_command(COMMANDS.JSON_GET, `Person:${this.id}`);
     await getDb().send_command(COMMANDS.JSON_SET, `Person:${this.id}`, '.', JSON.stringify({ ...person, ...editProps }));
   }
-
 }
