@@ -19,18 +19,17 @@ describe('Squad', () => {
     client.disconnect();
   });
 
-  it('Create squad', async () => {
+  it('Should create a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const res = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.name');
 
     if (!res) {
       throw new Error('Squad is null');
     }
-
     expect(JSON.parse(res)).to.be.equal('gryffindor');
   });
 
-  it('Should find existing squad', async () => {
+  it('Should find an existing squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const result = await Squad.findOne(squad.id);
 
@@ -38,71 +37,69 @@ describe('Squad', () => {
     expect(result).to.be.eql(squad);
   });
 
-  it('Add Person to squad', async () => {
+  it('Should add a person to a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const person = await createPerson('harry');
     await squad.addMember(person);
 
-    const res = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
+    const result = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
 
-    if (!res) {
+    if (!result) {
       throw new Error('Squad is null');
     }
 
-    expect(JSON.parse(res)[0]).to.be.equal(person.id);
+    expect(JSON.parse(result)[0]).to.be.equal(person.id);
   });
 
-  it('Does not add the same person twice', async () => {
+  it('Should not add the same person twice to the same squad.', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const person = await createPerson('harry');
     await squad.addMember(person);
     await squad.addMember(person);
 
-    const res = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
+    const result = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
 
-    if (!res) {
+    if (!result) {
       throw new Error('Squad is null');
     }
 
-    expect(JSON.parse(res)[0]).to.be.equal(person.id);
-    expect(JSON.parse(res)).to.have.length(1);
+    expect(JSON.parse(result)[0]).to.be.equal(person.id);
+    expect(JSON.parse(result)).to.have.length(1);
   });
 
-  it('Can edit properties of a squad', async () => {
+  it('Should change properties of a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     await squad.edit({ name: 'slytherin' });
 
-    const res = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.name');
-
-    expect(JSON.parse(res)).to.be.equal('slytherin');
+    const result = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.name');
+    expect(JSON.parse(result)).to.be.equal('slytherin');
   });
 
-  it('Can delete members from a squad', async () => {
+  it('Should delete a member from a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const person = await createPerson('harry');
     await squad.addMember(person);
 
-    let res = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
+    let result = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
 
-    if (!res) {
+    if (!result) {
       throw new Error('Squad is null');
     }
 
-    expect(JSON.parse(res)).to.have.length(1);
-    expect(JSON.parse(res)[0]).to.be.equal(person.id);
+    expect(JSON.parse(result)).to.have.length(1);
+    expect(JSON.parse(result)[0]).to.be.equal(person.id);
 
-    await squad.deleteMember(person);
+    await squad.removeMember(person);
+    result = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
 
-    res = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
-
-    if (!res) {
+    if (!result) {
       throw new Error('squad is null');
     }
 
-    expect(JSON.parse(res)).to.have.length(0);
+    expect(JSON.parse(result)).to.have.length(0);
   });
 
-  it('Can get a list of members', async () => {
+  it('Should get a list of members of a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const harry = await createPerson('harry');
     await squad.addMember(harry);
@@ -117,7 +114,7 @@ describe('Squad', () => {
     expect(members[0]).to.be.eql(harry);
   });
 
-  it('Can delete a member from a squad', async () => {
+  it('Should delete a member from a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const harry = await createPerson('harry');
     await squad.addMember(harry);
@@ -132,7 +129,7 @@ describe('Squad', () => {
     expect(members[1]).to.be.eql(ron);
 
     // remove harry from the Squad
-    await squad.deleteMember(harry);
+    await squad.removeMember(harry);
 
     members = await squad.getMembers();
     expect(members).to.be.an('array');
@@ -140,7 +137,7 @@ describe('Squad', () => {
     expect(members[0]).to.be.eql(ron);
   });
 
-  it('Handles well if we try to delete a member from a Squad thats not part of the Squad', async () => {
+  it('Should handle removing a member from a squad that is not part of that squad correctly', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const harry = await createPerson('harry');
     await squad.addMember(harry);
@@ -152,7 +149,7 @@ describe('Squad', () => {
     expect(members).to.have.length(1);
     expect(members[0]).to.be.eql(harry);
 
-    await squad.deleteMember(ron);
+    await squad.removeMember(ron);
     members = await squad.getMembers();
     expect(members).to.be.an('array');
     expect(members).to.have.length(1);

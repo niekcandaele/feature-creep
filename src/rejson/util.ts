@@ -1,5 +1,8 @@
-import { Person } from './models/Person';
+import { Person } from './entities/Person';
 
+/**
+ * Utility to faster create an actor in tests.
+ */
 export async function createPerson(name: 'harry' | 'ron' | 'draco'): Promise<Person> {
   switch (name) {
     case 'harry':
@@ -7,8 +10,6 @@ export async function createPerson(name: 'harry' | 'ron' | 'draco'): Promise<Per
     case 'ron':
       return Person.create({ firstName: 'Ron', lastName: 'Weasley', email: 'ron.weasley@wizard.net' });
     case 'draco':
-      return Person.create({ firstName: 'Draco', lastName: 'Malfoy', email: 'draco.malfoid@wizard.net' });
-    default:
-      throw new Error('unknown name');
+      return Person.create({ firstName: 'Draco', lastName: 'Malfoy', email: 'draco.malfoy@wizard.net' });
   }
 }

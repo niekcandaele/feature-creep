@@ -1,17 +1,29 @@
-export enum COMMANDS {
-  JSON_DEL = 'JSON.DEL',
-  JSON_GET = 'JSON.GET',
-  JSON_MGET = 'JSON.MGET',
-  JSON_SET = 'JSON.SET',
-  JSON_TYPE = 'JSON.TYPE',
+export enum JsonCommands {
 
-  JSON_ARR_APPEND = 'JSON.ARRAPPEND',
-  JSON_ARR_INDEX = 'JSON.ARRINDEX',
-  JSON_ARR_INSERT = 'JSON.ARRINSERT',
-  JSON_ARR_LEN = 'JSON.ARRLEN',
-  JSON_ARR_POP = 'JSON.ARRPOP',
+  // Base commands
+  Del = 'JSON.DEL',
+  Get = 'JSON.GET',
+  MGet = 'JSON.MGET',
+  Set = 'JSON.SET',
+  Type = 'JSON.TYPE',
 
-  JSON_OBJ_KEYS = 'JSON.OBJKEYS',
-  JSON_DEBUG = 'JSON.DEBUG',
-  JSON_RESP = 'JSON.RESP'
+  // Operations
+  StrAppend = 'JSON.STRAPPEND',
+  StrLen = 'JSON.STRLEN',
+  NumIncrBy = 'JSON.NUMINCRBY',
+  NumMultBy = 'JSON.NUMMULTBY',
+
+  // array operations
+  ArrAppend = 'JSON.ARRAPPEND',
+  ArrIndex = 'JSON.ARRINDEX',
+  ArrInsert = 'JSON.ARRINSERT',
+  ArrLen = 'JSON.ARRLEN',
+  ArrPop = 'JSON.ARRPOP',
+  ArrTrim = 'JSON.ARRTRIM',
+
+  // misc
+  ObjKeys = 'JSON.OBJKEYS',
+  ObjLen = 'JSON.OBJLEN',
+  Debug = 'JSON.DEBUG',
+  Resp = 'JSON.RESP'
 }
