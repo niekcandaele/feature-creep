@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "ioredis": "^4.26.0",
     "redis-modules-sdk": "^0.4.7",
     "uuid": "^8.3.2"
