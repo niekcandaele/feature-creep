@@ -1,4 +1,4 @@
-import { Person } from './Person';
+import { Person } from './models/Person';
 
 export async function createPerson(name: 'harry' | 'ron' | 'draco'): Promise<Person> {
   switch (name) {

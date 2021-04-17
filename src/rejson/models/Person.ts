@@ -1,6 +1,6 @@
-import { BaseModel } from './models/base';
-import { COMMANDS } from './commands';
-import { getDb } from './db';
+import { BaseModel } from '../models/base';
+import { COMMANDS } from '../commands';
+import { getDb } from '../db';
 
 interface PersonOpts {
   firstName: string;

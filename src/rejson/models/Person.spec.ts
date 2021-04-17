@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { createPerson } from './util';
-import { getDb } from './db';
-import { COMMANDS } from './commands';
+import { createPerson } from '../util';
+import { getDb } from '../db';
+import { COMMANDS } from '../commands';
 import { Person } from './Person';
 
 describe('Person', () => {
