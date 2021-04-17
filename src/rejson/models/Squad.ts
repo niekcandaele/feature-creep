@@ -1,6 +1,6 @@
 import { getDb } from '../db';
 import { COMMANDS } from '../commands';
-import { BaseModel } from './base';
+import { BaseModel } from './Base';
 import { Person } from './Person';
 
 interface SquadOpts {

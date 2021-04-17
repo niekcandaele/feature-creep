@@ -1,4 +1,4 @@
-import { BaseModel } from '../models/base';
+import { BaseModel } from './Base';
 import { COMMANDS } from '../commands';
 import { getDb } from '../db';
 
