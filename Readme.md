@@ -1,6 +1,6 @@
 ## Redis hackathon Agile tool
 
-![ci](https://github.com/niekcandaele/redis-hackathon/actions/workflows/ci.yml/badge.svg)
+![ci](https://github.com/niekcandaele/feature-creep/actions/workflows/ci.yml/badge.svg)
 
 ### Agile
 
