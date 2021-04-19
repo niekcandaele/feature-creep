@@ -8,13 +8,16 @@
     "lint": "eslint . --cache --report-unused-disable-directives --ext .js,.ts,.tsx -c .eslintrc.js",
     "build": "tsc",
     "prettier:write": "prettier --write .",
-    "prettier:check": "prettier --check ."
+    "prettier:check": "prettier --check .",
+    "start": "ts-node ./src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apollo-server": "^2.23.0",
     "dotenv": "^8.2.0",
+    "graphql": "^15.5.0",
     "ioredis": "^4.26.0",
     "redis-modules-sdk": "^0.4.7",
     "uuid": "^8.3.2"
