@@ -2,7 +2,6 @@
 
 ![ci](https://github.com/niekcandaele/redis-hackathon/actions/workflows/ci.yml/badge.svg)
 
-
 ### Agile
 
 #### What is a squad?

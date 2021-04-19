@@ -10,7 +10,7 @@ jobs:
 
     services:
       redis:
-        image: "redislabs/redismod"
+        image: 'redislabs/redismod'
         ports:
           - 6379:6379
         options: >-
@@ -30,5 +30,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
+      - run: npm run prettier:check
+      - run: npm run lint
       - run: npm run build
       - run: npm test
