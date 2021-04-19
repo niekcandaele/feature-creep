@@ -1,7 +1,8 @@
 import { expect } from 'chai';
-import { createPerson } from '../util';
-import { getDb } from '../db';
+
+import { createPerson } from '../../test/util';
 import { JsonCommands } from '../commands';
+import { getDb } from '../db';
 import { Person } from './Person';
 
 describe('Person', () => {

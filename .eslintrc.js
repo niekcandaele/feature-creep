@@ -5,7 +5,6 @@ module.exports = {
   rules: {
     'eol-last': 2,
     eqeqeq: 2,
-    indent: [2, 2, { SwitchCase: 1 }],
     'keyword-spacing': 2,
     'linebreak-style': [2, 'unix'],
     'no-case-declarations': 0,
