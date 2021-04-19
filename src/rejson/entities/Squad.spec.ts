@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { Redis } from 'ioredis';
 
+import { createPerson } from '../../test/util';
 import { clearDb, getDb } from '../db';
 import { Person } from './Person';
 import { Squad } from './Squad';
-import { createPerson } from '../util';
 
 describe('Squad', () => {
   let client: Redis;

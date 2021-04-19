@@ -1,4 +1,4 @@
-import { Person } from './entities/Person';
+import { Person } from '../rejson/entities/Person';
 
 /**
  * Utility to faster create an actor in tests.
