@@ -12,10 +12,10 @@ export class BaseEntity {
   //------------------------
 
   /**
-  * Typescript warns that property 'Id' could be undefined.
-  * But since an Id will be provided by parameters, or a new will be generated.
-  * We can safely disable this warning.
-  */
+   * Typescript warns that property 'Id' could be undefined.
+   * But since an Id will be provided by parameters, or a new will be generated.
+   * We can safely disable this warning.
+   */
 
   // @ts-expect-error
   public id: string;
@@ -25,12 +25,18 @@ export class BaseEntity {
   //------------------------
 
   /**
-  * Find first entity that matches.
-  * this.name = Name of Generic sub class.
-  */
+   * Find first entity that matches.
+   * this.name = Name of Generic sub class.
+   */
 
-  public static async findOne<T extends BaseEntity>(this: new (...args: any[]) => T, id: string): Promise<T | null> {
-    const obj = await getDb().send_command(JsonCommands.Get, `${this.name}:${id}`);
+  public static async findOne<T extends BaseEntity>(
+    this: new (...args: any[]) => T,
+    id: string
+  ): Promise<T | null> {
+    const obj = await getDb().send_command(
+      JsonCommands.Get,
+      `${this.name}:${id}`
+    );
     if (!obj) {
       return null;
     }
@@ -42,9 +48,15 @@ export class BaseEntity {
   /**
    * Creates a new entity instance.
    */
-  public static async create<T extends BaseEntity>(this: new (...args: any[]) => T, opts: Partial<T>): Promise<T> {
+  public static async create<T extends BaseEntity>(
+    this: new (...args: any[]) => T,
+    opts: Partial<T>
+  ): Promise<T> {
     if (opts.id) {
-      const obj = await getDb().send_command(JsonCommands.Get, `${this.name}:${opts.id}`);
+      const obj = await getDb().send_command(
+        JsonCommands.Get,
+        `${this.name}:${opts.id}`
+      );
       if (!obj) {
         throw new Error('the id that was given, does not exist.');
       }
@@ -54,16 +66,24 @@ export class BaseEntity {
     }
     const id = uuid();
 
-    await getDb().send_command(JsonCommands.Set, `${this.name}:${id}`, '.', JSON.stringify({ ...opts, id }));
+    await getDb().send_command(
+      JsonCommands.Set,
+      `${this.name}:${id}`,
+      '.',
+      JSON.stringify({ ...opts, id })
+    );
     const instance = new this(opts);
     instance.id = id;
     return instance;
   }
 
   /**
-  * Remove an entity instande from the database based on Id.
-  */
-  public static async remove<T extends BaseEntity>(this: new (...args: any[]) => T, id: string): Promise<boolean> {
+   * Remove an entity instande from the database based on Id.
+   */
+  public static async remove<T extends BaseEntity>(
+    this: new (...args: any[]) => T,
+    id: string
+  ): Promise<boolean> {
     return await getDb().send_command(JsonCommands.Del, `${this.name}:${id}`);
   }
 }
