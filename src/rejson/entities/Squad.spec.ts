@@ -21,7 +21,11 @@ describe('Squad', () => {
 
   it('Should create a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
-    const res = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.name');
+    const res = await client.send_command(
+      'JSON.GET',
+      `Squad:${squad.id}`,
+      '.name'
+    );
 
     if (!res) {
       throw new Error('Squad is null');
@@ -42,7 +46,11 @@ describe('Squad', () => {
     const person = await createPerson('harry');
     await squad.addMember(person);
 
-    const result = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
+    const result = await client.send_command(
+      'JSON.GET',
+      `Squad:${squad.id}`,
+      '.members'
+    );
 
     if (!result) {
       throw new Error('Squad is null');
@@ -57,7 +65,11 @@ describe('Squad', () => {
     await squad.addMember(person);
     await squad.addMember(person);
 
-    const result = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
+    const result = await client.send_command(
+      'JSON.GET',
+      `Squad:${squad.id}`,
+      '.members'
+    );
 
     if (!result) {
       throw new Error('Squad is null');
@@ -71,7 +83,11 @@ describe('Squad', () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     await squad.edit({ name: 'slytherin' });
 
-    const result = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.name');
+    const result = await client.send_command(
+      'JSON.GET',
+      `Squad:${squad.id}`,
+      '.name'
+    );
     expect(JSON.parse(result)).to.be.equal('slytherin');
   });
 
@@ -80,7 +96,11 @@ describe('Squad', () => {
     const person = await createPerson('harry');
     await squad.addMember(person);
 
-    let result = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
+    let result = await client.send_command(
+      'JSON.GET',
+      `Squad:${squad.id}`,
+      '.members'
+    );
 
     if (!result) {
       throw new Error('Squad is null');
@@ -90,7 +110,11 @@ describe('Squad', () => {
     expect(JSON.parse(result)[0]).to.be.equal(person.id);
 
     await squad.removeMember(person);
-    result = await client.send_command('JSON.GET', `Squad:${squad.id}`, '.members');
+    result = await client.send_command(
+      'JSON.GET',
+      `Squad:${squad.id}`,
+      '.members'
+    );
 
     if (!result) {
       throw new Error('squad is null');

@@ -18,5 +18,5 @@ export class Organisation extends BaseEntity {
   //------------------------
   // public methods
   //------------------------
-  public async edit(): Promise<void> { }
+  public async edit(): Promise<void> {}
 }
