@@ -1,4 +1,4 @@
-## Redis hackathon Agile tool
+# Feature creep
 
 ![ci](https://github.com/niekcandaele/feature-creep/actions/workflows/ci.yml/badge.svg)
 
