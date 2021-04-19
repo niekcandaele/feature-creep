@@ -11,6 +11,6 @@ export const queryType = new GraphQLObjectType({
         return 'PONG!';
       },
     },
-    person: personQuery
+    person: personQuery,
   }),
 });
