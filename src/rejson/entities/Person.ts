@@ -31,7 +31,15 @@ export class Person extends BaseEntity {
    * Edit properties of current Person.
    */
   public async edit(editProps: Partial<Person>): Promise<void> {
-    const person = await getDb().send_command(JsonCommands.Get, `Person:${this.id}`);
-    await getDb().send_command(JsonCommands.Set, `Person:${this.id}`, '.', JSON.stringify({ ...person, ...editProps }));
+    const person = await getDb().send_command(
+      JsonCommands.Get,
+      `Person:${this.id}`
+    );
+    await getDb().send_command(
+      JsonCommands.Set,
+      `Person:${this.id}`,
+      '.',
+      JSON.stringify({ ...person, ...editProps })
+    );
   }
 }

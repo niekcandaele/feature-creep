@@ -12,7 +12,7 @@ export function getDb() {
 
   client = new Redis({
     host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT as unknown as number,
+    port: (process.env.REDIS_PORT as unknown) as number,
   });
   handleKernelKillSignals();
   return client;

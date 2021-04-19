@@ -1,5 +1,4 @@
 export enum JsonCommands {
-
   // Base commands
   Del = 'JSON.DEL',
   Get = 'JSON.GET',
@@ -25,5 +24,5 @@ export enum JsonCommands {
   ObjKeys = 'JSON.OBJKEYS',
   ObjLen = 'JSON.OBJLEN',
   Debug = 'JSON.DEBUG',
-  Resp = 'JSON.RESP'
+  Resp = 'JSON.RESP',
 }
