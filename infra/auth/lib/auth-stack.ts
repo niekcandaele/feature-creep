@@ -1,9 +1,23 @@
 import { AccountRecovery, ClientAttributes, UserPool, UserPoolClient } from '@aws-cdk/aws-cognito';
 import * as cdk from '@aws-cdk/core';
 
+const DOMAIN_NAME = 'featurecreep.app';
 export class AuthStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    /*     // Domain + TLS stuff
+        const zone = new PublicHostedZone(this, 'HostedZone', {
+          zoneName: 'featurecreep.app'
+        });
+
+        // TLS certificate
+        const certificateArn = new acm.DnsValidatedCertificate(this, 'SiteCertificate', {
+          domainName: DOMAIN_NAME,
+          hostedZone: zone,
+          region: 'eu-west-1',
+        }).certificateArn;
+        new cdk.CfnOutput(this, 'Certificate', { value: certificateArn }); */
 
     // Cognito User Pool with Email Sign-in Type.
     const userPool = new UserPool(this, 'userPool', {
@@ -41,7 +55,7 @@ export class AuthStack extends cdk.Stack {
           implicitCodeGrant: true,
         },
         callbackUrls: [
-          'https://featurecreep.app'
+          'http://localhost:3000/redirect'
         ]
       }
     });
@@ -53,8 +67,8 @@ export class AuthStack extends cdk.Stack {
       }
     });
 
-    const signInUrl = domain.signInUrl(userPoolClient, {
-      redirectUri: 'https://featurecreep.app'
+    domain.signInUrl(userPoolClient, {
+      redirectUri: 'http://localhost:3000/redirect'
     });
   }
 }
