@@ -22,6 +22,6 @@ new AuthStack(app, 'AuthStack', {
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
   env: {
     region: 'eu-west-1',
-    account: process.env.CDK_DEFAULT_ACCOUNT
-  }
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+  },
 });

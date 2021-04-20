@@ -1,4 +1,9 @@
-import { AccountRecovery, ClientAttributes, UserPool, UserPoolClient } from '@aws-cdk/aws-cognito';
+import {
+  AccountRecovery,
+  ClientAttributes,
+  UserPool,
+  UserPoolClient,
+} from '@aws-cdk/aws-cognito';
 import * as cdk from '@aws-cdk/core';
 
 const DOMAIN_NAME = 'featurecreep.app';
@@ -29,17 +34,19 @@ export class AuthStack extends cdk.Stack {
       standardAttributes: {
         email: {
           required: true,
-          mutable: true
-        }
+          mutable: true,
+        },
       },
     });
 
     /* App Client */
-    const clientWriteAttributes = (new ClientAttributes())
-      .withStandardAttributes({ email: true });
+    const clientWriteAttributes = new ClientAttributes().withStandardAttributes(
+      { email: true }
+    );
 
-    const clientReadAttributes = clientWriteAttributes
-      .withStandardAttributes({ emailVerified: true });
+    const clientReadAttributes = clientWriteAttributes.withStandardAttributes({
+      emailVerified: true,
+    });
 
     const userPoolClient = new UserPoolClient(this, 'userPoolClient', {
       userPool,
@@ -54,21 +61,19 @@ export class AuthStack extends cdk.Stack {
         flows: {
           implicitCodeGrant: true,
         },
-        callbackUrls: [
-          'http://localhost:3000/redirect'
-        ]
-      }
+        callbackUrls: ['http://localhost:3000/redirect'],
+      },
     });
 
     /** Auth web pages */
     const domain = userPool.addDomain('CognitoDomain', {
       cognitoDomain: {
-        domainPrefix: 'feature-creep'
-      }
+        domainPrefix: 'feature-creep',
+      },
     });
 
     domain.signInUrl(userPoolClient, {
-      redirectUri: 'http://localhost:3000/redirect'
+      redirectUri: 'http://localhost:3000/redirect',
     });
   }
 }
