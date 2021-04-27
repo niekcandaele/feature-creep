@@ -1,6 +1,6 @@
-import { BaseEntity } from './BaseEntity';
 import { JsonCommands } from '../commands';
 import { getDb } from '../db';
+import { BaseEntity } from './BaseEntity';
 
 interface PersonOpts {
   firstName: string;
@@ -41,5 +41,18 @@ export class Person extends BaseEntity {
       '.',
       JSON.stringify({ ...person, ...editProps })
     );
+  }
+
+  // TODO: Move to Base Entity
+  // Have fun figuring it out :D
+  public static async findOrCreate(
+    id: string,
+    data: Partial<Person>
+  ): Promise<Person> {
+    const current = await Person.findOne(id);
+    if (current) return current;
+    console.log(`Entity ${id} not found, creating a new one`);
+
+    return Person.create(data);
   }
 }
