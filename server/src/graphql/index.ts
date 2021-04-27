@@ -50,3 +50,7 @@ export interface IJWT {
   exp: number;
   iat: number;
 }
+
+export interface IContext {
+  user: Person
+}

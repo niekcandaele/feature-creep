@@ -1,4 +1,4 @@
-import { Person } from '../../../rejson/entities/Person';
+import { IContext } from '../..';
 import { personType } from '../types/person';
 
 export const personQuery = {
@@ -7,8 +7,8 @@ export const personQuery = {
   resolve: (
     parent: Record<string, never>,
     args: { [argName: string]: string },
-    context: any
+    context: IContext
   ) => {
-    return Person.findOne(context.user.id);
+    return context.user;
   },
 };
