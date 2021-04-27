@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { StrictMode, FC, useEffect, useState } from 'react';
+import { Router } from './router';
+import { DEFAULT } from 'styled/theme';
+import { SnackbarProvider, SnackbarProviderProps } from 'notistack';
+import { ApolloProvider } from '@apollo/client';
+import { ThemeProvider } from 'styled-components';
+import { GlobalStyle } from 'styled/globalStyle';
+import { getClient } from 'apollo/client';
 
-function App() {
+export const App: FC = () => {
+  const [isLoading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    // handle client connection
+  });
+
+  const snackbarProps: Partial<SnackbarProviderProps> = {
+    anchorOrigin: { horizontal: 'center', vertical: 'top' },
+    autoHideDuration: 5000,
+    hideIconVariant: true,
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StrictMode>
+      <ThemeProvider theme={DEFAULT}>
+        <ApolloProvider client={getClient()}>
+          <SnackbarProvider {...snackbarProps}>
+            <GlobalStyle />
+            <Router />
+          </SnackbarProvider>
+        </ApolloProvider>
+      </ThemeProvider>
+    </StrictMode>
   );
-}
+};
 
 export default App;

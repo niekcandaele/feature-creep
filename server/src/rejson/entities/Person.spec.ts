@@ -39,4 +39,33 @@ describe('Person', () => {
     );
     expect(JSON.parse(res)).to.be.equal('ron');
   });
+
+  it('Should create a new person when creating with ID', async () => {
+    await Person.create({
+      firstName: 'Rubeus',
+      lastName: 'Hagrid',
+      email: 'hagrid@wizard.net',
+      id: 'this-is-the-id',
+    });
+
+    const hagrid = await Person.findOne('this-is-the-id');
+
+    if (!hagrid) throw new Error('hagrid is lost???');
+
+    expect(hagrid.email).to.equal('hagrid@wizard.net');
+  });
+
+  it('Should support findOrCreate', async () => {
+    const hagrid = await Person.findOrCreate('this-is-the-id', {
+      firstName: 'Rubeus',
+      lastName: 'Hagrid',
+      email: 'hagrid@wizard.net',
+      id: 'this-is-the-id',
+    });
+
+    if (!hagrid) throw new Error('hagrid is lost???');
+    console.log(hagrid);
+
+    expect(hagrid.email).to.equal('hagrid@wizard.net');
+  });
 });
