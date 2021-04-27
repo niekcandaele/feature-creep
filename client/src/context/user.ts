@@ -1,16 +1,16 @@
 import { createContext } from 'react';
 
 export interface IUserContext {
-  userData: Partial<IUserData>;
-  setUserData: React.Dispatch<IUserData>
+  userData: Partial<UserData>;
+  setUserData: React.Dispatch<Partial<UserData>>
 }
 
-export interface IUserData {
+export interface UserData {
   email: string;
-  discordId: string;
-  steamId: string;
   firstName: string;
   lastName: string;
+  emailVerified: boolean;
+  accessToken: string
 }
 
 export const UserContext = createContext<Partial<IUserContext>>(undefined!);

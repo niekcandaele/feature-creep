@@ -1,0 +1,1 @@
+export { authenticationService } from './AuthenticationService';

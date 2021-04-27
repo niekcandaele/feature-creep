@@ -1,2 +1,2 @@
-export type { IUserData, IUserContext } from './user';
+export type { UserData, IUserContext } from './user';
 export { UserContext } from './user';

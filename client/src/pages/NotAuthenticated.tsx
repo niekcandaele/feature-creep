@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { setRedirect } from 'helpers';
-import { routingService } from 'services';
+//import { routingService } from 'services';
 
 export const NotAuthenticated: FC = () => {
   const location = useLocation();
@@ -13,6 +13,6 @@ export const NotAuthenticated: FC = () => {
   }, []);
 
   return (
-    <div>not authenticated, you are being redirected to signin</div>
+    <div>You are not authenticated, you will be redirected to the signin page.</div>
   );
 };

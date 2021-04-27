@@ -1,6 +1,9 @@
-import { FC, useEffect } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import styled from 'styled-components';
+
 import { useNavigate, useLocation } from 'react-router-dom';
+import { UserContext } from 'context';
+import { decode } from 'jsonwebtoken';
 
 const Container = styled.div`
   background-color:${({ theme }) => theme.p};
@@ -17,12 +20,19 @@ const Container = styled.div`
 export const Redirect: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { setUserData } = useContext(UserContext);
 
+  // TODO: move this to jwt helper or something like that.
   function setJWT() {
     const params = new URLSearchParams(location.hash);
     const idToken = params.get('#id_token');
     const accessToken = params.get('access_token');
-    sessionStorage.setItem('jwt', JSON.stringify({ idToken, accessToken }));
+    // no jwt in redirect passed.
+    if (!idToken || !accessToken) {
+      return;
+    };
+    // save access token in local storage
+    localStorage.setItem('token', accessToken);
   }
 
   function redirect() {
@@ -38,7 +48,7 @@ export const Redirect: FC = () => {
 
   // check local storage
   useEffect(() => {
-    if (location.hash) { setJWT(); }
+    setJWT();
     redirect();
   }, []);
 
