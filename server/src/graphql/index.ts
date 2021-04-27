@@ -7,7 +7,8 @@ import { Person } from '../rejson/entities/Person';
 import { schema } from './schema';
 
 const client = jwksClient({
-  jwksUri: 'https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_4MH59fRxt/.well-known/jwks.json'
+  jwksUri:
+    'https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_4MH59fRxt/.well-known/jwks.json',
 });
 
 export const server = new ApolloServer({
@@ -22,14 +23,16 @@ export const server = new ApolloServer({
     try {
       // There's some real weird type stuff going on here because of promisify and jwt overloads supporting callbacks and sync usage
       //@ts-expect-error stfu TS >:(
-      const decoded: IJWT = await promisify(jwt.verify)(token, getKey, { algorithms: ['RS256'] });
+      const decoded: IJWT = await promisify(jwt.verify)(token, getKey, {
+        algorithms: ['RS256'],
+      });
       const user = await Person.findOrCreate(decoded.sub, { id: decoded.sub });
       return { user };
     } catch (error) {
       console.error(error);
       throw new Error('Invalid JWT.');
     }
-  }
+  },
 });
 
 function getKey(header: any, callback: CallableFunction) {

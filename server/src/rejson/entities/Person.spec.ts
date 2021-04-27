@@ -45,7 +45,7 @@ describe('Person', () => {
       firstName: 'Rubeus',
       lastName: 'Hagrid',
       email: 'hagrid@wizard.net',
-      id: 'this-is-the-id'
+      id: 'this-is-the-id',
     });
 
     const hagrid = await Person.findOne('this-is-the-id');
@@ -60,7 +60,7 @@ describe('Person', () => {
       firstName: 'Rubeus',
       lastName: 'Hagrid',
       email: 'hagrid@wizard.net',
-      id: 'this-is-the-id'
+      id: 'this-is-the-id',
     });
 
     if (!hagrid) throw new Error('hagrid is lost???');
