@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
-import { getDb } from '../db';
 import { JsonCommands } from '../commands';
+import { getDb } from '../db';
 
 /**
  * Base Modal for all models.
@@ -57,28 +57,28 @@ export class BaseEntity {
         JsonCommands.Get,
         `${this.name}:${opts.id}`
       );
-      if (!obj) {
-        throw new Error('the id that was given, does not exist.');
+      if (obj) {
+        const instance = new this(JSON.parse(obj));
+        instance.id = opts.id;
+        return instance;
       }
-      const instance = new this(JSON.parse(obj));
-      instance.id = opts.id;
-      return instance;
+    } else {
+      opts.id = uuid();
     }
-    const id = uuid();
 
     await getDb().send_command(
       JsonCommands.Set,
-      `${this.name}:${id}`,
+      `${this.name}:${opts.id}`,
       '.',
-      JSON.stringify({ ...opts, id })
+      JSON.stringify({ ...opts })
     );
     const instance = new this(opts);
-    instance.id = id;
+    instance.id = opts.id;
     return instance;
   }
 
   /**
-   * Remove an entity instande from the database based on Id.
+   * Remove an entity instance from the database based on Id.
    */
   public static async remove<T extends BaseEntity>(
     this: new (...args: any[]) => T,

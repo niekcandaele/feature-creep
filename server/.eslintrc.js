@@ -19,7 +19,6 @@ module.exports = {
     'padded-blocks': [1, 'never'],
     'prefer-arrow-callback': 2,
     'prefer-const': 2,
-    'no-console': 1,
     quotes: [2, 'single'],
     'space-before-function-paren': [
       2,
