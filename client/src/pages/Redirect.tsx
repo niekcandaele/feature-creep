@@ -1,9 +1,7 @@
 import { FC, useContext, useEffect } from 'react';
 import styled from 'styled-components';
-
 import { useNavigate, useLocation } from 'react-router-dom';
 import { UserContext } from 'context';
-import { decode } from 'jsonwebtoken';
 
 const Container = styled.div`
   background-color:${({ theme }) => theme.p};
@@ -29,6 +27,7 @@ export const Redirect: FC = () => {
     const accessToken = params.get('access_token');
     // no jwt in redirect passed.
     if (!idToken || !accessToken) {
+      console.log('dis fires');
       return;
     };
     // save access token in local storage

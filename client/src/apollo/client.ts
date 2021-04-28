@@ -27,10 +27,9 @@ export function getClient(): ApolloClient<any> {
       });
 
       const link = ApolloLink.from([
-        new HttpLink({ uri: process.env.REACT_APP_APOLLO_HTTP_URI, credentials: 'same-origin' }),
+        authLink.concat(new HttpLink({ uri: process.env.REACT_APP_APOLLO_HTTP_URI, credentials: 'same-origin' })),
         new RetryLink(),
         new WebSocketLink({ uri: wsUri, options: { reconnect: true } }),
-        authLink
       ]);
 
       client = new ApolloClient({ link, cache: new InMemoryCache() });
