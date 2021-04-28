@@ -16,8 +16,8 @@ export const AuthenticatedRoute: FC<AuthenticatedRouteProps> = ({ element, path 
   const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    authenticationService.isAuthenticated().then((isValid) => {
-      if (isValid) {
+    authenticationService.isAuthenticated().then((userData) => {
+      if (userData) {
         setAuthenticated(true);
         setLoading(false);
       }
