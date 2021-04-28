@@ -6,6 +6,7 @@ interface PersonOpts {
   firstName: string;
   lastName: string;
   email: string;
+  squads: string[];
 }
 
 export class Person extends BaseEntity {
@@ -15,12 +16,14 @@ export class Person extends BaseEntity {
   public firstName: string;
   public lastName: string;
   public email: string;
+  public squads: string[] = [];
 
   constructor(opts: PersonOpts) {
     super();
     this.firstName = opts.firstName;
     this.lastName = opts.lastName;
     this.email = opts.email;
+    this.squads = opts.squads;
   }
 
   //------------------------
@@ -31,10 +34,10 @@ export class Person extends BaseEntity {
    * Edit properties of current Person.
    */
   public async edit(editProps: Partial<Person>): Promise<void> {
-    const person = await getDb().send_command(
-      JsonCommands.Get,
-      `Person:${this.id}`
+    const person = JSON.parse(
+      await getDb().send_command(JsonCommands.Get, `Person:${this.id}`)
     );
+
     await getDb().send_command(
       JsonCommands.Set,
       `Person:${this.id}`,

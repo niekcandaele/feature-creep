@@ -64,7 +64,6 @@ describe('Person', () => {
     });
 
     if (!hagrid) throw new Error('hagrid is lost???');
-    console.log(hagrid);
 
     expect(hagrid.email).to.equal('hagrid@wizard.net');
   });

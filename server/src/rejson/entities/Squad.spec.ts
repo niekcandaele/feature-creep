@@ -57,6 +57,12 @@ describe('Squad', () => {
     }
 
     expect(JSON.parse(result)[0]).to.be.equal(person.id);
+
+    const personAfterAdd = await Person.findOne(person.id);
+
+    if (!personAfterAdd) throw new Error('Person not defined');
+
+    expect(personAfterAdd.squads).to.include(squad.id);
   });
 
   it('Should not add the same person twice to the same squad.', async () => {
@@ -134,8 +140,9 @@ describe('Squad', () => {
     const members = await squad.getMembers();
 
     expect(members).to.be.an('array');
+    expect(members).to.have.length(2);
     expect(members[0]).to.be.instanceOf(Person);
-    expect(members[0]).to.be.eql(harry);
+    expect(members[0].firstName).to.be.eql('Harry');
   });
 
   it('Should delete a member from a squad', async () => {
@@ -149,8 +156,8 @@ describe('Squad', () => {
     let members = await squad.getMembers();
     expect(members).to.be.an('array');
     expect(members).to.have.length(2);
-    expect(members[0]).to.be.eql(harry);
-    expect(members[1]).to.be.eql(ron);
+    expect(members[0].firstName).to.be.eql('Harry');
+    expect(members[1].firstName).to.be.eql('Ron');
 
     // remove harry from the Squad
     await squad.removeMember(harry);
@@ -158,7 +165,11 @@ describe('Squad', () => {
     members = await squad.getMembers();
     expect(members).to.be.an('array');
     expect(members).to.have.length(1);
-    expect(members[0]).to.be.eql(ron);
+    expect(members[0].firstName).to.be.eql('Ron');
+
+    const harryAfter = await Person.findOne(harry.id);
+    if (!harryAfter) throw new Error('Harry undefined');
+    expect(harryAfter.squads).to.have.length(0);
   });
 
   it('Should handle removing a member from a squad that is not part of that squad correctly', async () => {
@@ -171,12 +182,12 @@ describe('Squad', () => {
 
     expect(members).to.be.an('array');
     expect(members).to.have.length(1);
-    expect(members[0]).to.be.eql(harry);
+    expect(members[0].firstName).to.be.eql('Harry');
 
     await squad.removeMember(ron);
     members = await squad.getMembers();
     expect(members).to.be.an('array');
     expect(members).to.have.length(1);
-    expect(members[0]).to.be.eql(harry);
+    expect(members[0].firstName).to.be.eql('Harry');
   });
 });
