@@ -3,6 +3,7 @@
     "extends": [
       "react-app"
     ],
+    "ignorePatterns": "src/generated/index.ts",
     "rules": {
       "eol-last": 2,
       "eqeqeq": 2,
