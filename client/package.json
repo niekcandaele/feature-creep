@@ -7,13 +7,18 @@
     "lint": "eslint . --cache --report-unused-disable-directives --ext .js,.ts,.tsx -c .eslintrc",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "graphql:generate": "graphql-codegen --config codegen.yml",
+    "prestart": "npm run graphql:generate",
+    "storybook": "start-storybook -p 6006 -s public",
+    "storybook:build": "build-storybook -s public"
   },
   "dependencies": {
     "@apollo/client": "^3.3.15",
     "@material-ui/core": "^4.11.3",
     "@sentry/react": "^6.2.5",
     "@types/eslint": "^7.2.10",
+    "debounce": "^1.2.1",
     "framer-motion": "^4.1.5",
     "graphql": "^15.5.0",
     "history": "^5.0.0",
@@ -22,6 +27,8 @@
     "notistack": "^1.0.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.3.5",
+    "react-icons": "^4.2.0",
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "4.0.3",
     "styled-components": "^5.2.3",
@@ -42,10 +49,23 @@
     ]
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.21.4",
+    "@graphql-codegen/cli": "1.21.4",
+    "@graphql-codegen/fragment-matcher": "2.0.1",
+    "@graphql-codegen/introspection": "1.18.2",
+    "@graphql-codegen/typescript": "1.22.0",
+    "@graphql-codegen/typescript-operations": "1.17.16",
+    "@graphql-codegen/typescript-react-apollo": "2.2.4",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-docs": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/node-logger": "^6.2.9",
+    "@storybook/preset-create-react-app": "^3.1.7",
+    "@storybook/react": "^6.2.9",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@types/debounce": "^1.2.0",
     "@types/history": "^4.7.8",
     "@types/jest": "^26.0.15",
     "@types/jsonwebtoken": "^8.5.1",
@@ -57,5 +77,17 @@
     "@types/styled-components": "^5.1.9",
     "@typescript-eslint/parser": "^4.22.0",
     "sort-package-json": "^1.49.0"
+  },
+  "eslintConfig": {
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   }
 }
