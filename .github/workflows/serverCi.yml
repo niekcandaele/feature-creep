@@ -1,8 +1,13 @@
 name: Node.js CI
 
 on:
+  workflow_dispatch:
   push:
+    paths:
+      - "server/**"
   pull_request:
+    paths:
+      - "server/**"
 
 jobs:
   build:
@@ -35,5 +40,4 @@ jobs:
           npm run prettier:check
           npm run lint
           npm run build
-          npm run storybook:build
           npm test
