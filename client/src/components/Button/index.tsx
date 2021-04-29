@@ -4,7 +4,7 @@ import styled from 'styled';
 const Template = styled.button<{ outline: boolean }>`
   width: fit-content;
   border-radius: 2.5rem;
-  background: ${({ theme, outline }): string => outline ? 'transparent' : theme.colors.gradient};
+  background: ${({ theme, outline }): string => outline ? 'transparent' : theme.gradient.primary};
   border: none;
   color: ${({ theme, outline }) => outline ? theme.colors.title : 'white'};
   font-weight: 900;

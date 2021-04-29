@@ -1,16 +1,7 @@
 import { FC } from 'react';
 import styled from 'styled';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { Icon } from 'components';
-
-export interface LinkProps {
-  to: string;
-  arrow?: boolean;
-  external?: string;
-  text: string;
-  className?: string;
-}
-
+import { AiOutlineArrowRight } from 'react-icons/ai';
 const Container = styled.div <{ arrow: boolean }>`
   a {
     display: inline-flex;
@@ -24,13 +15,21 @@ const Container = styled.div <{ arrow: boolean }>`
   svg { transform: rotate(90deg); }
 `;
 
+export interface LinkProps {
+  to: string;
+  arrow?: boolean;
+  external?: string;
+  text: string;
+  className?: string;
+}
+
 export const Link: FC<LinkProps> = ({ className, to, arrow = false, external = false, text }) => {
   if (external) {
     return (
       <Container arrow={arrow} className={className}>
         <a href={to} rel="noreferrer noopener" target="_blank" >
           <span>{text}</span>
-          {arrow ? <Icon glyph="arrow-right" size={24} /> : ''}
+          {arrow ? <AiOutlineArrowRight size={24} /> : ''}
         </a>
       </Container>
     );
@@ -40,7 +39,7 @@ export const Link: FC<LinkProps> = ({ className, to, arrow = false, external = f
     <Container arrow={arrow}>
       <ReactRouterLink to={to}>
         <span>{text}</span>
-        {arrow ? <Icon glyph="arrow-right" size={24} /> : ''}
+        {arrow ? <AiOutlineArrowRight size={24} /> : ''}
       </ReactRouterLink>
     </Container>
   );
