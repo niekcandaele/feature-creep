@@ -13,7 +13,7 @@ export function getClient(): ApolloClient<any> {
     else {
       const wsUri = process.env.REACT_APP_APOLLO_WS_URI;
       if (!wsUri) {
-        throw new Error('Websocket uri was not found');
+        throw new Error('Websocket uri not defined.');
       }
 
       const authLink = setContext((_, { headers }) => {
@@ -27,7 +27,8 @@ export function getClient(): ApolloClient<any> {
       });
 
       const link = ApolloLink.from([
-        authLink.concat(new HttpLink({ uri: process.env.REACT_APP_APOLLO_HTTP_URI, credentials: 'same-origin' })),
+        authLink,
+        new HttpLink({ uri: process.env.REACT_APP_APOLLO_HTTP_URI, credentials: 'same-origin' }),
         new RetryLink(),
         new WebSocketLink({ uri: wsUri, options: { reconnect: true } }),
       ]);
