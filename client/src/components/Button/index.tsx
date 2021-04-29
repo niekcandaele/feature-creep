@@ -4,13 +4,13 @@ import styled from 'styled';
 const Template = styled.button<{ outline: boolean }>`
   width: fit-content;
   border-radius: 2.5rem;
-  background: ${({ theme, outline }): string => outline ? 'transparent' : theme.gradient};
+  background: ${({ theme, outline }): string => outline ? 'transparent' : theme.colors.gradient};
   border: none;
-  color: ${({ theme, outline }) => outline ? theme.title : 'white'};
+  color: ${({ theme, outline }) => outline ? theme.colors.title : 'white'};
   font-weight: 900;
-  border: 2px solid ${({ theme, outline }) => outline ? theme.gray : 'transparent'};
+  border: 2px solid ${({ theme, outline }) => outline ? theme.colors.gray : 'transparent'};
   cursor: pointer;
-  transition: all .3s ease-in-out;
+  transition: all .2s ease-in-out;
   line-height: 19px;
   letter-spacing: 0;
   background-clip: padding-box;
@@ -19,8 +19,8 @@ const Template = styled.button<{ outline: boolean }>`
   }
   &:hover {
     background: transparent;
-    color: ${({ outline, theme }): string => outline ? theme.title : theme.primary};
-    border-color: ${({ theme, outline }): string => outline ? theme.title : theme.primary}
+    color: ${({ outline, theme }): string => outline ? theme.colors.title : theme.colors.primary};
+    border-color: ${({ theme, outline }): string => outline ? theme.colors.title : theme.colors.primary}
   }
 `;
 
