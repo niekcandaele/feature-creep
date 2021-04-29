@@ -1,0 +1,27 @@
+name: Build and Deploy Storybook
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy-storybook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+
+      - name: Install root packages
+        run: npm ci
+
+      - name: Deploy
+        run: |
+          cd client
+          npm ci
+          npm run storybook:build
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: client/storybook-static # The folder the action should deploy.
+
