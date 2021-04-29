@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styled from 'styled';
-import { Icon, Link } from 'components';
+import { Link } from 'components';
 
 const Template = styled.div`
   border-radius: 1rem;
@@ -64,7 +64,7 @@ const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }): string => theme.gray};
+  background-color: ${({ theme }): string => theme.colors.gray};
   width: fit-content;
   padding: 5px;
   border-radius: 50%;
@@ -72,21 +72,21 @@ const IconContainer = styled.div`
 `;
 
 export interface CardProps {
-  glyph: string;
   title: string;
   size: 'small' | 'medium' | 'large'
   description: string;
   to?: string;
   linkText?: string;
+  icon: React.ReactNode;
 }
 
-export const Card: FC<CardProps> = ({ title, description, glyph, size, to = '/not-set', linkText = 'not set' }) => {
+export const Card: FC<CardProps> = ({ title, description, icon, size, to = '/not-set', linkText = 'not set' }) => {
   switch (size) {
     case 'small':
       return (
         <Small>
           <IconContainer>
-            <Icon glyph={glyph} />
+            {icon}
           </IconContainer>
           <div className="text">
             <h3>{title}</h3>
@@ -97,7 +97,7 @@ export const Card: FC<CardProps> = ({ title, description, glyph, size, to = '/no
     case 'medium':
       return (
         <Medium>
-          <Icon glyph={glyph} size={48} />
+          {icon}
           <div className="text">
             <h3>{title}</h3>
             <p>{description}</p>
@@ -108,7 +108,7 @@ export const Card: FC<CardProps> = ({ title, description, glyph, size, to = '/no
       return (
         <Large>
           <div className="title">
-            <Icon glyph={glyph} size={64} />
+            {icon}
             <h3>{title}</h3>
           </div>
           <p>{description}</p>
