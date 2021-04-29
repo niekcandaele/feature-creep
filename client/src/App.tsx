@@ -1,13 +1,13 @@
 import { StrictMode, FC, useEffect, useState, useMemo } from 'react';
 import { Router } from './router';
-import { DEFAULT } from 'styled/theme';
+import { theme } from 'styled/theme';
 import { SnackbarProvider, SnackbarProviderProps } from 'notistack';
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from 'styled/globalStyle';
 import { getClient } from 'apollo/client';
-import { UserContext } from 'context';
-import { authenticationService } from 'services';
+import { AuthContext, authProvider } from 'context/AuthContext';
+import { UserContext } from 'context/UserContext';
 
 const snackbarProps: Partial<SnackbarProviderProps> = {
   anchorOrigin: { horizontal: 'center', vertical: 'top' },
@@ -19,22 +19,18 @@ export const App: FC = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const [userData, setUserData] = useState({});
-  const providerUserData = useMemo(() => ({ userData, setUserData }), [userData, setUserData]);
+  const userDataProvider = useMemo(() => ({ userData, setUserData }), [userData, setUserData]);
 
   useEffect(() => {
-    authenticationService.isAuthenticated().then((userData) => {
-      if (userData) {
-        setUserData(userData);
-      }
-      setLoading(false);
-    });
+    // do stuff here
+    setLoading(false);
   }, []);
 
   if (isLoading) {
     return (
       <StrictMode>
-        <ThemeProvider theme={DEFAULT}>
-          <div>loading...</div>
+        <ThemeProvider theme={theme}>
+          <div>App loading.</div>
         </ThemeProvider>
       </StrictMode>
     );
@@ -42,13 +38,15 @@ export const App: FC = () => {
 
   return (
     <StrictMode>
-      <ThemeProvider theme={DEFAULT}>
+      <ThemeProvider theme={theme}>
         <ApolloProvider client={getClient()}>
-          <UserContext.Provider value={providerUserData}>
-            <SnackbarProvider {...snackbarProps}>
-              <GlobalStyle />
-              <Router />
-            </SnackbarProvider>
+          <UserContext.Provider value={userDataProvider}>
+            <AuthContext.Provider value={authProvider()}>
+              <SnackbarProvider {...snackbarProps}>
+                <GlobalStyle />
+                <Router />
+              </SnackbarProvider>
+            </AuthContext.Provider>
           </UserContext.Provider>
         </ApolloProvider>
       </ThemeProvider>
