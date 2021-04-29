@@ -23,11 +23,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-        env:
-          SKIP_PREFLIGHT_CHECK: true
       - run: |
           cd client
           npm ci
           npm run lint
           npm run build
           npm run storybook:build
+        env:
+          SKIP_PREFLIGHT_CHECK: true
