@@ -32,3 +32,4 @@ jobs:
           npm run chromatic
         env:
           SKIP_PREFLIGHT_CHECK: true
+          CHROMATIC_PROJECT_TOKEN: ${{SECRETS.CHROMATIC_PROJECT_TOKEN}}
