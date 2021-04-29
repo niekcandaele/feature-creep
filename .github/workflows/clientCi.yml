@@ -30,7 +30,8 @@ jobs:
           npm run build
           npm run storybook:build
           npm run chromatic
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
         env:
           SKIP_PREFLIGHT_CHECK: true
           CHROMATIC_PROJECT_TOKEN: ${{SECRETS.CHROMATIC_PROJECT_TOKEN}}
