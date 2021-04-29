@@ -1,11 +1,11 @@
 import { ThemeProvider } from 'styled-components';
-import { DEFAULT } from '../src/styled/theme';
+import { theme } from '../src/styled/theme';
 import { GlobalStyle } from '../src/styled/globalStyle';
 import { MemoryRouter } from 'react-router-dom';
 
 export const decorators = [
   Story => (
-    <ThemeProvider theme={DEFAULT}>
+    <ThemeProvider theme={theme}>
       <MemoryRouter initialEntries={['/']}>
         <GlobalStyle />
         <Story />
