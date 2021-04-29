@@ -8,6 +8,7 @@ export interface LinkProps {
   arrow?: boolean;
   external?: string;
   text: string;
+  className?: string;
 }
 
 const Container = styled.div <{ arrow: boolean }>`
@@ -17,13 +18,16 @@ const Container = styled.div <{ arrow: boolean }>`
     align-items: center;
     justify-content: center;
   }
+  span {
+    font-size: inherit;
+  }
   svg { transform: rotate(90deg); }
 `;
 
-export const Link: FC<LinkProps> = ({ to, arrow = false, external = false, text }) => {
+export const Link: FC<LinkProps> = ({ className, to, arrow = false, external = false, text }) => {
   if (external) {
     return (
-      <Container arrow={arrow}>
+      <Container arrow={arrow} className={className}>
         <a href={to} rel="noreferrer noopener" target="_blank" >
           <span>{text}</span>
           {arrow ? <Icon glyph="arrow-right" size={24} /> : ''}
