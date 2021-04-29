@@ -29,5 +29,6 @@ jobs:
           npm run lint
           npm run build
           npm run storybook:build
+          npm run chromatic
         env:
           SKIP_PREFLIGHT_CHECK: true
