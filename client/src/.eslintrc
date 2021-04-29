@@ -3,7 +3,7 @@
     "extends": [
       "react-app"
     ],
-    "ignorePatterns": "src/generated/index.ts",
+    "ignorePatterns": ["node_modules", "src/generated/index.ts", "storybook-static"],
     "rules": {
       "eol-last": 2,
       "eqeqeq": 2,

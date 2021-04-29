@@ -1,8 +1,7 @@
 import { FC } from 'react';
 import styled from 'styled';
-import { useController, Control, UseFormTrigger } from 'react-hook-form';
+import { useController, Control } from 'react-hook-form';
 import { AiOutlineSearch } from 'react-icons/ai';
-import debounce from 'debounce';
 
 const Container = styled.div`
   position: relative;
