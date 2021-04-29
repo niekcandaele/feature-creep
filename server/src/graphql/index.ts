@@ -16,10 +16,10 @@ export const server = new ApolloServer({
   playground: true,
   introspection: true,
   context: async (data: any) => {
+    return {};
     const req = data.req;
     const header = req.headers.authorization;
     const token = header.replace('Bearer ', '').trim();
-
     try {
       // There's some real weird type stuff going on here because of promisify and jwt overloads supporting callbacks and sync usage
       //@ts-expect-error stfu TS >:(
