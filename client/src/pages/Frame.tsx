@@ -1,15 +1,18 @@
 import { FC } from 'react';
 import { motion } from 'framer-motion';
-import styled from 'styled-components';
+import styled from 'styled';
 import { Outlet } from 'react-router-dom';
+import { Header } from 'components';
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   height: 100%;
-  background-color:#e8edf5;
+  border-radius: 1.5rem;
+  background-color:${({ theme }) => theme.colors.background};
 `;
 const ContentContainer = styled(motion.div)`
-  background-color:#e8edf5;
+  background-color:${({ theme }) => theme.colors.background};
   width: 100%;
   opacity: 0;
   overflow-y: auto;
@@ -19,10 +22,9 @@ const Page = styled.div`
 `;
 
 export const Frame: FC = () => {
-  // check if the user has already filled in an email address (initial).
-
   return (
     <Container>
+      <Header />
       <ContentContainer
         animate={{ opacity: 1 }}
         transition={{ delay: .3, duration: .5 }}

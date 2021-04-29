@@ -1,7 +1,6 @@
-import { FC, useContext, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { UserContext } from 'context';
 
 const Container = styled.div`
   background-color:${({ theme }) => theme.p};
@@ -15,24 +14,21 @@ const Container = styled.div`
   }
 `;
 
+function setJWT(hash: string) {
+  const params = new URLSearchParams(hash);
+  const idToken = params.get('#id_token');
+  const accessToken = params.get('access_token');
+  // no jwt in redirect passed.
+  if (!idToken || !accessToken) {
+    return;
+  };
+  // save access token in local storage
+  localStorage.setItem('token', accessToken);
+}
+
 export const Redirect: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { setUserData } = useContext(UserContext);
-
-  // TODO: move this to jwt helper or something like that.
-  function setJWT() {
-    const params = new URLSearchParams(location.hash);
-    const idToken = params.get('#id_token');
-    const accessToken = params.get('access_token');
-    // no jwt in redirect passed.
-    if (!idToken || !accessToken) {
-      console.log('dis fires');
-      return;
-    };
-    // save access token in local storage
-    localStorage.setItem('token', accessToken);
-  }
 
   function redirect() {
     const path = localStorage.getItem('redirect');
@@ -47,7 +43,7 @@ export const Redirect: FC = () => {
 
   // check local storage
   useEffect(() => {
-    setJWT();
+    setJWT(location.hash);
     redirect();
   }, []);
 
