@@ -22,7 +22,7 @@ const Inner = styled.span<{ isChecked: boolean }>`
   display: block;
   width: 100%;
   height: 9px;
-  background-color: ${({ theme, isChecked }): string => isChecked ? theme.primary : theme.gray};
+  background-color: ${({ theme, isChecked }): string => isChecked ? theme.colors.primary : theme.colors.gray};
 `;
 
 const Dot = styled.span<{ isChecked: boolean }>`
