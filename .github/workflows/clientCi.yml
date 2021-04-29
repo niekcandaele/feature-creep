@@ -23,9 +23,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+          # Haven't found any other solution thn --legacy-peer-deps or downgrading npm to fix this :'(
       - run: |
           cd client
-          npm ci
+          npm ci --legacy-peer-deps
           npm run lint
           npm run build
           npm run storybook:build
