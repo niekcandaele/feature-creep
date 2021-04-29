@@ -1,6 +1,8 @@
 # Feature creep
 
-![ci](https://github.com/niekcandaele/feature-creep/actions/workflows/ci.yml/badge.svg)
+![Client ci](https://github.com/niekcandaele/feature-creep/actions/workflows/clientCi.yml/badge.svg)
+![Server ci](https://github.com/niekcandaele/feature-creep/actions/workflows/serverCi.yml/badge.svg)
+
 
 ### Agile
 
