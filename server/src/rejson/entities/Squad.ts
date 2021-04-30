@@ -1,5 +1,5 @@
-import { getDb } from '../db';
 import { JsonCommands } from '../commands';
+import { getDb } from '../db';
 import { BaseEntity } from './BaseEntity';
 import { Person } from './Person';
 
@@ -102,6 +102,10 @@ export class Squad extends BaseEntity {
         JSON.stringify(person.id)
       );
     }
+
+    // Save the squad to Person aswell
+
+    await person.edit({ squads: [this.id, ...person.squads] });
   }
   /**
    * Remove a member from the current squad.
@@ -121,5 +125,7 @@ export class Squad extends BaseEntity {
         index
       );
     }
+
+    await person.edit({ squads: person.squads.filter((_) => _ !== this.id) });
   }
 }

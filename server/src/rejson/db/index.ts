@@ -36,6 +36,9 @@ function handleKernelKillSignals() {
   const signals: NodeJS.Signals[] = ['SIGHUP', 'SIGINT', 'SIGTERM']; // maybe SIGKILL and SIGSTOP?
 
   for (const signal of signals) {
-    process.on(signal, () => client.disconnect);
+    process.on(signal, () => {
+      client.disconnect;
+      process.exit(1);
+    });
   }
 }
