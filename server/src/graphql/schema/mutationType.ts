@@ -12,6 +12,6 @@ export const mutationType = new GraphQLObjectType({
     editPerson: editPersonMutation,
     addMemberToSquad: addMemberToSquadMutation,
     removeMemberFromSquad: removeMemberFromSquadMutation,
-    createSquad: createSquad
+    createSquad: createSquad,
   }),
 });

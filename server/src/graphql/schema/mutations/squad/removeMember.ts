@@ -7,33 +7,33 @@ import { Squad } from '../../../../rejson/entities/Squad';
 import { squadType } from '../../types/squad';
 
 const removeMemberType = new GraphQLInputObjectType({
-    name: 'RemoveMemberType',
-    fields: () => ({
-        personId: { type: new GraphQLNonNull(GraphQLString) },
-        squadId: { type: new GraphQLNonNull(GraphQLString) },
-    }),
+  name: 'RemoveMemberType',
+  fields: () => ({
+    personId: { type: new GraphQLNonNull(GraphQLString) },
+    squadId: { type: new GraphQLNonNull(GraphQLString) },
+  }),
 });
 
 export const removeMemberFromSquadMutation = {
-    type: squadType,
+  type: squadType,
+  args: {
+    input: { type: removeMemberType },
+  },
+  resolve: async (
+    parent: Record<string, never>,
     args: {
-        input: { type: removeMemberType },
+      input: { squadId: string; personId: string };
     },
-    resolve: async (
-        parent: Record<string, never>,
-        args: {
-            input: { squadId: string, personId: string };
-        },
-        context: IContext
-    ) => {
-        const squad = await Squad.findOne(args.input.squadId);
-        const person = await Person.findOne(args.input.personId);
+    context: IContext
+  ) => {
+    const squad = await Squad.findOne(args.input.squadId);
+    const person = await Person.findOne(args.input.personId);
 
-        if (!squad) throw new UserInputError('Squad does not exist');
-        if (!person) throw new UserInputError('Person does not exist');
+    if (!squad) throw new UserInputError('Squad does not exist');
+    if (!person) throw new UserInputError('Person does not exist');
 
-        await squad.removeMember(person);
+    await squad.removeMember(person);
 
-        return Squad.findOne(args.input.squadId);
-    },
+    return Squad.findOne(args.input.squadId);
+  },
 };

@@ -24,9 +24,10 @@ describe('INTEGRATION squad management', () => {
     }`;
 
     const createSquadRes = await testClient.mutate({
-      mutation, variables: {
-        'input': { 'name': 'coolste squad' }
-      }
+      mutation,
+      variables: {
+        input: { name: 'coolste squad' },
+      },
     });
 
     const squadId = createSquadRes.data.createSquad.id;
@@ -45,9 +46,9 @@ describe('INTEGRATION squad management', () => {
       variables: {
         input: {
           personId: personId,
-          squadId: squadId
-        }
-      }
+          squadId: squadId,
+        },
+      },
     });
 
     const squadWithMember = await Squad.findOne(squadId);
@@ -69,9 +70,9 @@ describe('INTEGRATION squad management', () => {
       variables: {
         input: {
           personId: personId,
-          squadId: squadId
-        }
-      }
+          squadId: squadId,
+        },
+      },
     });
 
     const squadWithoutMembers = await Squad.findOne(squadId);
