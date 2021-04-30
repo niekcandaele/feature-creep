@@ -2,6 +2,7 @@ import { ThemeProvider } from 'styled-components';
 import { theme } from '../src/styled/theme';
 import { GlobalStyle } from '../src/styled/globalStyle';
 import { MemoryRouter } from 'react-router-dom';
+import { viewports as customViewports } from './viewports';
 
 export const decorators = [
   Story => (
@@ -22,4 +23,7 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  viewport: {
+    viewports: customViewports
+  }
 }
