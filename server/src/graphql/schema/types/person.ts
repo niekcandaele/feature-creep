@@ -5,7 +5,7 @@ export const personType = new GraphQLObjectType({
   description: 'A person',
   fields: {
     id: {
-      type: GraphQLString
+      type: GraphQLString,
     },
     // Falsehoods programmers believe about names: Everyone has a first and last name :-)
     firstName: {

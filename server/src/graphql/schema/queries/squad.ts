@@ -12,7 +12,7 @@ export const squadQuery = {
     args: { [argName: string]: string },
     context: IContext
   ) => {
-    const squads = context.user.squads.map(id => Squad.findOne(id));
+    const squads = context.user.squads.map((id) => Squad.findOne(id));
     return Promise.all(squads);
   },
 };
