@@ -6,7 +6,7 @@ import styled from 'styled';
 import { useDebounce } from 'hooks';
 
 export default {
-  title: 'Components/Fields/SearchField',
+  title: 'Components/Form/SearchField',
   component: SearchField
 } as Meta;
 

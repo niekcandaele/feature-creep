@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react/types-6-0';
 import { TextField, TextFieldProps } from 'components';
 
 export default {
-  title: 'Components/Fields/TextField',
+  title: 'Components/Form/TextField',
   component: TextField,
   args: {
     glyph: 'dashboard'
