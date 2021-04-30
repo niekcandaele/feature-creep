@@ -1,9 +1,10 @@
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer, AuthenticationError } from 'apollo-server';
 import * as jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { promisify } from 'util';
 
 import { Person } from '../rejson/entities/Person';
+import { getDevJwt } from '../test/devJwt';
 import { schema } from './schema';
 
 const client = jwksClient({
@@ -16,9 +17,20 @@ export const server = new ApolloServer({
   playground: true,
   introspection: true,
   context: async (data: any) => {
-    return {};
     const req = data.req;
+
+    if (process.env.NODE_ENV !== 'production') {
+      const decoded = getDevJwt();
+      const user = await Person.findOrCreate(decoded.sub, { id: decoded.sub });
+      return { user };
+    }
+
     const header = req.headers.authorization;
+
+    if (!header) {
+      throw new AuthenticationError('JWT is required');
+    }
+
     const token = header.replace('Bearer ', '').trim();
     try {
       // There's some real weird type stuff going on here because of promisify and jwt overloads supporting callbacks and sync usage
@@ -26,11 +38,13 @@ export const server = new ApolloServer({
       const decoded: IJWT = await promisify(jwt.verify)(token, getKey, {
         algorithms: ['RS256'],
       });
+      console.log(decoded);
+
       const user = await Person.findOrCreate(decoded.sub, { id: decoded.sub });
       return { user };
     } catch (error) {
       console.error(error);
-      throw new Error('Invalid JWT.');
+      throw new AuthenticationError('Invalid JWT.');
     }
   },
 });
@@ -49,4 +63,8 @@ export interface IJWT {
   token_use: 'access' | 'id';
   exp: number;
   iat: number;
+}
+
+export interface IContext {
+  user: Person;
 }

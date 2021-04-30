@@ -70,7 +70,7 @@ export class BaseEntity {
       JsonCommands.Set,
       `${this.name}:${opts.id}`,
       '.',
-      JSON.stringify({ ...opts })
+      JSON.stringify({ squads: [], ...opts })
     );
     const instance = new this(opts);
     instance.id = opts.id;
