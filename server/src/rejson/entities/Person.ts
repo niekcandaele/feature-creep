@@ -23,7 +23,7 @@ export class Person extends BaseEntity {
     this.firstName = opts.firstName;
     this.lastName = opts.lastName;
     this.email = opts.email;
-    this.squads = opts.squads;
+    this.squads = opts.squads || [];
   }
 
   //------------------------

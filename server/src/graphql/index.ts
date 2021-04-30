@@ -52,5 +52,5 @@ export interface IJWT {
 }
 
 export interface IContext {
-  user: Person
+  user: Person;
 }

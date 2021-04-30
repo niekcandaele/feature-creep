@@ -52,6 +52,8 @@ export class BaseEntity {
     this: new (...args: any[]) => T,
     opts: Partial<T>
   ): Promise<T> {
+    console.log(opts);
+
     if (opts.id) {
       const obj = await getDb().send_command(
         JsonCommands.Get,
@@ -70,7 +72,7 @@ export class BaseEntity {
       JsonCommands.Set,
       `${this.name}:${opts.id}`,
       '.',
-      JSON.stringify({ ...opts })
+      JSON.stringify({ squads: [], ...opts })
     );
     const instance = new this(opts);
     instance.id = opts.id;

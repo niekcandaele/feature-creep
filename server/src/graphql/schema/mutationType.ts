@@ -8,5 +8,4 @@ export const mutationType = new GraphQLObjectType({
   fields: () => ({
     editPerson: editPersonMutation,
   }),
-
 });
