@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer, AuthenticationError } from 'apollo-server';
 import * as jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { promisify } from 'util';
@@ -18,6 +18,11 @@ export const server = new ApolloServer({
   context: async (data: any) => {
     const req = data.req;
     const header = req.headers.authorization;
+
+    if (!header) {
+      throw new AuthenticationError('JWT is required');
+    }
+
     const token = header.replace('Bearer ', '').trim();
 
     try {
@@ -30,7 +35,7 @@ export const server = new ApolloServer({
       return { user };
     } catch (error) {
       console.error(error);
-      throw new Error('Invalid JWT.');
+      throw new AuthenticationError('Invalid JWT.');
     }
   },
 });
