@@ -52,8 +52,6 @@ export class BaseEntity {
     this: new (...args: any[]) => T,
     opts: Partial<T>
   ): Promise<T> {
-    console.log(opts);
-
     if (opts.id) {
       const obj = await getDb().send_command(
         JsonCommands.Get,
