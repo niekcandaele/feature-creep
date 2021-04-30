@@ -34,9 +34,10 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     max-width: 1920px;
     width: calc(100% - 150px);
     overflow: hidden;
+    height: calc(100vh - 150px);
     margin: 100px auto;
     background-color:${({ theme }): string => theme.colors.background};
-    border-radius: 2rem;
+    border-radius: 5rem;
   }
   a, p, div, li, h1, h2, h3, h4, h5, h6, header, footer {
     font-weight: 400; /* Default size */
@@ -49,14 +50,14 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     box-sizing: border-box;
     letter-spacing: 1px;
     line-height: 1.5;
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.gray};
   }
   h1,h2,h3,h4,h5,h6 {
     color:${({ theme }) => theme.colors.title};
     font-weight: 900;
   }
   h1 {
-    font-size: 4rem;
+    font-size: 5rem;
   }
   h2 {
     font-size: 2.5rem;
@@ -70,14 +71,22 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
   p{
     font-size: 1.225rem;
   }
+  strong {
+    font-size: inherit;
+    font-weight: inherit;
+    color: ${({ theme }): string => theme.colors.gray}
+  }
   a {
     font-weight: 900;
     text-decoration: none;
     font-size: 1.225rem;
-    color: ${({ theme }): string => theme.colors.title};
+    color: ${({ theme }): string => theme.colors.gray};
     span {
       font-size: 1.225rem;
     }
+  }
+  img {
+    display: block;
   }
   ul {
     list-style-type: none;
@@ -85,6 +94,7 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     margin: 0;
   }
   button {
+    font-size: ${({ theme }): string => theme.fontSize.small};
     outline: 0;
     font-family: 'Lato', sans-serif;
     &:focus {
