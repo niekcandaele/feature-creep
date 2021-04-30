@@ -5,10 +5,10 @@ export const Spinner: FC = () => {
   const theme = useTheme();
   return (
     <svg
-      height="44"
+      height="24"
       stroke={theme.colors.secondary}
       viewBox="0 0 44 44"
-      width="44"
+      width="24"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g fill="none" fillRule="evenodd" strokeWidth="2">

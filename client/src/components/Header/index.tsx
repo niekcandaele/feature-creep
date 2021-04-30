@@ -3,7 +3,7 @@ import { Button, Link } from 'components';
 import styled from 'styled';
 import { useAuth } from 'hooks';
 
-const Container = styled.div`
+const Container = styled.header`
   width: 100%;
   height: 75px;
   padding: 15px 100px;
@@ -24,7 +24,7 @@ export const Header: FC = () => {
   return (
     <Container>
       <Link text="Feature Creep" to="/workspace" />
-      <Button label="Sign in" onClick={signIn} />
+      <Button onClick={signIn} text="Sign in" />
     </Container>
   );
 };

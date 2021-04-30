@@ -1,71 +1,89 @@
-import { FC, MouseEvent } from 'react';
-import styled from 'styled';
-
-const Template = styled.button<{ outline: boolean }>`
-  width: fit-content;
-  border-radius: 2.5rem;
-  background: ${({ theme, outline }): string => outline ? 'transparent' : theme.gradient.primary};
-  border: none;
-  color: ${({ theme, outline }) => outline ? theme.colors.title : 'white'};
-  font-weight: 900;
-  border: 2px solid ${({ theme, outline }) => outline ? theme.colors.gray : 'transparent'};
-  cursor: pointer;
-  transition: all .2s ease-in-out;
-  line-height: 19px;
-  letter-spacing: 0;
-  background-clip: padding-box;
-  &:focus {
-    outline: 0;
-  }
-  &:hover {
-    background: transparent;
-    color: ${({ outline, theme }): string => outline ? theme.colors.title : theme.colors.primary};
-    border-color: ${({ theme, outline }): string => outline ? theme.colors.title : theme.colors.primary}
-  }
-`;
-
-const Small = styled(Template)`
-  padding: 6px 15px;
-`;
-
-const Medium = styled(Template)`
-  padding: 10px 18px;
-`;
-
-const Large = styled(Template)`
-  padding: 15px 22px;
-`;
+import { FC, MouseEvent as ReactMouseEvent, ReactNode } from 'react';
+import { Spinner } from 'components';
+import { Text, Small, Medium, Large } from './style';
+import { AiOutlineArrowRight } from 'react-icons/ai';
 
 export interface ButtonProps {
-  outline?: boolean,
-  size?: 'small' | 'medium' | 'large',
-  label: string,
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => any;
+  disabled?: boolean;
+  onClick: (event: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => any;
+  isLoading?: boolean;
+  icon?: ReactNode;
+  size?: 'small' | 'medium' | 'large';
+  type?: 'submit' | 'reset' | 'button';
+  variant?: 'default' | 'outline';
+  text: string;
+  white?: boolean;
 }
 
-export const Button: FC<ButtonProps> = ({ size = 'small', outline = false, label, onClick }) => {
+export const Button: FC<ButtonProps> = ({
+  icon,
+  size = 'medium',
+  type = 'button',
+  isLoading = false,
+  text,
+  disabled = false,
+  white = false,
+  variant = 'default',
+  onClick,
+}) => {
+  function content(): JSX.Element {
+    return (
+      <>
+        { isLoading ? <Spinner /> : icon}
+        <Text
+          icon={!!icon}
+          isLoading={isLoading}
+          onClick={disabled ? undefined : onClick}
+          outline={variant === 'outline'}
+          white={white}
+        >
+          {text}
+        </Text>
+      </>
+    );
+  }
+
   switch (size) {
     case 'small':
       return (
         <Small
-          onClick={(e: React.MouseEvent<HTMLButtonElement>): void => (typeof onClick === 'function' ? onClick(e) : null)}
-          outline={outline}>
-          {label}
+          disabled={disabled}
+          icon={!!icon}
+          isLoading={isLoading}
+          onClick={disabled ? undefined : onClick}
+          outline={variant === 'outline'}
+          type={type}
+          white={white}
+        >
+          {content()}
         </Small>
       );
     case 'medium':
       return (
         <Medium
-          onClick={(e: React.MouseEvent<HTMLButtonElement>): void => (typeof onClick === 'function' ? onClick(e) : null)}
-          outline={outline}>{label}
+          disabled={disabled}
+          icon={!!icon}
+          isLoading={isLoading}
+          onClick={disabled ? undefined : onClick}
+          outline={variant === 'outline'}
+          type={type}
+          white={white}
+        >
+          {content()}
         </Medium>
       );
     case 'large':
       return (
         <Large
-          onClick={(e: React.MouseEvent<HTMLButtonElement>): void => (typeof onClick === 'function' ? onClick(e) : null)}
-          outline={outline}>
-          {label}
+          disabled={disabled}
+          icon={!!icon}
+          isLoading={isLoading}
+          onClick={disabled ? undefined : onClick}
+          outline={variant === 'outline'}
+          type={type}
+          white={white}
+        >
+          {content()}
         </Large>
       );
   };

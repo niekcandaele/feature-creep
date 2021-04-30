@@ -8,6 +8,12 @@ const Container = styled.div <{ arrow: boolean }>`
     width: fit-content;
     align-items: center;
     justify-content: center;
+    &:hover {
+      color: white;
+      span {
+        color: white;
+      }
+    }
   }
   span {
     font-size: inherit;

@@ -1,25 +1,14 @@
 import { createContext } from 'react';
-import { getClient } from 'apollo/client';
-import { gql } from '@apollo/client';
 import { setRedirect } from 'helpers/setRedirect';
 
 interface IAuthContext {
   signIn: () => void;
   signOut: () => boolean;
   isAuthenticated: () => Promise<boolean>
+  register: () => void;
 }
 
-const GET_USER_DATA = gql`
-query GET_USER_DATA {
-  person {
-    firstName
-    lastName
-    email
-  }
-}
-`;
-
-export const AuthContext = createContext<Partial<IAuthContext>>({});
+export const AuthContext = createContext<IAuthContext>(authProvider());
 
 export function authProvider(): IAuthContext {
   function signIn(path: string = '/workspace') {
@@ -33,20 +22,22 @@ export function authProvider(): IAuthContext {
     localStorage.removeItem('token');
     return true;
   }
+
+  function register() {
+    // redirect to register page
+    return;
+  }
   async function isAuthenticated(): Promise<boolean> {
     // Check if user has a token.
     const token = localStorage.getItem('token');
-    if (!token) {
-      return false;
-    }
+    if (!token) { return false; }
 
-    const { data, error } = await getClient().query({ query: GET_USER_DATA });
-
-    if (!data || error) {
-      return false;
-    }
+    //    const { data, error } = await getClient().query({ query: GET_USER_DATA });
+    //
+    //   if (!data || error) {
+    //     return false;
+    //   }
     return true;
   }
-
-  return { signIn, signOut, isAuthenticated };
+  return { signIn, signOut, isAuthenticated, register };
 };

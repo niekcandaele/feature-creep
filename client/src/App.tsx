@@ -8,6 +8,17 @@ import { GlobalStyle } from 'styled/globalStyle';
 import { getClient } from 'apollo/client';
 import { AuthContext, authProvider } from 'context/AuthContext';
 import { UserContext } from 'context/UserContext';
+import styled from 'styled';
+
+const Cursor = styled.div<{ x: number; y: number }>`
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: white;
+  transform: ${({ x, y }) => `translate3d(${x}px, ${y}px, 0)`};
+`;
 
 const snackbarProps: Partial<SnackbarProviderProps> = {
   anchorOrigin: { horizontal: 'center', vertical: 'top' },
@@ -15,15 +26,32 @@ const snackbarProps: Partial<SnackbarProviderProps> = {
   hideIconVariant: true,
 };
 
+interface CursorProps {
+  x: number;
+  y: number;
+}
+
 export const App: FC = () => {
+  const [cursorXY, setCursorXY] = useState<CursorProps>({ x: -100, y: -100 });
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const [userData, setUserData] = useState({});
   const userDataProvider = useMemo(() => ({ userData, setUserData }), [userData, setUserData]);
 
+  const moveCursor = (e: any) => {
+    const x = e.clientX - 16;
+    const y = e.clientY - 16;
+    setCursorXY({ x, y });
+  };
+
   useEffect(() => {
-    // do stuff here
+    window.addEventListener('mousemove', moveCursor);
     setLoading(false);
+
+    // clean up
+    return () => {
+      window.removeEventListener('mousemove', moveCursor);
+    };
   }, []);
 
   if (isLoading) {
@@ -44,6 +72,7 @@ export const App: FC = () => {
             <AuthContext.Provider value={authProvider()}>
               <SnackbarProvider {...snackbarProps}>
                 <GlobalStyle />
+                <Cursor {...cursorXY} />
                 <Router />
               </SnackbarProvider>
             </AuthContext.Provider>

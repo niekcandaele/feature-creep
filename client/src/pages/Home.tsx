@@ -1,9 +1,9 @@
 import { FC } from 'react';
+import { Header, Landing } from 'views/home';
 
-export const Home: FC = () => {
-  return (
-    <>
-      <div>homepage</div>
-    </>
-  );
-};
+export const Home: FC = () => (
+  <>
+    <Header />
+    <Landing />
+  </>
+);

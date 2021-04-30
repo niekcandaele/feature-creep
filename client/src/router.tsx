@@ -6,7 +6,6 @@ import { Home, Workspace, Redirect, Frame, PageNotFound } from './pages';
 export const Router: FC = () => (
   <BrowserRouter>
     <Routes>
-
       {/* Make sure that non authenticated routes are above /workspace */}
       <Route element={<Home />} path="/" />
       <Route element={<Redirect />} path="/redirect" />

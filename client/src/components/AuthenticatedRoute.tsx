@@ -11,26 +11,14 @@ interface AuthenticatedRouteProps {
   path: string;
 }
 
-const GET_USER_DATA = gql`
-  query GET_USER_DATA {
-    person {
-      firstName
-      lastName
-      email
-    }
-  }
-`;
-
 /*
   Routes that can only be accessed when authorized and authenticated.
 */
 export const AuthenticatedRoute: FC<AuthenticatedRouteProps> = ({ element, path }) => {
   const [isAuth, setAuth] = useState<boolean>(false);
   // Should probably handle error of uselazyquery as well.
-  const [getUserData, { loading, data }] = useLazyQuery<Person>(GET_USER_DATA);
   const [isLoading, setLoading] = useState<boolean>(true);
   const { isAuthenticated } = useAuth();
-  const { setUserData, userData } = useUser();
 
   useEffect(() => {
     // check if user is authenticated.
@@ -38,7 +26,6 @@ export const AuthenticatedRoute: FC<AuthenticatedRouteProps> = ({ element, path 
       isAuthenticated().then((isAuth) => {
         if (isAuth) {
           setAuth(true);
-          getUserData();
           // request user data
         }
         setLoading(false);
@@ -46,17 +33,8 @@ export const AuthenticatedRoute: FC<AuthenticatedRouteProps> = ({ element, path 
     }
   }, []);
 
-  useEffect(() => {
-    setAuth(true);
-    setLoading(false);
-  }, []);
-
-  if (isLoading && loading) { return <Loading />; }
-  if (isAuth) {
-    // @ts-ignore
-    setUserData({ ...userData, ...data });
-    return <Route element={element} path={path} />;
-  }
+  if (isLoading) { return <Loading />; }
+  if (isAuth) { return <Route element={element} path={path} />; }
 
   return <Route element={<NotAuthenticated />} path={path} />;
 };
