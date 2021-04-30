@@ -16,7 +16,6 @@ describe('Squad', () => {
 
   after(async () => {
     await clearDb();
-    client.disconnect();
   });
 
   it('Should create a squad', async () => {

@@ -4,6 +4,7 @@ import jwksClient from 'jwks-rsa';
 import { promisify } from 'util';
 
 import { Person } from '../rejson/entities/Person';
+import { getDevJwt } from '../test/devJwt';
 import { schema } from './schema';
 
 const client = jwksClient({
@@ -16,8 +17,14 @@ export const server = new ApolloServer({
   playground: true,
   introspection: true,
   context: async (data: any) => {
-    return {};
     const req = data.req;
+
+    if (process.env.NODE_ENV !== 'production') {
+      const decoded = getDevJwt();
+      const user = await Person.findOrCreate(decoded.sub, { id: decoded.sub });
+      return { user };
+    }
+
     const header = req.headers.authorization;
 
     if (!header) {
@@ -31,6 +38,8 @@ export const server = new ApolloServer({
       const decoded: IJWT = await promisify(jwt.verify)(token, getKey, {
         algorithms: ['RS256'],
       });
+      console.log(decoded);
+
       const user = await Person.findOrCreate(decoded.sub, { id: decoded.sub });
       return { user };
     } catch (error) {
