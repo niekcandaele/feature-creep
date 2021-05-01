@@ -87,7 +87,9 @@ export class BaseEntity {
     return await getDb().send_command(JsonCommands.Del, `${this.name}:${id}`);
   }
 
-  public static async findAll<T extends BaseEntity>(this: new (...args: any[]) => T,): Promise<T[]> {
+  public static async findAll<T extends BaseEntity>(
+    this: new (...args: any[]) => T
+  ): Promise<T[]> {
     const obj = await getDb().scan('', 'MATCH', `${this.name}:*`);
     const instances = obj[1].map((_: unknown) => new this(_));
     return instances;

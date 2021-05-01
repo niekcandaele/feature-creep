@@ -6,5 +6,5 @@ import { clearDb } from '../rejson/db';
 export const testClient = createTestClient(server);
 
 afterEach(async () => {
-    await clearDb();
+  await clearDb();
 });

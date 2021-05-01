@@ -12,26 +12,20 @@ const getSquadType = new GraphQLInputObjectType({
       type: new GraphQLEnumType({
         name: 'SquadFilterType',
         values: {
-          MEMBEROF:
-            { value: 'memberof' },
-          ALL:
-            { value: 'all' }
-        }
-      })
-    }
-  })
+          MEMBEROF: { value: 'memberof' },
+          ALL: { value: 'all' },
+        },
+      }),
+    },
+  }),
 });
 
 export const squadQuery = {
   type: new GraphQLList(squadType),
   args: {
-    filter: { type: getSquadType }
+    filter: { type: getSquadType },
   },
-  resolve: (
-    parent: Record<string, never>,
-    args: any,
-    context: IContext
-  ) => {
+  resolve: (parent: Record<string, never>, args: any, context: IContext) => {
     let filterMode = 'memberof';
     if (args && args.filter) {
       filterMode = args.filter.filter;
