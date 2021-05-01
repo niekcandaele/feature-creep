@@ -189,4 +189,17 @@ describe('Squad', () => {
     expect(members).to.have.length(1);
     expect(members[0].firstName).to.be.eql('Harry');
   });
+
+  it('findAll', async () => {
+    const squad1 = await Squad.create({ name: 'gryffindor' });
+    const squad2 = await Squad.create({ name: 'slytherin' });
+
+    const res = await Squad.findAll();
+
+    expect(res).to.be.an('array');
+    expect(res).to.have.length(2);
+    for (const x of res) {
+      expect(x).to.be.instanceOf(Squad);
+    }
+  });
 });
