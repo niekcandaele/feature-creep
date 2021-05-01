@@ -14,10 +14,6 @@ describe('Squad', () => {
     await clearDb();
   });
 
-  after(async () => {
-    await clearDb();
-  });
-
   it('Should create a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const res = await client.send_command(
