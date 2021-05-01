@@ -40,6 +40,7 @@ export class BaseEntity {
     if (!obj) {
       return null;
     }
+
     const instance = new this(JSON.parse(obj));
     instance.id = id;
     return instance;
