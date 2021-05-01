@@ -5,6 +5,7 @@ import { Person } from './Person';
 
 interface SquadOpts {
   name: string;
+  members: string[]
 }
 
 /*
@@ -16,10 +17,12 @@ export class Squad extends BaseEntity {
   // Properties
   //------------------------
   public name: string;
+  public members: string[]
 
   constructor(opts: SquadOpts) {
     super();
     this.name = opts.name;
+    this.members = opts.members || [];
   }
   //------------------------
   // Public Methods
@@ -29,34 +32,9 @@ export class Squad extends BaseEntity {
    * Retrieve members from current squad.
    */
   public async getMembers(): Promise<Person[]> {
-    // check if members array exists
-    const exists = await getDb().send_command(
-      JsonCommands.ArrLen,
-      `Squad:${this.id}`,
-      '.members'
-    );
-    if (exists === null) return [];
-
-    const personIds: string[] = JSON.parse(
-      await getDb().send_command(
-        JsonCommands.Get,
-        `Squad:${this.id}`,
-        '.members'
-      )
-    );
-    if (personIds.length === 0) return [];
-
-    const mapIds = personIds.map((_) => `Person:${_}`);
-    const result = await getDb().send_command(
-      JsonCommands.MGet,
-      ...mapIds,
-      '.'
-    );
-    return Promise.all(
-      result.map((person: string) => {
-        return Person.create(JSON.parse(person));
-      })
-    );
+    const members = this.members.map(m => Person.findOne(m));
+    const resMembers = await Promise.all(members);
+    return resMembers.filter(_ => !!_) as Person[];
   }
 
   /**
@@ -79,52 +57,22 @@ export class Squad extends BaseEntity {
    * Add a member to the current squad.
    */
   public async addMember(person: Person): Promise<void> {
-    // only create arr when it does not exist
-    await getDb().send_command(
-      JsonCommands.Set,
-      `Squad:${this.id}`,
-      '.members',
-      '[]',
-      'NX'
-    );
-
-    const index: number = await getDb().send_command(
-      JsonCommands.ArrIndex,
-      `Squad:${this.id}`,
-      '.members',
-      JSON.stringify(person.id)
-    );
-    if (index === -1) {
-      await getDb().send_command(
-        JsonCommands.ArrAppend,
-        `Squad:${this.id}`,
-        '.members',
-        JSON.stringify(person.id)
-      );
+    if (this.members.includes(person.id)) {
+      // Dont add the same person twice
+      return;
     }
+    this.members.push(person.id);
+    await this.save();
 
     // Save the squad to Person aswell
-
     await person.edit({ squads: [this.id, ...person.squads] });
   }
   /**
    * Remove a member from the current squad.
    */
   public async removeMember(person: Person): Promise<void> {
-    const index: number = await getDb().send_command(
-      JsonCommands.ArrIndex,
-      `Squad:${this.id}`,
-      '.members',
-      JSON.stringify(person.id)
-    );
-    if (index !== -1) {
-      await getDb().send_command(
-        JsonCommands.ArrPop,
-        `Squad:${this.id}`,
-        '.members',
-        index
-      );
-    }
+    this.members = this.members.filter(_ => _ !== person.id);
+    await this.save();
 
     await person.edit({ squads: person.squads.filter((_) => _ !== this.id) });
   }

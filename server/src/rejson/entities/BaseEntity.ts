@@ -24,6 +24,17 @@ export class BaseEntity {
   // Public Static Methods
   //------------------------
 
+  async save() {
+    await getDb().send_command(
+      JsonCommands.Set,
+      // @ts-expect-error It works ¯\_(ツ)_/¯
+      `${this.__proto__.constructor.name}:${this.id}`,
+      '.',
+      JSON.stringify(this)
+    );
+    return this;
+  }
+
   /**
    * Find first entity that matches.
    * this.name = Name of Generic sub class.
