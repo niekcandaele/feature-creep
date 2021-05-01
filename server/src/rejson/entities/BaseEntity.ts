@@ -25,10 +25,11 @@ export class BaseEntity {
   //------------------------
 
   async save() {
+    // @ts-expect-error It works ¯\_(ツ)_/¯
+    const field = `${this.__proto__.constructor.name}:${this.id}`;
     await getDb().send_command(
       JsonCommands.Set,
-      // @ts-expect-error It works ¯\_(ツ)_/¯
-      `${this.__proto__.constructor.name}:${this.id}`,
+      field,
       '.',
       JSON.stringify(this)
     );

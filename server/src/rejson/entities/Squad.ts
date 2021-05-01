@@ -5,7 +5,7 @@ import { Person } from './Person';
 
 interface SquadOpts {
   name: string;
-  members: string[]
+  members: string[];
 }
 
 /*
@@ -17,7 +17,7 @@ export class Squad extends BaseEntity {
   // Properties
   //------------------------
   public name: string;
-  public members: string[]
+  public members: string[];
 
   constructor(opts: SquadOpts) {
     super();
@@ -32,9 +32,9 @@ export class Squad extends BaseEntity {
    * Retrieve members from current squad.
    */
   public async getMembers(): Promise<Person[]> {
-    const members = this.members.map(m => Person.findOne(m));
+    const members = this.members.map((m) => Person.findOne(m));
     const resMembers = await Promise.all(members);
-    return resMembers.filter(_ => !!_) as Person[];
+    return resMembers.filter((_) => !!_) as Person[];
   }
 
   /**
@@ -71,7 +71,7 @@ export class Squad extends BaseEntity {
    * Remove a member from the current squad.
    */
   public async removeMember(person: Person): Promise<void> {
-    this.members = this.members.filter(_ => _ !== person.id);
+    this.members = this.members.filter((_) => _ !== person.id);
     await this.save();
 
     await person.edit({ squads: person.squads.filter((_) => _ !== this.id) });
