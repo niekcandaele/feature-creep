@@ -1,10 +1,11 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled';
-import { Outlet } from 'react-router-dom';
-import { Header } from 'components';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { Header, Loading } from 'components';
 import { useUser } from 'hooks';
 import { useApolloClient, gql } from '@apollo/client';
+import { Person } from 'generated';
 
 const Container = styled.div`
   display: flex;
@@ -36,16 +37,27 @@ const GET_USER_DATA = gql`
 export const Frame: FC = () => {
   // get user data
   const { setUserData } = useUser();
+  const [loading, setLoading] = useState<boolean>(true);
   const client = useApolloClient();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (setUserData) {
-      client.query({ query: GET_USER_DATA }).then(({ data, error }) => {
-        console.log(error);
-        //setUserData({ });
+      setLoading(true);
+      client.query<Person>({ query: GET_USER_DATA }).then(({ data: { firstName, lastName, email }, error }) => {
+        // TODO: handle error
+        if (!firstName || !lastName || !email) {
+          navigate('/onboarding');
+        } else {
+          setUserData({ firstName, lastName, email: email });
+        };
       });
     }
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Container>

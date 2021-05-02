@@ -19,11 +19,11 @@ function setJWT(hash: string) {
   const idToken = params.get('#id_token');
   const accessToken = params.get('access_token');
   // no jwt in redirect passed.
-  if (!idToken || !accessToken) {
-    return;
+  if (idToken && accessToken) {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('idToken', idToken);
   };
-  // save access token in local storage
-  localStorage.setItem('token', accessToken);
+  // show error message here.
 }
 
 export const Redirect: FC = () => {

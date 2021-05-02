@@ -21,25 +21,30 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     font-family: 'Lato', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(180deg,#141628 0%, #292f51 100%);
   }
   body{
+    background: linear-gradient(180deg,#141628 0%, #292f51 100%);
     padding: 0;
     margin: 0;
-    transition: background-color 0.2s linear;
     overflow: hidden;
     padding-bottom: 100px;
+
+    &.loading {
+      background: ${({ theme }): string => theme.colors.quaternary};
+    }
   }
   #root {
-    max-width: 1920px;
-    width: calc(100% - 150px);
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-    height: calc(100vh - 150px);
-    margin: 100px auto;
     background-color:${({ theme }): string => theme.colors.background};
-    border-radius: 5rem;
   }
-  a, p, div, li, h1, h2, h3, h4, h5, h6, header, footer {
+
+  form {
+    width: 100%;
+  }
+
+  a, p, div, li, h1, h2, h3, h4, h5, h6, header, footer, form, input {
     font-weight: 400; /* Default size */
     font-family: 'Lato', sans-serif;
     transition: background-color 0.2s linear;
@@ -69,7 +74,7 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     font-size: 1.5rem;
   }
   p{
-    font-size: 1.225rem;
+    font-size: ${({ theme }) => theme.fontSize.medium}
   }
   strong {
     font-size: inherit;
@@ -109,18 +114,28 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     background-color: transparent;
     outline: 0;
     display: block;
-    border: 2px solid ${({ theme }): string => theme.colors.secondary};
+    border: 2px solid ${({ theme }): string => theme.colors.gray};
     padding: 10px 12px;
     min-width: 200px;
+    width: 100%;
     border-radius: .5rem;
     font-weight: 600;
-    color: ${({ theme }): string => theme.colors.secondary};
+    color: black;
     font-size: ${({ theme }) => theme.fontSize.small};
+    margin: 15px 0;
     &::placeholder {
       color: ${({ theme }): string => theme.colors.secondary};
       font-size: ${({ theme }) => theme.fontSize.small};
       font-weight: 600;
     }
+  }
+
+  // Remove default webkit search field styling
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance:none;
   }
 
 `;
