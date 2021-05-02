@@ -1,23 +1,26 @@
 import styled from 'styled';
 
-export const Container = styled.div`
-  padding-top: 10rem;
-`;
+export const Container = styled.div``;
 
 export const Title = styled.h2`
   display: flex;
   align-items: center;
-  padding-bottom: 5rem;
-  margin-bottom: 5rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
   width: 100%;
+  font-weight: 600;
   border-bottom: 1px solid ${({ theme }): string => theme.colors.gray};
-  font-size: ${({ theme }) => theme.fontSize.huge};
+  font-size: ${({ theme }) => theme.fontSize.large};
+
+  svg {
+    cursor: pointer;
+  }
   span {
-    margin-left: 10px;
+    margin-left: 20px;
   }
 `;
 
 export const ContentContainer = styled.div`
-  background-color: orange;
-  min-height: 70vh;
+  height: 60vh;
+  overflow-y: auto;
 `;
