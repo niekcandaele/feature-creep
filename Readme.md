@@ -8,7 +8,7 @@
 
 #### What is a squad?
 
-You and your fellow squad members are on the same long-term mission and spend your days in each other's company. This self-organiz$ing entity possesses all the skills and tools needed to cover the entire workflow, from design to release.
+You and your fellow squad members are on the same long-term mission and spend your days in each other's company. This self-organizing entity possesses all the skills and tools needed to cover the entire workflow, from design to release.
 
 A squad consists of 4 up to 8 people. Its composition is typically based on specific needs and can evolve over time, depending on the experise and capacity that is required. Every squad must be formally approved by higher management.
 
