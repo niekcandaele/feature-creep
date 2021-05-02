@@ -1,1 +1,1 @@
-export { setRedirect } from './setRedirect';
+export { getRedirect, setRedirect } from './redirect';
