@@ -1,31 +1,65 @@
-import { FC, ReactNode } from 'react';
-import styled from 'styled';
-import { useController, Control } from 'react-hook-form';
+import { FC, cloneElement, useState } from 'react';
+import { Container, LabelContainer, Label, InputContainer, Input, ErrorContainer, Error } from '../field/style';
+import { FieldProps } from '../field';
+import { useController } from 'react-hook-form';
 
-const Container = styled.div`
+export const TextField: FC<FieldProps> = ({
+  control,
+  labelText,
+  placeholder,
+  name,
+  error,
+  icon,
+  readOnly,
+  required = false,
+  loading = false
+}) => {
+  const [showError, setShowError] = useState(false);
+  const { field: { ref, ...inputProps } } = useController({ name, control, defaultValue: placeholder });
 
-`;
-const Input = styled.input<{ hasIcon: boolean }>`
-  ${({ hasIcon }) => hasIcon ? 'padding-left: 35px' : null};
-`;
-
-export interface TextFieldProps {
-  icon?: ReactNode;
-  control: Control<any>;
-  name: string;
-}
-
-export const TextField: FC<TextFieldProps> = ({ icon, control, name }) => {
-  const { field } = useController({ control, name });
+  if (loading) {
+    return (
+      <Container>
+        <LabelContainer>
+          <Label htmlFor={name} showError={error ? true : false}>{labelText}</Label>
+        </LabelContainer>
+        <InputContainer className="placeholder" />
+      </Container>
+    );
+  }
 
   return (
     <Container>
-      {icon && icon}
-      <Input
-        {...field}
-        hasIcon={!!icon}
-        type="text"
-      />
-    </Container>
+      <LabelContainer>
+        <Label htmlFor={name} showError={error ? true : false}>
+          {labelText}
+          {required && '*'}
+        </Label>
+      </LabelContainer>
+      <InputContainer>
+        {icon && cloneElement(icon, { size: 24, className: 'icon' })}
+        <Input
+          {...inputProps}
+          autoCapitalize="off"
+          autoComplete="new-password" // >:( Required to disable auto-complete
+          hasError={error ? true : false}
+          hasIcon={icon ? true : false}
+          id={name}
+          name={name}
+          onBlur={(): void => { setShowError(false); }}
+          onFocus={(): void => { setShowError(true); }}
+          placeholder={placeholder}
+          readOnly={readOnly}
+          ref={ref}
+          type="search"
+        />
+      </InputContainer>
+      {
+        error &&
+        <ErrorContainer showError={showError}>
+          <Error>{error.message}</Error>
+        </ErrorContainer>
+      }
+    </Container >
   );
 };
