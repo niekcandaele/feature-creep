@@ -112,7 +112,7 @@ export const Card: FC<CardProps> = ({ title, description, icon, size, to = '/not
             <h3>{title}</h3>
           </div>
           <p>{description}</p>
-          <Link arrow text={linkText} to={to} />
+          <Link arrow to={to}><span>{linkText}</span></Link>
         </Large>
       );
   }

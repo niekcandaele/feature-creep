@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { Button, Link } from 'components';
 import styled from 'styled';
-import { useAuth } from 'hooks';
 
 const Container = styled.header`
   width: 100%;
@@ -19,12 +18,11 @@ const Container = styled.header`
 `;
 
 export const Header: FC = () => {
-  const { signIn } = useAuth();
+  // get user information to load avatar. (use default avatar for now)
 
   return (
     <Container>
-      <Link text="Feature Creep" to="/workspace" />
-      <Button onClick={signIn} text="Sign in" />
+      <Link to="/workspace"><span>Feature Creep</span></Link>
     </Container>
   );
 };
