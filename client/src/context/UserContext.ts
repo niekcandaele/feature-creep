@@ -14,4 +14,4 @@ export interface UserData {
   squads: string[];
 }
 
-export const UserContext = createContext<Partial<IUserContext>>({});
+export const UserContext = createContext<IUserContext>(undefined!);

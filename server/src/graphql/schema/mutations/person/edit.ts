@@ -7,6 +7,7 @@ import { personType } from '../../types/person';
 const editType = new GraphQLInputObjectType({
   name: 'EditPersonType',
   fields: () => ({
+    email: { type: GraphQLString },
     firstName: { type: GraphQLString },
     lastName: { type: GraphQLString },
   }),

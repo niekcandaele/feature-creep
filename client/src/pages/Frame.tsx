@@ -1,11 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Header, Loading } from 'components';
 import { useUser } from 'hooks';
-import { useApolloClient, gql } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
 import { Person } from 'generated';
+import { setRedirect } from 'helpers';
 
 const Container = styled.div`
   display: flex;
@@ -15,10 +16,14 @@ const Container = styled.div`
   background-color:${({ theme }) => theme.colors.background};
 `;
 const ContentContainer = styled(motion.div)`
+  padding-top: 2rem;
   background-color:${({ theme }) => theme.colors.background};
   width: 100%;
+  height: calc(100vh - 100px);
   opacity: 0;
   overflow-y: auto;
+  margin-bottom: 75px;
+  border-bottom: 1px solid ${({ theme }): string => theme.colors.gray};
 `;
 const Page = styled.div`
   padding: 30px 80px;
@@ -36,27 +41,30 @@ const GET_USER_DATA = gql`
 
 export const Frame: FC = () => {
   // get user data
-  const { setUserData } = useUser();
-  const [loading, setLoading] = useState<boolean>(true);
-  const client = useApolloClient();
+  const { userData, setUserData } = useUser();
+  const [getUserData, { loading, data }] = useLazyQuery<{ person: Person }>(GET_USER_DATA);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (setUserData) {
-      setLoading(true);
-      client.query<Person>({ query: GET_USER_DATA }).then(({ data: { firstName, lastName, email }, error }) => {
-        // TODO: handle error
-        if (!firstName || !lastName || !email) {
-          navigate('/onboarding');
-        } else {
-          setUserData({ firstName, lastName, email: email });
-        };
-      });
-    }
+    getUserData();
   }, []);
 
-  if (loading) {
-    return <Loading />;
+  useEffect(() => {
+    if (data) {
+      const { firstName, lastName, email } = data.person;
+      if (!firstName || !lastName || !email) {
+        // if these fields are not filled in we should remember the page where we wanted to go to.
+        setRedirect(location.pathname);
+        navigate('/onboarding');
+      } else {
+        setUserData({ firstName, lastName, email: email });
+      };
+    }
+  }, [data]);
+
+  if (loading || !data) {
+    return (<Loading />);
   }
 
   return (

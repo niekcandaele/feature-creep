@@ -4,25 +4,27 @@ import { FaGhost as Ghost } from 'react-icons/fa';
 import { hovering } from 'animations';
 import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
 import { Button, TextField } from 'components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
-import { lighten } from 'polished';
 import { decode } from 'jsonwebtoken';
+import { Person, EditPersonType } from 'generated';
+import { useUser } from 'hooks';
+import { getRedirect } from 'helpers';
 
 const ADD_USER_DETAILS = gql`
-  mutation addUserDetails($firstName: String!, $lastName: String!, $email: String!) {
-    editPerson(firstName: $firstName, lastName: $lastName, email: $email){
-      firstname,
-      lastname,
+  mutation addUserDetails($person:EditPersonType!) {
+    editPerson(person: $person){
       email
+      firstName
+      lastName
     }
   }
 `;
 
 const Container = styled.div`
-  background: ${({ theme }): string => lighten('0.03', theme.colors.background)};
   height: 100vh;
   position: relative;
+  background:#141628;
  svg.link {
     position: absolute;
     left: 10%;
@@ -43,8 +45,8 @@ const ContentWrapper = styled.div`
 const ContentContainer = styled.div`
 box-shadow: ${({ theme }) => theme.shadow};
 border-radius: 2rem;
-width: 1200px;
-height: 800px;
+width: 1000px;
+height: 700px;
 display: flex;
 flex-direction:row;
 align-items: center;
@@ -118,34 +120,40 @@ const resolver: Resolver<FormFields> = async (values) => {
 };
 
 export const OnBoarding: FC = () => {
-  const { reset, control, handleSubmit, formState: { errors, isDirty }, setValue } = useForm<FormFields>({ resolver });
-  const [addUserDetails, { data, loading }] = useMutation<FormFields>(ADD_USER_DETAILS);
+  const { control, handleSubmit, formState: { errors, isDirty }, setValue } = useForm<FormFields>({ resolver });
+  const [addUserDetails, { loading, error }] = useMutation<Person, { person: EditPersonType }>(ADD_USER_DETAILS);
+  const { setUserData } = useUser();
+  const navigate = useNavigate();
 
   // block leaving this page.
   // const blocker = useBlocker(() => 'hello');
 
   useEffect(() => {
+    document.querySelector('body')?.classList.add('dark');
     const token = localStorage.getItem('idToken');
     if (token) {
       // validate token here
       const payload: any = decode(token);
       setValue('email', payload.email);
     }
+    return () => { document.querySelector('body')?.classList.remove('dark'); };
   }, []);
 
-  // TODO: extra check to make sure token is valid and fields are def empty.
-  // We do not want the user having to change his own valid fields.
-  const submit: SubmitHandler<FormFields> = async ({ firstName, lastName }) => {
-    // only submit when fields are changed.
+  const submit: SubmitHandler<FormFields> = async ({ firstName, lastName, email }) => {
     if (isDirty) {
-      // TODO: show success message
-      const email = 'testemail@vanseveren.dev';
-      const result = await addUserDetails({ variables: { firstName, lastName, email } });
+      const { errors } = await addUserDetails({ variables: { person: { firstName, lastName, email } } });
 
-      // Clear all fields
-      reset();
+      if (errors) {
+        console.log('der was lik nen error', errors); // TODO: handle this :)
+      }
+      setUserData({ firstName, lastName, email });
+      navigate(getRedirect());
     }
   };
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <Container>
