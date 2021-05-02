@@ -29,7 +29,7 @@ const Brand = styled.div`
   a, h2 {
     color: white;
     font-weight: 700;
-    font-size: ${({ theme }) => theme.fontSize.large};
+    font-size: ${({ theme }) => theme.fontSize.mediumLarge};
   }
   h2 {
     margin-left: 1rem;
