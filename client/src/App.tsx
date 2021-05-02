@@ -22,11 +22,9 @@ export const App: FC = () => {
   const userDataProvider = useMemo(() => ({ userData, setUserData }), [userData, setUserData]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
   }, []);
 
+  /*
   if (isLoading) {
     return (
       <StrictMode>
@@ -37,6 +35,7 @@ export const App: FC = () => {
       </StrictMode>
     );
   }
+  */
 
   return (
     <StrictMode>
