@@ -29,3 +29,9 @@ export { Loading } from './Loading';
 
 export { SubPage } from './SubPage';
 export type { SubPageProps } from './SubPage';
+
+export { Tag } from './Tag';
+export type { TagProps } from './Tag';
+
+export { Error } from './Error';
+export type { ErrorProps } from './Error';

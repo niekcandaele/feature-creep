@@ -29,6 +29,10 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     overflow: hidden;
     padding-bottom: 100px;
 
+    &.dark {
+      background:#141628;
+    }
+
     &.loading {
       background: ${({ theme }): string => theme.colors.quaternary};
     }
@@ -38,6 +42,10 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     height: 100%;
     overflow: hidden;
     background-color:${({ theme }): string => theme.colors.background};
+    width: calc(100% - 150px);
+    min-height: calc(100vh - 150px);
+    margin: 75px auto;
+    border-radius: 2rem;
   }
 
   form {
@@ -92,12 +100,14 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
   }
   img {
     display: block;
+    pointer-events: none;
   }
   ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
   }
+
   button {
     font-size: ${({ theme }): string => theme.fontSize.small};
     outline: 0;

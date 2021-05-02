@@ -23,7 +23,8 @@ export const theme = {
     tiny: '1rem',
     small: '1.3rem',
     medium: '1.825rem',
-    large: '2.5rem',
+    mediumLarge: '2.825rem',
+    large: '4.25rem',
     huge: '6rem'
   }
 };

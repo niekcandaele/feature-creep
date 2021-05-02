@@ -18,7 +18,6 @@ const Container = styled.div <{ arrow: boolean }>`
   span {
     font-size: inherit;
   }
-  svg { transform: rotate(90deg); }
 `;
 
 export interface LinkProps {
