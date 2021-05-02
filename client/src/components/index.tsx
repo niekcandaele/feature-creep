@@ -23,6 +23,9 @@ export { SearchField } from './SearchField';
 export type { SearchFieldProps } from './SearchField';
 
 export { TextField } from './TextField';
-export type { TextFieldProps } from './TextField';
+// export type { TextFieldProps } from './TextField';
 
 export { Loading } from './Loading';
+
+export { SubPage } from './SubPage';
+export type { SubPageProps } from './SubPage';

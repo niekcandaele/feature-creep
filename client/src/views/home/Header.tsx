@@ -8,17 +8,7 @@ import {
   AiFillHeart as RegisterIcon
 } from 'react-icons/ai';
 import { FaGhost as GhostIcon } from 'react-icons/fa';
-import { keyframes } from 'styled-components';
-
-const upDownAnimation = keyframes`
-  0% {
-    transform: TranslateY(2px);
-  }
-  100% {
-
-    transform: TranslateY(-5px);
-  }
-`;
+import { hovering } from 'animations';
 
 const Container = styled.header`
   z-index: 10;
@@ -73,7 +63,7 @@ const ButtonContainer = styled.div`
 `;
 
 const AnimatedGhostIcon = styled(GhostIcon)`
-  animation: ${upDownAnimation} 2s alternate infinite ;
+  animation: ${hovering(5, 2)} 2s alternate infinite ;
 `;
 
 export const Header: FC = () => {
@@ -92,7 +82,7 @@ export const Header: FC = () => {
         </Nav>
       </Left>
       <ButtonContainer>
-        <Button icon={<SignInIcon size={18} />} onClick={signIn} text="Sign in" />
+        <Button icon={<SignInIcon size={18} />} onClick={() => { signIn('/workspace'); }} text="Sign in" />
         <Button icon={<RegisterIcon size={18} />} onClick={register} text="Register" white />
       </ButtonContainer>
     </Container>
