@@ -24,6 +24,18 @@ export class BaseEntity {
   // Public Static Methods
   //------------------------
 
+  async save() {
+    // @ts-expect-error It works ¯\_(ツ)_/¯
+    const field = `${this.__proto__.constructor.name}:${this.id}`;
+    await getDb().send_command(
+      JsonCommands.Set,
+      field,
+      '.',
+      JSON.stringify(this)
+    );
+    return this;
+  }
+
   /**
    * Find first entity that matches.
    * this.name = Name of Generic sub class.
@@ -40,6 +52,7 @@ export class BaseEntity {
     if (!obj) {
       return null;
     }
+
     const instance = new this(JSON.parse(obj));
     instance.id = id;
     return instance;
