@@ -1,7 +1,11 @@
 import { FC } from 'react';
 import styled from 'styled';
 
-const Container = styled.div<{ src: string }>`
+const Container = styled.div<{
+  // size: 'small' | 'medium' | 'large',
+  src: string,
+  loading: boolean
+}>`
   border-radius: 50%;
   background-image: ${({ src }): string => `url(${src})`};
   background-size: cover;
@@ -23,24 +27,25 @@ const LargeContainer = styled(Container)`
 export interface AvatarProps {
   size: 'small' | 'medium' | 'large';
   alt?: string;
-  loading: boolean;
+  loading?: boolean;
   src: string;
 }
 
-export const Avatar: FC<AvatarProps> = ({ size, src, loading, alt = 'avatar' }) => {
+export const Avatar: FC<AvatarProps> = ({ size, src, loading = false, alt = 'avatar' }) => {
   // TODO: implement skeleton loading
+
   switch (size) {
     case 'small':
       return (
-        <SmallContainer role="img" src={src} />
+        <SmallContainer loading={loading} role="img" src={src} />
       );
     case 'medium':
       return (
-        <MediumContainer role="img" src={src} />
+        <MediumContainer loading={loading} role="img" src={src} />
       );
     case 'large':
       return (
-        <LargeContainer role="img" src={src} />
+        <LargeContainer loading={loading} role="img" src={src} />
       );
   };
 };

@@ -25,16 +25,15 @@ export interface LinkProps {
   to: string;
   arrow?: boolean;
   external?: string;
-  text: string;
   className?: string;
 }
 
-export const Link: FC<LinkProps> = ({ className, to, arrow = false, external = false, text }) => {
+export const Link: FC<LinkProps> = ({ className, to, arrow = false, external = false, children }) => {
   if (external) {
     return (
       <Container arrow={arrow} className={className}>
         <a href={to} rel="noreferrer noopener" target="_blank" >
-          <span>{text}</span>
+          {children}
           {arrow ? <AiOutlineArrowRight size={24} /> : ''}
         </a>
       </Container>
@@ -44,7 +43,7 @@ export const Link: FC<LinkProps> = ({ className, to, arrow = false, external = f
   return (
     <Container arrow={arrow}>
       <ReactRouterLink to={to}>
-        <span>{text}</span>
+        {children}
         {arrow ? <AiOutlineArrowRight size={24} /> : ''}
       </ReactRouterLink>
     </Container>

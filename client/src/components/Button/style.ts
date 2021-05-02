@@ -48,12 +48,17 @@ export const Template = styled.button<{ white: boolean, icon: boolean, isLoading
 
 export const Small = styled(Template)`
   padding: 4px 10px;
+  font-size: ${({ theme }): string => theme.fontSize.tiny};
 `;
 
 export const Medium = styled(Template)`
   padding: 6px 16px;
+  font-size: ${({ theme }): string => theme.fontSize.small};
 `;
 
 export const Large = styled(Template)`
   padding: 10px 22px;
+  span {
+    font-size: ${({ theme }): string => theme.fontSize.medium};
+  }
 `;

@@ -1,7 +1,6 @@
 import { FC, MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 import { Spinner } from 'components';
 import { Text, Small, Medium, Large } from './style';
-import { AiOutlineArrowRight } from 'react-icons/ai';
 
 export interface ButtonProps {
   disabled?: boolean;
