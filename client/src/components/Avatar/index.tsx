@@ -3,8 +3,8 @@ import styled from 'styled';
 
 const Container = styled.div<{
   // size: 'small' | 'medium' | 'large',
-  src: string,
-  loading: boolean
+  src: string;
+  loading: boolean;
 }>`
   border-radius: 50%;
   background-image: ${({ src }): string => `url(${src})`};
@@ -12,8 +12,8 @@ const Container = styled.div<{
 `;
 
 const SmallContainer = styled(Container)`
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 `;
 const MediumContainer = styled(Container)`
     width: 60px;

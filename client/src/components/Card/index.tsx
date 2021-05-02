@@ -5,7 +5,8 @@ import { Link } from 'components';
 const Template = styled.div`
   border-radius: 1rem;
   box-shadow: ${({ theme }): string => theme.shadow};
-  background-color: white;
+  background-color: transparent;
+  border: 1px solid ${({ theme }): string => theme.colors.gray};
   transition: transform 0.3s ease-in-out;
   .text {
     display: flex;
@@ -80,7 +81,7 @@ export interface CardProps {
   icon: React.ReactNode;
 }
 
-export const Card: FC<CardProps> = ({ title, description, icon, size, to = '/not-set', linkText = 'not set' }) => {
+export const Card: FC<CardProps> = ({ title, description, icon, size, to, linkText }) => {
   switch (size) {
     case 'small':
       return (
@@ -112,7 +113,7 @@ export const Card: FC<CardProps> = ({ title, description, icon, size, to = '/not
             <h3>{title}</h3>
           </div>
           <p>{description}</p>
-          <Link arrow to={to}><span>{linkText}</span></Link>
+          { linkText && to && <Link arrow to={to}><span>{linkText}</span></Link>}
         </Large>
       );
   }
