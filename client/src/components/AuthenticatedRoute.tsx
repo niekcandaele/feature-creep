@@ -2,7 +2,7 @@ import { useState, FC, useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { NotAuthenticated } from 'pages';
 import { useAuth, useUser } from 'hooks';
-import { Loading } from 'components';
+import { Error, Loading } from 'components';
 import { useLazyQuery, gql } from '@apollo/client';
 import { Person } from 'generated';
 
@@ -14,27 +14,24 @@ interface AuthenticatedRouteProps {
 /*
   Routes that can only be accessed when authorized and authenticated.
 */
+
+const PING = gql`
+  query ping {
+    ping
+  }
+`;
+
 export const AuthenticatedRoute: FC<AuthenticatedRouteProps> = ({ element, path }) => {
-  const [isAuth, setAuth] = useState<boolean>(false);
-  // Should probably handle error of uselazyquery as well.
-  const [isLoading, setLoading] = useState<boolean>(true);
-  const { isAuthenticated } = useAuth();
+  const [ping, { loading, called, error }] = useLazyQuery(PING);
 
   useEffect(() => {
-    // check if user is authenticated.
-    if (isAuthenticated) {
-      isAuthenticated().then((isAuth) => {
-        if (isAuth) {
-          setAuth(true);
-          // request user data
-        }
-        setLoading(false);
-      });
-    }
+    // check if user is authenticated,
+    // - check if both tokens are set
+    // check if he can make a request that returns a 200 status OK
+    ping();
   }, []);
 
-  if (isLoading) { return <Loading />; }
-  if (isAuth) { return <Route element={element} path={path} />; }
-
+  if (!called || loading) { return <Loading />; }
+  if (!error) { return <Route element={element} path={path} />; }
   return <Route element={<NotAuthenticated />} path={path} />;
 };

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { setRedirect } from 'helpers/setRedirect';
+import { setRedirect } from 'helpers';
 
 interface IAuthContext {
   signIn: (redirect: string) => void;
