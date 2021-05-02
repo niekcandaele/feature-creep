@@ -1,14 +1,10 @@
 import { FC } from 'react';
-import styled from 'styled';
-
-const Container = styled.div`
-
-`;
+import { SubPage } from 'components/SubPage';
 
 export const CreateSquad: FC = () => {
   return (
-    <Container>
-      <h2>Create new Squad</h2>
-    </Container>
+    <SubPage title="Create a new squad">
+      <div>dit is de content</div>
+    </SubPage>
   );
 };
