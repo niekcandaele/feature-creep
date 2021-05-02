@@ -16,14 +16,15 @@ export const theme = {
     secondary: 'linear-gradient(180deg, #78cca7 0%, #2ea26f 100%)',
     tertiary: 'linear-gradient(180deg, #2da3ff 0%, #146aff 100%)',
     quaternary: 'linear-gradient(180deg, #ea9ca9 0%, #F75D75 100%)',
+    gray: 'linear-gradient(180deg, #4f4f4f 0%, #3c3a43 100%)'
   },
   shadow: 'rgb(0 0 0 / 10%) 0px 15px 45px 0px',
   fontSize: {
-    tiny: '.8rem',
-    small: '1.225rem',
+    tiny: '1rem',
+    small: '1.3rem',
     medium: '1.825rem',
-    large: '2.325rem',
-    huge: '4rem'
+    large: '2.5rem',
+    huge: '6rem'
   }
 };
 
