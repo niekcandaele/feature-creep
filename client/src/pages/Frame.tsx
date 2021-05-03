@@ -4,9 +4,9 @@ import styled from 'styled';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Header, Loading } from 'components';
 import { useUser } from 'hooks';
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Person } from 'generated';
-import { setRedirect } from 'helpers';
+import { getRedirect, setRedirect } from 'helpers';
 
 const Container = styled.div`
   display: flex;
@@ -41,14 +41,10 @@ const GET_USER_DATA = gql`
 
 export const Frame: FC = () => {
   // get user data
-  const { userData, setUserData } = useUser();
-  const [getUserData, { loading, data }] = useLazyQuery<{ person: Person }>(GET_USER_DATA);
+  const { setUserData } = useUser();
+  const { loading, data } = useQuery<{ person: Person }>(GET_USER_DATA, { fetchPolicy: 'no-cache' });
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    getUserData();
-  }, []);
 
   useEffect(() => {
     if (data) {
@@ -61,9 +57,9 @@ export const Frame: FC = () => {
         setUserData({ firstName, lastName, email: email });
       };
     }
-  }, [data]);
+  }, [loading]);
 
-  if (loading || !data) {
+  if (loading || !data || !data.person || !data.person.firstName) {
     return (<Loading />);
   }
 
