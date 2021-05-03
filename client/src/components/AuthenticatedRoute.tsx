@@ -22,16 +22,19 @@ const PING = gql`
 `;
 
 export const AuthenticatedRoute: FC<AuthenticatedRouteProps> = ({ element, path }) => {
-  const [ping, { loading, called, error }] = useLazyQuery(PING);
+  const [ping, { loading, called, error, data }] = useLazyQuery(PING);
 
   useEffect(() => {
-    // check if user is authenticated,
-    // - check if both tokens are set
-    // check if he can make a request that returns a 200 status OK
+    /* check if user is authenticated,
+      - check if he can make a request that returns a 200 status OK.
+      - We don't have to check the access tokens, because the token is used to make a request
+    */
+
     ping();
   }, []);
 
   if (!called || loading) { return <Loading />; }
-  if (!error) { return <Route element={element} path={path} />; }
+  // check if idToken with extra information is set, we possibly have to extract this if it is the first time the user is signing in.
+  if (!error && localStorage.getItem('idToken')) { return <Route element={element} path={path} />; }
   return <Route element={<NotAuthenticated />} path={path} />;
 };
