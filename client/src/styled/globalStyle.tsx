@@ -1,6 +1,7 @@
 import { FC, Fragment, ReactNode } from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeType } from './theme';
+import { SnackBarStyles } from './SnackBar';
 
 export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
   *::selection {
@@ -139,7 +140,6 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
       font-weight: 600;
     }
   }
-
   // Remove default webkit search field styling
   input[type="search"]::-webkit-search-decoration,
   input[type="search"]::-webkit-search-cancel-button,
@@ -148,6 +148,8 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     -webkit-appearance:none;
   }
 
+  // larger parts in different files
+  ${SnackBarStyles}
 `;
 
 export const StorybookGlobalStyle: FC<{ children: ReactNode }> = ({ children }) => (
