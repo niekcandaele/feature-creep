@@ -11,8 +11,7 @@ export const SubPage: FC<SubPageProps> = ({ title, children }) => {
 
   return (
     <Container>
-      {/* Goes back to the previous page. For some reason this is val -1*/}
-      <Title onClick={() => navigate(-1)}><ArrowLeft color="white" size={32} /><span>{title}</span></Title>
+      <Title onClick={() => navigate('/workspace')}><ArrowLeft color="white" size={32} /><span>{title}</span></Title>
       <ContentContainer>
         {children}
       </ContentContainer>

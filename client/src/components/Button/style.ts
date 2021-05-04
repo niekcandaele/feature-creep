@@ -57,7 +57,7 @@ export const Medium = styled(Template)`
 `;
 
 export const Large = styled(Template)`
-  padding: 10px 22px;
+  padding: 8px 22px;
   span {
     font-size: ${({ theme }): string => theme.fontSize.medium};
   }
