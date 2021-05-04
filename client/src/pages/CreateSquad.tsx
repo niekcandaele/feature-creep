@@ -42,14 +42,13 @@ export const CreateSquad: FC = () => {
   useEffect(() => {
     if (!loading && data) {
       enqueueSnackbar('Squad successfully created!', { variant: 'success' });
-      navigate('/workspace');
+      // check this
+      navigate(`/squad/${data.id}`);
     }
   }, [data]);
 
   const onSubmit: SubmitHandler<FormFields> = ({ squadName }) => {
-    if (formState.isDirty) {
-      createSquad({ variables: { squad: { name: squadName } } });
-    }
+    createSquad({ variables: { squad: { name: squadName } } });
   };
 
   if (error) {
@@ -61,8 +60,21 @@ export const CreateSquad: FC = () => {
     <SubPage title="Create a new squad">
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* FUN TODO: Generate a custom placeholder */}
-        <TextField control={control} labelText="Squad name" name="squadName" placeholder="Gryffindor" />
-        <Button isLoading={loading} onClick={() => { /* dummy */ }} size="large" text="Create squad" type="submit" variant="default" />
+        <TextField
+          control={control}
+          error={formState.errors.squadName}
+          labelText="Squad name"
+          name="squadName"
+          placeholder="Gryffindor"
+        />
+        <Button
+          isLoading={loading}
+          onClick={() => { /* dummy */ }}
+          size="large"
+          text="Create squad"
+          type="submit"
+          variant="default"
+        />
       </form>
     </SubPage>
   );

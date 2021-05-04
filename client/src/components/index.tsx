@@ -35,3 +35,6 @@ export type { TagProps } from './Tag';
 
 export { Error } from './Error';
 export type { ErrorProps } from './Error';
+
+export { MenuDropDown } from './MenuDropDown';
+export type { MenuDropDownProps } from './MenuDropDown';
