@@ -2,7 +2,6 @@ import { css } from 'styled-components';
 import { ThemeType } from './theme';
 
 /* TODO:
-  - maybe extract extra styling for search component
   - Create story for textfield
   - remove big create squad cards if user is part of a squad.
   - Add squad dropdown to header.
