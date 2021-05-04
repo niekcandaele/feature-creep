@@ -41,7 +41,7 @@ export const TextField: FC<FieldProps> = ({
         <Input
           {...inputProps}
           autoCapitalize="off"
-          autoComplete="new-password" // >:( Required to disable auto-complete
+          autoComplete="off"
           hasError={error ? true : false}
           hasIcon={icon ? true : false}
           id={name}

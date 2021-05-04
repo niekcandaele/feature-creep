@@ -1,10 +1,6 @@
-import { FC } from 'react';
 import styled from 'styled';
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { useSnackbar } from 'notistack';
-
-const None: FC = () => <div>none</div>;
-;
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,7 +13,7 @@ const Wrapper = styled.div`
 
 export default {
   title: 'Components/Snack',
-  component: None,
+  component: undefined,
 } as Meta;
 
 export const Snack: Story = () => {
