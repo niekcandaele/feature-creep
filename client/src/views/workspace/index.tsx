@@ -1,0 +1,1 @@
+export { SquadCards } from './SquadCards';
