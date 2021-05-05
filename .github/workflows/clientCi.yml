@@ -9,6 +9,10 @@ on:
     paths:
       - "client/**"
 
+defaults:
+  run:
+    working-directory: client
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,20 +22,28 @@ jobs:
         node-version: [14.x, 15.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
-          fetch-depth: 0
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: |
-          cd client
-          npm ci
-          npm run lint
-          npm run build
-          npm run storybook:build
-          npm run chromatic
+          fetch-depth: 0 # Required to retrieve git history
+      - name: Install dependencies
+        run: npm ci
         env:
-          SKIP_PREFLIGHT_CHECK: true
-          CHROMATIC_PROJECT_TOKEN: ${{SECRETS.CHROMATIC_PROJECT_TOKEN}}
+          SKIP_PREFLIGHT_CHECK: true # Fixes broken npm install (temp work-around)
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Build Storybook
+        run: npm run storybook:build
+
+      - name: Publish to Chromatic
+        uses: chromaui/action|v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{secrets.CHROMATIC_PROJECT_TOKEN}}
+          exitZeroOnChanges: true # Prevent workflow from failing.
+          allowConsoleErrors: true # Don't fail when a console log is still there.
