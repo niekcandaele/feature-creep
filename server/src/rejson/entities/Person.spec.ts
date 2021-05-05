@@ -13,7 +13,7 @@ describe('Person', () => {
     );
 
     expect(harry).to.be.instanceOf(Person);
-    expect(res).to.be.eql(JSON.parse(JSON.stringify(harry)));
+    expect(res.firstName).to.be.equal(harry.firstName);
   });
 
   it('Should find an existing person', async () => {
@@ -25,7 +25,7 @@ describe('Person', () => {
     const result = await Person.findOne(harry.id);
 
     expect(harry).to.be.instanceOf(Person);
-    expect(result).to.be.eql(harry);
+    expect(result?.firstName).to.be.eql(harry.firstName);
   });
 
   it('Should change properties of a person', async () => {

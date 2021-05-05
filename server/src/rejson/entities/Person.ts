@@ -3,6 +3,7 @@ import { getDb } from '../db';
 import { BaseEntity } from './BaseEntity';
 
 interface PersonOpts {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -19,7 +20,7 @@ export class Person extends BaseEntity {
   public squads: string[] = [];
 
   constructor(opts: PersonOpts) {
-    super();
+    super(opts);
     this.firstName = opts.firstName;
     this.lastName = opts.lastName;
     this.email = opts.email;
@@ -58,4 +59,6 @@ export class Person extends BaseEntity {
 
     return Person.create(data);
   }
+
+  async init() {}
 }

@@ -8,6 +8,7 @@ import { endSession } from './mutations/session/endSession';
 import { addMemberToSquadMutation } from './mutations/squad/addMember';
 import { createSquad } from './mutations/squad/createSquad';
 import { removeMemberFromSquadMutation } from './mutations/squad/removeMember';
+import { setSquadOpen } from './mutations/squad/setOpen';
 
 export const mutationType = new GraphQLObjectType({
   name: 'Mutation',
@@ -21,5 +22,6 @@ export const mutationType = new GraphQLObjectType({
     addQuestion: addQuestion,
     answerQuestion: answerQuestion,
     endSession: endSession,
+    setSquadOpen: setSquadOpen,
   }),
 });

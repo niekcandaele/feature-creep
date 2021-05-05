@@ -1,4 +1,9 @@
-import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import {
+  GraphQLBoolean,
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 
 export const squadType = new GraphQLObjectType({
   name: 'Squad',
@@ -12,6 +17,9 @@ export const squadType = new GraphQLObjectType({
     },
     members: {
       type: new GraphQLList(GraphQLString),
+    },
+    open: {
+      type: GraphQLBoolean,
     },
   },
 });

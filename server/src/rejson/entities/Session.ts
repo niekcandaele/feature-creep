@@ -6,6 +6,7 @@ import { Person } from './Person';
 import { Squad } from './Squad';
 
 interface SessionOpts {
+  id: string;
   active: boolean;
   questions: IQuestion[];
   squad: Squad;
@@ -33,7 +34,7 @@ export class Session extends BaseEntity {
   public squad: Squad;
 
   constructor(opts: SessionOpts) {
-    super();
+    super(opts);
 
     if (!opts.squad) {
       throw new UserInputError(
@@ -77,4 +78,6 @@ export class Session extends BaseEntity {
     this.active = false;
     return this.save();
   }
+
+  async init() {}
 }
