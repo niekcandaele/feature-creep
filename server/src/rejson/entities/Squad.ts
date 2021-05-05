@@ -4,6 +4,7 @@ import { JsonCommands } from '../commands';
 import { getDb } from '../db';
 import { BaseEntity } from './BaseEntity';
 import { Person } from './Person';
+import { Session } from './Session';
 
 interface SquadOpts {
   id: string;
@@ -21,7 +22,9 @@ export class Squad extends BaseEntity {
   //------------------------
   public name: string;
   public members: string[];
+
   public open: boolean | null = null;
+  public activeSession: Session | undefined = undefined;
 
   constructor(opts: SquadOpts) {
     super(opts);
@@ -95,6 +98,15 @@ export class Squad extends BaseEntity {
     this.open = true;
     console.log(`Set Squad ${this.id} to open`);
     return this;
+  }
+
+  public async getActiveSession(): Promise<Session | undefined> {
+    // TODO: This has pretty bad performance...
+    const sessions = await Session.findAll();
+    const squadId = this.id;
+    const session = sessions.find((s) => s.squad.id === squadId && s.active);
+    this.activeSession = session;
+    return session;
   }
 
   async init() {

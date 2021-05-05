@@ -5,6 +5,8 @@ import {
   GraphQLString,
 } from 'graphql';
 
+import { sessionType } from './session';
+
 export const squadType = new GraphQLObjectType({
   name: 'Squad',
   description: 'A squad',
@@ -20,6 +22,9 @@ export const squadType = new GraphQLObjectType({
     },
     open: {
       type: GraphQLBoolean,
+    },
+    activeSession: {
+      type: sessionType,
     },
   },
 });
