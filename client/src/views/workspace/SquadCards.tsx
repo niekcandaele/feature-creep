@@ -4,7 +4,6 @@ import { Button } from 'components';
 import create from 'images/create.png';
 import people from 'images/people.png';
 import { useNavigate } from 'react-router';
-import { useQuery } from '@apollo/client';
 
 const Container = styled.div`
   display: flex;

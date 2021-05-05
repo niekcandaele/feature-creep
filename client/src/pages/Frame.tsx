@@ -1,12 +1,12 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Header, Loading } from 'components';
 import { useUser } from 'hooks';
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { Person } from 'generated';
-import { getRedirect, setRedirect } from 'helpers';
+import { setRedirect } from 'helpers';
 
 const Container = styled.div`
   display: flex;
