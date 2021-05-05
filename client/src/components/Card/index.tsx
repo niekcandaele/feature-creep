@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styled from 'styled';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div<{ isDisabled: boolean, isLink: boolean }>`
   width: fit-content;

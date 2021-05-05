@@ -1,11 +1,10 @@
 import { FC } from 'react';
-import { useParams } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client';
-import { Squad } from 'generated';
+//import { useParams } from 'react-router-dom';
+//import { gql, useQuery } from '@apollo/client';
+//import { Squad } from 'generated';
 import { Spinner, SubPage } from 'components';
 
-
-const GET_USER_DATA = gql`
+/*const GET_USER_DATA = gql`
 query GET_USER_DATA {
   person {
     firstName
@@ -13,12 +12,12 @@ query GET_USER_DATA {
     email
   }
 }
-`;
+`;*/
 
 export const JoinSquad: FC = () => {
   const loading = false;
   const open = false;
-  const { id } = useParams();
+  //const { id } = useParams();
 
   //const { loading, data } = useQuery<{ squad: Squad }>(GET_USER_DATA, { variables: { id } });
 
