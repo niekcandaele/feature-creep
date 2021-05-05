@@ -4,8 +4,7 @@ import { Squad } from '../../rejson/entities/Squad';
 import { testClient } from '../testClient.spec';
 
 describe('INTEGRATION squad management', () => {
-  it('Does the thing', async function () {
-    this.timeout(500000);
+  it('Does the thing', async () => {
     const query = `query {
             person {
               id
