@@ -4,6 +4,7 @@ import { Redis } from 'ioredis';
 import { createPerson } from '../../test/util';
 import { clearDb, getDb } from '../db';
 import { Person } from './Person';
+import { Session } from './Session';
 import { Squad } from './Squad';
 
 describe('Squad', () => {
@@ -217,5 +218,15 @@ describe('Squad', () => {
 
     const redisOpenAfter = await getDb().get(`Squad:${squad.id}:open`);
     expect(redisOpenAfter).to.be.equal('true');
+  });
+
+  it('activeSession', async () => {
+    const squad = await Squad.create({ name: 'gryffindor' });
+    const session = await Session.create({ squad });
+    expect(session.active).to.be.true;
+
+    const activeSession = await squad.getActiveSession();
+    if (!activeSession) throw new Error('activeSession undefined');
+    expect(activeSession.active).to.be.true;
   });
 });

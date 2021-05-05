@@ -43,7 +43,16 @@ export const squadsQuery = {
 
     switch (filterMode) {
       case 'memberof':
-        return Promise.all(context.user.squads.map((id) => Squad.findOne(id)));
+        const squads = await Promise.all(
+          context.user.squads.map((id) => Squad.findOne(id))
+        );
+        const res: Squad[] = [];
+        for (const squad of squads) {
+          if (!squad) continue;
+          await squad.getActiveSession();
+          res.push(squad);
+        }
+        return res;
       case 'all':
         return Squad.findAll();
       default:
@@ -65,6 +74,7 @@ export const squadQuery = {
     const squad = await Squad.findOne(args.id);
     if (!squad) throw new UserInputError('Invalid squad ID');
     await squad.isReady;
+    await squad.getActiveSession();
     return squad;
   },
 };

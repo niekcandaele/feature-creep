@@ -1,7 +1,9 @@
 import { expect } from 'chai';
 
+import { Person } from '../../rejson/entities/Person';
 import { Session } from '../../rejson/entities/Session';
 import { Squad } from '../../rejson/entities/Squad';
+import { getDevJwt } from '../devJwt';
 import { testClient } from '../testClient.spec';
 import { createPerson } from '../util';
 
@@ -9,11 +11,15 @@ describe('INTEGRATION session activity', () => {
   it('Does the thing', async () => {
     const harry = await createPerson('harry');
     const ron = await createPerson('ron');
+    const user = await Person.create({ id: getDevJwt().sub });
+
+    if (!user) throw new Error('user undefined');
 
     const squad = await Squad.create({ name: 'testing Squad' });
     await squad.setOpen();
     await squad.addMember(harry);
     await squad.addMember(ron);
+    await squad.addMember(user);
 
     // Start a new session
     const createSession = `
@@ -33,6 +39,24 @@ describe('INTEGRATION session activity', () => {
     if (!session) throw new Error('Session undefined');
 
     expect(session.active).to.be.true;
+
+    const getMemberOfSquads = `query {
+      squads(filter: {filter: MEMBEROF}) {
+          name
+          id
+          activeSession {
+            id
+          }
+        }
+    }`;
+    const memberOfSquadsRes = await testClient.query({
+      query: getMemberOfSquads,
+    });
+
+    const memberOfSquads = memberOfSquadsRes.data.squads;
+    expect(memberOfSquads).to.be.an('array');
+    expect(memberOfSquads).to.have.length(1);
+    expect(memberOfSquads[0].activeSession.id).to.be.equal(session.id);
 
     // Add a question to the session
     const addQuestion = `
