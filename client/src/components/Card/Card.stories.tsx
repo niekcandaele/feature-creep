@@ -1,35 +1,58 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
-import { Card, CardProps } from 'components';
+import { Card, CardProps, Button } from 'components';
+import create from 'images/create.png';
+import styled from 'styled';
+
+const Inner = styled.div`
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 375px;
+  h2, p, img {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+`;
 
 export default {
   title: 'Components/Card',
   component: Card,
-  args: {
-    glyph: 'dashboard'
-  }
 } as Meta;
 
-const Template: Story<CardProps> = (args) => <Card {...args} />;
-
-export const Small = Template.bind({});
-Small.args = {
-  size: 'small',
-  title: 'Improve',
-  description: 'Learning & collaboration',
+export const CardComponent: Story<CardProps> = () => {
+  return (
+    <div>
+      <Card>
+        <Inner>
+          <h2>Create a squad</h2>
+          <img alt="Create a new squad" src={create} />
+          <p>
+            You are probably part of an organisation.
+            Request the agile coach to join an existing squad.
+          </p>
+          <Button onClick={() => { }} size="large" text="Create squad" variant="default" />
+        </Inner>
+      </Card>
+    </div>
+  );
 };
 
-export const Medium = Template.bind({});
-Medium.args = {
-  size: 'medium',
-  title: 'Stimulate',
-  description: 'participation & motivate your audience',
-};
-
-export const Large = Template.bind({});
-Large.args = {
-  size: 'large',
-  title: 'Share your questions with other teams',
-  description: 'Interact before, during and after the course. Whether it is for a diagnostic test, a formative test or an assessment test.',
-  linkText: 'Learn More',
-  to: '/learn-more'
+export const CardComponentLink: Story<CardProps> = () => {
+  return (
+    <div>
+      <Card to="/test">
+        <Inner>
+          <h2>Create a squad</h2>
+          <img alt="Create a new squad" src={create} />
+          <p>
+            You are probably part of an organisation.
+            Request the agile coach to join an existing squad.
+          </p>
+          <Button onClick={() => { }} size="large" text="Create squad" variant="default" />
+        </Inner>
+      </Card>
+    </div>
+  );
 };
