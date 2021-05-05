@@ -8,7 +8,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "chromatic": "chromatic --exit-zero-on-changes",
+    "chromatic": "chromatic --exit-zero-on-changes --exit-once-uploaded --allow-console-errors",
     "graphql:generate": "graphql-codegen --config codegen.yml",
     "storybook": "start-storybook -p 6006 -s public",
     "storybook:build": "build-storybook -s public"
