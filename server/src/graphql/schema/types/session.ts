@@ -51,7 +51,7 @@ export const sessionType = new GraphQLObjectType({
       type: GraphQLBoolean,
     },
     questions: {
-      type: questionType,
+      type: new GraphQLList(questionType),
     },
   },
 });
