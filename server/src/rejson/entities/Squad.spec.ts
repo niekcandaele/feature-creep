@@ -32,13 +32,15 @@ describe('Squad', () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const result = await Squad.findOne(squad.id);
 
+    if (!result) throw new Error('boo query');
     expect(squad).to.be.instanceOf(Squad);
-    expect(result).to.be.eql(squad);
+    expect(result.id).to.be.eql(squad.id);
   });
 
   it('Should add a person to a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const person = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(person);
 
     const result = await client.send_command(
@@ -63,6 +65,7 @@ describe('Squad', () => {
   it('Should not add the same person twice to the same squad.', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const person = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(person);
     await squad.addMember(person);
 
@@ -95,6 +98,7 @@ describe('Squad', () => {
   it('Should delete a member from a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const person = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(person);
 
     let result = await client.send_command(
@@ -127,6 +131,7 @@ describe('Squad', () => {
   it('Should get a list of members of a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const harry = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(harry);
 
     const ron = await createPerson('ron');
@@ -143,6 +148,7 @@ describe('Squad', () => {
   it('Should delete a member from a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const harry = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(harry);
 
     const ron = await createPerson('ron');
@@ -170,6 +176,7 @@ describe('Squad', () => {
   it('Should handle removing a member from a squad that is not part of that squad correctly', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const harry = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(harry);
 
     const ron = await createPerson('ron');
@@ -197,5 +204,16 @@ describe('Squad', () => {
     for (const x of res) {
       expect(x).to.be.instanceOf(Squad);
     }
+  });
+
+  it('setOpen', async () => {
+    const squad = await Squad.create({ name: 'gryffindor' });
+
+    const redisOpenBefore = await getDb().get(`Squad:${squad.id}:open`);
+    expect(redisOpenBefore).to.be.null;
+    await squad.setOpen();
+
+    const redisOpenAfter = await getDb().get(`Squad:${squad.id}:open`);
+    expect(redisOpenAfter).to.be.equal('true');
   });
 });

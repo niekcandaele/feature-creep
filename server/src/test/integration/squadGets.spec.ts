@@ -63,6 +63,17 @@ describe('INTEGRATION squad query gets', () => {
     expect(memberOfSquadsNoMember).to.be.an('array');
     expect(memberOfSquadsNoMember).to.have.length(0);
 
+    const openSquadMutation = `mutation setSquadOpen {
+      setSquadOpen(input:{
+      squadId:"${squadId}"
+      }) {
+        id
+        open
+      }
+    }`;
+
+    await testClient.mutate({ mutation: openSquadMutation });
+
     const addMemberMutation = `mutation test($input:AddMemberType){
             addMemberToSquad(input: $input) {
               name

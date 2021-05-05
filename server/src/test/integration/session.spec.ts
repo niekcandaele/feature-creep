@@ -11,7 +11,7 @@ describe('INTEGRATION session activity', () => {
     const ron = await createPerson('ron');
 
     const squad = await Squad.create({ name: 'testing Squad' });
-
+    await squad.setOpen();
     await squad.addMember(harry);
     await squad.addMember(ron);
 

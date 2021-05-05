@@ -35,14 +35,15 @@ describe('INTEGRATION squad management', () => {
 
     expect(squadId).to.be.a('string');
 
-    const addMemberMutation = `mutation test($input:AddMemberType){
+    // Should fail because squad isnt open yet
+    const addMemberMutationFail = `mutation test($input:AddMemberType){
       addMemberToSquad(input: $input) {
         name
       }
     }`;
 
-    const addMemberRes = await testClient.mutate({
-      mutation: addMemberMutation,
+    const addMemberResFail = await testClient.mutate({
+      mutation: addMemberMutationFail,
       variables: {
         input: {
           personId: personId,
@@ -50,6 +51,41 @@ describe('INTEGRATION squad management', () => {
         },
       },
     });
+
+    expect(addMemberResFail.errors![0].message).to.be.equal(
+      'Cannot add a person to a squad that is not open'
+    );
+
+    const openSquadMutation = `mutation setSquadOpen {
+      setSquadOpen(input:{
+      squadId:"${squadId}"
+      }) {
+        id
+        open
+      }
+    }`;
+
+    await testClient.mutate({ mutation: openSquadMutation });
+
+    const addMemberMutationSuccess = `mutation test($input:AddMemberType){
+      addMemberToSquad(input: $input) {
+        name
+      }
+    }`;
+
+    const addMemberRes = await testClient.mutate({
+      mutation: addMemberMutationSuccess,
+      variables: {
+        input: {
+          personId: personId,
+          squadId: squadId,
+        },
+      },
+    });
+
+    expect(addMemberRes.data.addMemberToSquad.name).to.be.equal(
+      'coolste squad'
+    );
 
     const squadWithMember = await Squad.findOne(squadId);
     if (!squadWithMember) throw new Error('no squad');
