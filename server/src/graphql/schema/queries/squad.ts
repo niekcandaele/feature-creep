@@ -1,5 +1,11 @@
 import { UserInputError } from 'apollo-server';
-import { GraphQLEnumType, GraphQLInputObjectType, GraphQLList } from 'graphql';
+import {
+  GraphQLEnumType,
+  GraphQLInputObjectType,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLString,
+} from 'graphql';
 
 import { IContext } from '../..';
 import { Squad } from '../../../rejson/entities/Squad';
@@ -20,12 +26,16 @@ const getSquadType = new GraphQLInputObjectType({
   }),
 });
 
-export const squadQuery = {
+export const squadsQuery = {
   type: new GraphQLList(squadType),
   args: {
     filter: { type: getSquadType },
   },
-  resolve: (parent: Record<string, never>, args: any, context: IContext) => {
+  resolve: async (
+    parent: Record<string, never>,
+    args: any,
+    context: IContext
+  ) => {
     let filterMode = 'memberof';
     if (args && args.filter) {
       filterMode = args.filter.filter;
@@ -35,9 +45,29 @@ export const squadQuery = {
       case 'memberof':
         return Promise.all(context.user.squads.map((id) => Squad.findOne(id)));
       case 'all':
-        return Squad.findAll();
+        const squads = await Squad.findAll();
+        console.log(squads);
+
+        return squads;
       default:
         throw new UserInputError('Invalid filtermode');
     }
+  },
+};
+
+export const squadQuery = {
+  type: squadType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLString) },
+  },
+  resolve: async (
+    parent: Record<string, never>,
+    args: any,
+    context: IContext
+  ) => {
+    const squad = await Squad.findOne(args.id);
+    if (!squad) throw new UserInputError('Invalid squad ID');
+    await squad.isReady;
+    return squad;
   },
 };
