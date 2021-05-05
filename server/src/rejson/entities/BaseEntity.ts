@@ -102,8 +102,8 @@ export abstract class BaseEntity {
     this: new (...args: any[]) => T
   ): Promise<T[]> {
     const obj = await getDb().scan('', 'MATCH', `${this.name}:*`);
-    const instances = obj[1].map((_: unknown) => new this(_));
-    return instances;
+    const data = obj[1].map((_) => getOne(_));
+    return (await Promise.all(data)).map((_) => new this(_));
   }
 
   private async initialize() {
@@ -111,4 +111,15 @@ export abstract class BaseEntity {
   }
 
   abstract init<T extends BaseEntity>(): Promise<void>;
+}
+
+// TODO:
+// Its here because I had a bunch of trouble figuring out how to call a static method from another static method
+// Theres probably a better to do this
+async function getOne(key: string) {
+  const obj = await getDb().send_command(JsonCommands.Get, key);
+  if (!obj) {
+    return null;
+  }
+  return JSON.parse(obj);
 }
