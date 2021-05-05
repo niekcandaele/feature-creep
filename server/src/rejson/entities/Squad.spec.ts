@@ -203,8 +203,8 @@ describe('Squad', () => {
     expect(res).to.have.length(2);
     for (const x of res) {
       expect(x).to.be.instanceOf(Squad);
-      expect(res.find((_) => _.name === 'gryffindor')).to.not.be.null;
-      expect(res.find((_) => _.name === 'slytherin')).to.not.be.null;
+      expect(res.find((_) => _.name === 'gryffindor')).to.not.be.undefined;
+      expect(res.find((_) => _.name === 'slytherin')).to.not.be.undefined;
     }
   });
 
