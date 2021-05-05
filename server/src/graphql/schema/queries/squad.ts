@@ -45,10 +45,7 @@ export const squadsQuery = {
       case 'memberof':
         return Promise.all(context.user.squads.map((id) => Squad.findOne(id)));
       case 'all':
-        const squads = await Squad.findAll();
-        console.log(squads);
-
-        return squads;
+        return Squad.findAll();
       default:
         throw new UserInputError('Invalid filtermode');
     }
