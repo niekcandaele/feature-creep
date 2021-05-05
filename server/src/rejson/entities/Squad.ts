@@ -65,7 +65,7 @@ export class Squad extends BaseEntity {
 
     if (!this.open) {
       throw new AuthenticationError(
-        "Cannot add a person to a squad that isn't open"
+        'Cannot add a person to a squad that is not open'
       );
     }
 

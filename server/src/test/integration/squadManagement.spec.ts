@@ -53,7 +53,7 @@ describe('INTEGRATION squad management', () => {
     });
 
     expect(addMemberResFail.errors![0].message).to.be.equal(
-      "Cannot add a person to a squad that isn't open"
+      'Cannot add a person to a squad that is not open'
     );
 
     const openSquadMutation = `mutation setSquadOpen {
