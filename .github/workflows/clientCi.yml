@@ -36,9 +36,13 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          SKIP_PREFLIGHT_CHECK: true # Fixes broken npm install (temp work-around)
 
       - name: Build Storybook
         run: npm run storybook:build
+        env:
+          SKIP_PREFLIGHT_CHECK: true # Fixes broken npm install (temp work-around)
 
       - name: Publish to Chromatic
         uses: chromaui/action@v1
