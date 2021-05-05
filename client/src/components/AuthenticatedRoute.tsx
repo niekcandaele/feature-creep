@@ -1,10 +1,8 @@
-import { useState, FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { NotAuthenticated } from 'pages';
-import { useAuth, useUser } from 'hooks';
-import { Error, Loading } from 'components';
+import { Loading } from 'components';
 import { useLazyQuery, gql } from '@apollo/client';
-import { Person } from 'generated';
 
 interface AuthenticatedRouteProps {
   element: React.ReactElement | null;
@@ -22,7 +20,7 @@ const PING = gql`
 `;
 
 export const AuthenticatedRoute: FC<AuthenticatedRouteProps> = ({ element, path }) => {
-  const [ping, { loading, called, error, data }] = useLazyQuery(PING);
+  const [ping, { loading, called, error }] = useLazyQuery(PING);
 
   useEffect(() => {
     /* check if user is authenticated,

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "lint": "eslint . --cache --report-unused-disable-directives --ext .js,.ts,.tsx -c src/.eslintrc",
+    "lint": "eslint . --cache --report-unused-disable-directives --ext .ts,.tsx -c src/.eslintrc",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

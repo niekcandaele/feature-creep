@@ -144,7 +144,7 @@ export const OnBoarding: FC = () => {
       const { errors } = await addUserDetails({ variables: { person: { firstName, lastName, email } } });
 
       if (errors) {
-        console.log('der was lik nen error', errors); // TODO: handle this :)
+        /* Handle */
       }
       setUserData({ firstName, lastName, email });
       navigate(getRedirect());
