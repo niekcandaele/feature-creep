@@ -1,10 +1,25 @@
 import { expect } from 'chai';
 import { datatype } from 'faker';
 
+import { getDb } from '../rejson/db';
 import { Session } from '../rejson/entities/Session';
 import { Squad } from '../rejson/entities/Squad';
 import { createPerson } from '../test/util';
-import { executeGears, GearsFunctions } from './execute';
+import { GearsClient, GearsFunctions } from './gears';
+
+/**
+ * Unloads any registered Gears functions
+ */
+async function clearRegistrations() {
+    const db = await getDb();
+
+    const registrations = await db.send_command('RG.DUMPREGISTRATIONS');
+
+    for (const registration of registrations) {
+        const id = registration[1];
+        await db.send_command('RG.UNREGISTER', id);
+    }
+}
 
 async function setUp(amountOfSessions = 10) {
     // Since we use Redis Gears for generating session reports
@@ -41,15 +56,32 @@ async function setUp(amountOfSessions = 10) {
     return sessions;
 }
 
+let Gears: GearsClient;
+
 describe('Redis Gears', () => {
+    beforeEach(async () => {
+        await clearRegistrations();
+        Gears = new GearsClient();
+        await Gears.initialize();
+    });
     it('Executes a simple example', async () => {
-        const res = await executeGears(GearsFunctions.test);
+        const res = await Gears.runJob(GearsFunctions.test);
         expect(res).to.be.an('array');
         expect(res).to.have.length(2);
     });
-    it('Generates a report of multiple sessions', async () => {
-        await setUp();
-        const res = await executeGears(GearsFunctions.generateReport);
-        console.log(res);
+    it('Only registers BG functions once', async () => {
+        const db = await getDb();
+
+        const registrations = await db.send_command('RG.DUMPREGISTRATIONS');
+
+        expect(registrations).to.be.an('array');
+        // There should at least be something loaded
+        expect(registrations.length).to.be.greaterThan(0);
+        const secondClient = new GearsClient();
+        await secondClient.initialize();
+        const registrationsAfter = await db.send_command('RG.DUMPREGISTRATIONS');
+        expect(registrations).to.be.an('array');
+        // It should have the same amount of registrations after calling initialize
+        expect(registrationsAfter.length).to.be.equal(registrations.length);
     });
 });
