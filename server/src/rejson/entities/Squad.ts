@@ -116,6 +116,6 @@ export class Squad extends BaseEntity {
     this.open = openStatus ? JSON.parse(openStatus) : false;
 
     const sessions = await Session.findAll();
-    this.sessions = sessions.filter(s => s.squad.id === this.id);
+    this.sessions = sessions.filter((s) => s.squad.id === this.id);
   }
 }
