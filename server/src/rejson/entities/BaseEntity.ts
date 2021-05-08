@@ -7,13 +7,13 @@ import { getDb } from '../db';
  * Base Modal for all models.
  */
 export abstract class BaseEntity {
-  public isReady = new Promise((resolve, reject) => {
-    this.initialize().then(resolve).catch(reject);
-  });
+  public isReady: Promise<unknown>;
 
   constructor(opts: { id: string }) {
     this.id = opts.id;
-    this.initialize();
+    this.isReady = new Promise((resolve, reject) => {
+      this.initialize().then(resolve).catch(reject);
+    });
   }
   //------------------------
   // Properties
@@ -55,6 +55,7 @@ export abstract class BaseEntity {
     }
 
     const instance = new this({ ...JSON.parse(obj), id });
+    await instance.isReady;
     return instance;
   }
 
@@ -85,6 +86,7 @@ export abstract class BaseEntity {
       JSON.stringify({ squads: [], ...opts })
     );
     const instance = new this({ ...opts, id: opts.id });
+    await instance.isReady;
     return instance;
   }
 
@@ -106,7 +108,7 @@ export abstract class BaseEntity {
     return (await Promise.all(data)).map((_) => new this(_));
   }
 
-  private async initialize() {
+  protected async initialize() {
     await this.init();
   }
 

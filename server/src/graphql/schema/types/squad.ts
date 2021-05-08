@@ -26,5 +26,8 @@ export const squadType = new GraphQLObjectType({
     activeSession: {
       type: sessionType,
     },
+    sessions: {
+      type: new GraphQLList(sessionType),
+    },
   },
 });

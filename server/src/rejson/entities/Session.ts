@@ -1,6 +1,7 @@
 import { UserInputError } from 'apollo-server';
 import { v4 as uuid } from 'uuid';
 
+import { getDb } from '../db';
 import { BaseEntity } from './BaseEntity';
 import { Person } from './Person';
 import { Squad } from './Squad';
@@ -17,6 +18,7 @@ interface IQuestion {
   id: string;
   question: string;
   answers: IAnswer[];
+  total?: number;
 }
 
 interface IAnswer {
@@ -45,6 +47,11 @@ export class Session extends BaseEntity {
     this.active = opts.active === undefined ? true : opts.active;
     this.questions = opts.questions || [];
     this.squad = opts.squad;
+
+    // We reset this because it relies on data set after the super() call
+    this.isReady = new Promise((resolve, reject) => {
+      this.initialize().then(resolve).catch(reject);
+    });
   }
 
   async addQuestion(question: string) {
@@ -76,8 +83,42 @@ export class Session extends BaseEntity {
     console.log(`Session: Ending session ${this.id}`);
 
     this.active = false;
-    return this.save();
+    await this.save();
+    // Push an event into a stream
+    // This will trigger a Redis Gears function to do bg processing
+    await getDb().send_command('XADD', 'Session-end', '*', 'id', this.id);
+    return this;
   }
 
-  async init() {}
+  public async getTotals() {
+    const returnVal: Record<string, number> = {};
+    for (const question of this.questions) {
+      const total = await getDb().get(`Question:${question.id}:total`);
+      // not !total because it could be 0!
+      if (total === null) continue;
+      returnVal[question.id] = parseInt(total, 10);
+    }
+
+    return returnVal;
+  }
+
+  async init() {
+    if (!this.questions) {
+      return;
+    }
+
+    if (this.active) {
+      // No need to get the totals if a session hasnt ended yet
+      return;
+    }
+
+    const totals = await this.getTotals();
+
+    this.questions = this.questions.map((q) => {
+      return {
+        ...q,
+        total: totals[q.id],
+      };
+    });
+  }
 }
