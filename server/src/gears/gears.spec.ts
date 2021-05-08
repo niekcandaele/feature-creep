@@ -1,10 +1,8 @@
 import { expect } from 'chai';
-import { datatype } from 'faker';
 
 import { getDb } from '../rejson/db';
 import { Session } from '../rejson/entities/Session';
-import { Squad } from '../rejson/entities/Squad';
-import { createPerson } from '../test/util';
+import { setUpTestData, wait } from '../test/util';
 import { GearsClient, GearsFunctions } from './gears';
 
 /**
@@ -19,46 +17,6 @@ async function clearRegistrations() {
     const id = registration[1];
     await db.send_command('RG.UNREGISTER', id);
   }
-}
-
-async function setUp(amountOfSessions = 10) {
-  // Since we use Redis Gears for generating session reports
-  // We need practically every test to have access to a completed session
-  const squad = await Squad.create({ name: 'Gears testers' });
-  const harry = await createPerson('harry');
-  const ron = await createPerson('ron');
-  const draco = await createPerson('draco');
-
-  // Questions based on https://engineering.atspotify.com/2014/09/16/squad-health-check-model/
-  const questions = [
-    'Delivering value',
-    'Easy to release',
-    'Fun',
-    'Health of codebase',
-    'Learning',
-    'Mission',
-    'Pawns or players',
-    'Speed',
-  ];
-
-  const sessions: Session[] = [];
-
-  for (let i = 0; i < amountOfSessions; i++) {
-    const session = await Session.create({ squad });
-    for (const q of questions) {
-      const question = await session.addQuestion(q);
-      for (const person of [harry, ron, draco]) {
-        await session.answerQuestion(
-          question.id,
-          person.id,
-          datatype.number({ min: 0, max: 3 }).toString()
-        );
-      }
-    }
-    sessions.push(session);
-  }
-
-  return sessions;
 }
 
 let Gears: GearsClient;
@@ -91,7 +49,7 @@ describe('Redis Gears', () => {
   });
   it('Can generate a report', async function () {
     this.timeout(60000);
-    const sessions = await setUp();
+    const sessions = await setUpTestData();
 
     for (const session of sessions) {
       await session.end();
@@ -123,9 +81,3 @@ describe('Redis Gears', () => {
     }
   });
 });
-
-async function wait(seconds = 1) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, seconds * 1000);
-  });
-}

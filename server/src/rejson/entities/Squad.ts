@@ -26,6 +26,8 @@ export class Squad extends BaseEntity {
   public open: boolean | null = null;
   public activeSession: Session | undefined = undefined;
 
+  public sessions: Session[] = [];
+
   constructor(opts: SquadOpts) {
     super(opts);
     this.name = opts.name;
@@ -112,5 +114,8 @@ export class Squad extends BaseEntity {
   async init() {
     const openStatus = await getDb().get(`Squad:${this.id}:open`);
     this.open = openStatus ? JSON.parse(openStatus) : false;
+
+    const sessions = await Session.findAll();
+    this.sessions = sessions;
   }
 }

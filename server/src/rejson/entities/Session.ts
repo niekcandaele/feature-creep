@@ -18,6 +18,7 @@ interface IQuestion {
   id: string;
   question: string;
   answers: IAnswer[];
+  total?: number;
 }
 
 interface IAnswer {
@@ -46,6 +47,11 @@ export class Session extends BaseEntity {
     this.active = opts.active === undefined ? true : opts.active;
     this.questions = opts.questions || [];
     this.squad = opts.squad;
+
+    // We reset this because it relies on data set after the super() call
+    this.isReady = new Promise((resolve, reject) => {
+      this.initialize().then(resolve).catch(reject);
+    });
   }
 
   async addQuestion(question: string) {
@@ -78,6 +84,8 @@ export class Session extends BaseEntity {
 
     this.active = false;
     await this.save();
+    // Push an event into a stream
+    // This will trigger a Redis Gears function to do bg processing
     await getDb().send_command('XADD', 'Session-end', '*', 'id', this.id);
     return this;
   }
@@ -94,5 +102,23 @@ export class Session extends BaseEntity {
     return returnVal;
   }
 
-  async init() {}
+  async init() {
+    if (!this.questions) {
+      return;
+    }
+
+    if (this.active) {
+      // No need to get the totals if a session hasnt ended yet
+      return;
+    }
+
+    const totals = await this.getTotals();
+
+    this.questions = this.questions.map((q) => {
+      return {
+        ...q,
+        total: totals[q.id],
+      };
+    });
+  }
 }
