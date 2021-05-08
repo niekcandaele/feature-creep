@@ -1,6 +1,7 @@
 import { UserInputError } from 'apollo-server';
 import { v4 as uuid } from 'uuid';
 
+import { getDb } from '../db';
 import { BaseEntity } from './BaseEntity';
 import { Person } from './Person';
 import { Squad } from './Squad';
@@ -76,7 +77,21 @@ export class Session extends BaseEntity {
     console.log(`Session: Ending session ${this.id}`);
 
     this.active = false;
-    return this.save();
+    await this.save();
+    await getDb().send_command('XADD', 'Session-end', '*', 'id', this.id);
+    return this;
+  }
+
+  public async getTotals() {
+    const returnVal: Record<string, number> = {};
+    for (const question of this.questions) {
+      const total = await getDb().get(`Question:${question.id}:total`);
+      // not !total because it could be 0!
+      if (total === null) continue;
+      returnVal[question.id] = parseInt(total, 10);
+    }
+
+    return returnVal;
   }
 
   async init() {}

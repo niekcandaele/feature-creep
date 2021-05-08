@@ -1,27 +1,39 @@
+import json
+
 # This is used for deduplication of registered functions
 FUNCTION_NAME = "generate_report.py"
 
 
 def process(x):
-    '''
-    Processes a message from the local expiration stream
-    Note: in this example we simply print to the log, but feel free to replace
-    this logic with your own, e.g. an HTTP request to a REST API or a call to an
-    external data store.
-    '''
-    log(f"Key '{x['value']['key']}' expired at {x['id'].split('-')[0]}")
+    session_id = x['value']['id']
+    ended_session = json.loads(execute('JSON.GET', f"Session:{session_id}"))
+    log(f"Calculating totals for session {ended_session['id']}")
+    for question in ended_session['questions']:
+        total = 0
+        for answer in question["answers"]:
+            total += int(answer["answer"])
+        execute('SET', f"Question:{question['id']}:total", total)
+        log(f"Overall score for '{question['question']}' = {total}")
 
 
-cap = GB('KeysReader', desc=FUNCTION_NAME)
-cap.foreach(lambda x:
-            execute('XADD', f'expired:{hashtag()}', '*', 'key', x['key']))
-cap.register(prefix='*',
-             mode='sync',
-             eventTypes=['expired'],
-             readValue=False)
+def get_all_sessions(squad_id):
+    """
+    Returns all ended sessions for a certain squad.
+    Unused for now...
+    """
+    returnVal = []
+    all_session_keys = execute('SCAN', '', 'MATCH', 'Session:*')
+    for key in all_session_keys[1]:
+        session = json.loads(execute('JSON.GET', key))
+        if (session['squad']['id'] == squad_id and session['active'] is False):
+            returnVal.append(session)
 
+    return returnVal
+
+
+# Whenever a session is ended, it sends out some data in a stream
+# This StreamReaders reads those events and triggers the process function
 proc = GB('StreamReader', desc=FUNCTION_NAME)
 proc.foreach(process)
-proc.register(prefix='expired:*',
-              batch=100,
+proc.register(prefix='Session-end',
               duration=1)
