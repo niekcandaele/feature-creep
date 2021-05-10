@@ -3,7 +3,8 @@ import { expect } from 'chai';
 import { getDb } from '../rejson/db';
 import { Session } from '../rejson/entities/Session';
 import { setUpTestData, wait } from '../test/util';
-import { GearsClient, GearsFunctions } from './gears';
+import { GearsTest } from './functions/test';
+import { GearsClient } from './gears';
 
 /**
  * Unloads any registered Gears functions
@@ -28,7 +29,7 @@ describe('Redis Gears', () => {
     await Gears.initialize();
   });
   it('Executes a simple example', async () => {
-    const res = await Gears.runJob(GearsFunctions.test);
+    const res = await Gears.runJob(new GearsTest());
     expect(res).to.be.an('array');
     expect(res).to.have.length(2);
   });
