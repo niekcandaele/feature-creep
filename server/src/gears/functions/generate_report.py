@@ -12,7 +12,9 @@ def process(x):
         for answer in question["answers"]:
             total += int(answer["answer"])
         execute('SET', f"Question:{question['id']}:total", total)
-
+        #log(f"Setting average {total / len(question['answers'])} for {question['id']}")
+        execute(
+            'SET', f"Question:{question['id']}:average", total / len(question['answers']))
     execute('XADD', 'Squad-report', '*', 'squad',
             json.dumps(ended_session['squad']))
 

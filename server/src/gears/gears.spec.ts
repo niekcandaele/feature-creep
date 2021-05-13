@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { config } from 'dotenv';
 
 import { getDb } from '../rejson/db';
 import { Session } from '../rejson/entities/Session';
@@ -6,6 +7,7 @@ import { setUpTestData, wait } from '../test/util';
 import { GearsTest } from './functions/test';
 import { GearsClient } from './gears';
 
+config();
 /**
  * Unloads any registered Gears functions
  */
@@ -50,9 +52,9 @@ describe('Redis Gears', () => {
   });
   it('Can generate a report', async function () {
     this.timeout(60000);
-    const sessions = await setUpTestData();
+    const data = await setUpTestData();
 
-    for (const session of sessions) {
+    for (const session of data.sessions) {
       await session.end();
       // Gears does async processing, hard to "await" that properly
       await wait();
@@ -80,5 +82,33 @@ describe('Redis Gears', () => {
         }
       }
     }
+  });
+
+  /**
+   * This test fires the notification gears function
+   * I havent figured out how to assert it actually sent the webhooks
+   * so for now, just is just an easy way to trigger the functionality
+   * protip: check redis container logs for debug info :)
+   */
+  it('notification', async function () {
+    this.timeout(60000);
+
+    const data = await setUpTestData();
+
+    for (const session of data.sessions.slice(1)) {
+      await session.end();
+      await wait();
+    }
+    data.squad.notificationConfig.discordWebhook = process.env
+      .DISCORD_WEBHOOK as string;
+    await data.squad.save();
+    await data.sessions[0].end();
+
+    const sessionAfter = await Session.findOne(data.sessions[0].id);
+    if (!sessionAfter) throw new Error('session undefined');
+
+    // Test automatically clean up data
+    // Give the bg process time to finish
+    await wait(3);
   });
 });

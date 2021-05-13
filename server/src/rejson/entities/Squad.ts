@@ -10,6 +10,9 @@ interface SquadOpts {
   id: string;
   name: string;
   members: string[];
+  notificationConfig: {
+    discordWebhook: string;
+  };
 }
 
 /*
@@ -22,6 +25,9 @@ export class Squad extends BaseEntity {
   //------------------------
   public name: string;
   public members: string[];
+  public notificationConfig: {
+    discordWebhook: string;
+  };
 
   public open: boolean | null = null;
   public activeSession: Session | undefined = undefined;
@@ -32,6 +38,7 @@ export class Squad extends BaseEntity {
     super(opts);
     this.name = opts.name;
     this.members = opts.members || [];
+    this.notificationConfig = opts.notificationConfig || {};
   }
   //------------------------
   // Public Methods

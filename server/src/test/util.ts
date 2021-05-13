@@ -69,7 +69,7 @@ export async function setUpTestData(amountOfSessions = 10) {
     sessions.push(session);
   }
 
-  return sessions;
+  return { sessions, squad, persons: { harry, ron, draco } };
 }
 
 export async function wait(seconds = 0.5) {

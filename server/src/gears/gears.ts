@@ -8,7 +8,7 @@ import { GearsFunction } from './GearsFunction';
 
 const BackgroundFunctions = [
   new GearsSendNotification(),
-  new GearsGenerateReport()
+  new GearsGenerateReport(),
 ];
 
 export class GearsClient {
@@ -59,7 +59,9 @@ export class GearsClient {
    */
   private async loadFunction(file: GearsFunction) {
     if (!this.funcCache[file.fileName]) {
-      console.log(`[GEARS] ${file.fileName} is not loaded yet, loading into cache now`);
+      console.log(
+        `[GEARS] ${file.fileName} is not loaded yet, loading into cache now`
+      );
       this.funcCache[file.fileName] = (
         await fs.readFile(this.getfunctionPath(file))
       ).toString();
@@ -77,7 +79,12 @@ export class GearsClient {
     const func = await this.loadFunction(gearsFunction);
 
     if (gearsFunction.requirements.length) {
-      return db.send_command('RG.PYEXECUTE', func), `REQUIREMENTS ${gearsFunction.requirements.join(',')}`;
+      return db.send_command(
+        'RG.PYEXECUTE',
+        func,
+        'REQUIREMENTS',
+        gearsFunction.requirements.join(',')
+      );
     } else {
       return db.send_command('RG.PYEXECUTE', func);
     }
