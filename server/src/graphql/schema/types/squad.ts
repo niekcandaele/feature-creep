@@ -5,6 +5,7 @@ import {
   GraphQLString,
 } from 'graphql';
 
+import { personType } from './person';
 import { sessionType } from './session';
 
 export const squadType = new GraphQLObjectType({
@@ -18,7 +19,7 @@ export const squadType = new GraphQLObjectType({
       type: GraphQLString,
     },
     members: {
-      type: new GraphQLList(GraphQLString),
+      type: new GraphQLList(personType),
     },
     open: {
       type: GraphQLBoolean,
