@@ -1,11 +1,9 @@
 {
-  "root": true,
     "extends": [
       "react-app"
     ],
     "ignorePatterns": [
-      "node_modules",
-      "src/generated/index.ts",
+      "generated/index.ts",
       "storybook-static"
     ],
     "rules": {
@@ -90,6 +88,7 @@
       ],
       "react/jsx-no-duplicate-props": 2,
       "react/jsx-sort-default-props": 2,
+      "react/react-in-jsx-scope": 0,
       "react/jsx-sort-props": [
         2,
         {
