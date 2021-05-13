@@ -4,12 +4,45 @@
 ![Server ci](https://github.com/niekcandaele/feature-creep/actions/workflows/serverCi.yml/badge.svg)
 
 
-### Agile
+## Installation
 
-#### What is a squad?
+### Server
 
-You and your fellow squad members are on the same long-term mission and spend your days in each other's company. This self-organizing entity possesses all the skills and tools needed to cover the entire workflow, from design to release.
+```sh
+docker-compose up -d 
+cd server
+npm ci # Use "ci" so it respects the lockfile
 
-A squad consists of 4 up to 8 people. Its composition is typically based on specific needs and can evolve over time, depending on the experise and capacity that is required. Every squad must be formally approved by higher management.
+# When running "npm start" you will be running in production mode
+# This means, authentication will happen via JWTs provded by AWS Cognito
+# See the folder infra/auth for details on how its set up
+npm start
 
-There are several types of squads each with their own mission and objectives. Although there is no actual hierarchy in squads (apart from the operational authority), all squad members have a well-defined key role, according to expertise and type of squad. Each of these roles comes with its own specific responsibilities. However, it is up to every member to see to it that the squad is successful, no matter which part they fulfill. Taking ownership is a general responsibilities.
+# When running "npm run dev" you will be running in development mode
+# Any calls to the API are automatically authenticated
+# This does mean only 1 user can exist in the database at any time
+# It might get lonely in your solo squad :(
+npm run dev
+```
+
+### Client
+
+// TODO: Emiel
+
+### Features
+
+- Uses RedisJSON as main datastore
+- Uses Redis Streams to trigger BG processing
+- Users can create "Squads"
+- Users can invite other users to join their Squad
+- Users can start a Session in the context of a Squad
+- A Session currently is a healthcheck, but can be expanded to other agile meetings in the future
+- After a Session ends, background processing of the data happens (powered by Redis Gears). 
+- After background processing, a report is sent to Discord 
+
+![example Discord output](./docs/img/discord_report.png)
+
+
+### Squad health checks
+
+[Health check model by Spotify](https://engineering.atspotify.com/2014/09/16/squad-health-check-model/)
