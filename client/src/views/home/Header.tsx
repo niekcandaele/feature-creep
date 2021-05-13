@@ -83,7 +83,7 @@ export const Header: FC = () => {
       </Left>
       <ButtonContainer>
         <Button icon={<SignInIcon size={18} />} onClick={() => { signIn('/workspace'); }} text="Sign in" />
-        <Button icon={<RegisterIcon size={18} />} onClick={register} text="Register" white />
+        <Button color="secondary" icon={<RegisterIcon size={18} />} onClick={register} text="Register" />
       </ButtonContainer>
     </Container>
   );
