@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:14-alpine
+FROM node:14-alpine as builder
 
 # set working directory
 WORKDIR /app
@@ -16,5 +16,23 @@ RUN npm ci
 
 COPY . .
 
-# start app
-CMD ["npm", "start"]
+ENV SKIP_PREFLIGHT_CHECK=true
+ENV REACT_APP_APOLLO_HTTP_URI="http://localhost:4000"
+ENV REACT_APP_APOLLO_WS_URI="ws://localhost:4000"
+ENV REACT_APP_HOSTNAME="http://localhost:3000"
+
+RUN npm run build
+
+FROM node:14-alpine as runtime
+
+RUN npm i -g serve
+USER node
+
+WORKDIR /app
+
+COPY --from=builder /app/build .
+
+EXPOSE 5000
+
+
+CMD [ "serve", "--single" ]
