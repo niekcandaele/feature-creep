@@ -15,13 +15,13 @@ services:
       - redisinsight:/db
   # Production mode, uses Cognito for auth
   feature-creep-server:
-    build: ./server
+    image: ghcr.io/niekcandaele/featurecreep-server:latest
     ports:
       - 127.0.0.1:4000:4000
     environment: 
       - REDIS_HOST=redis
   feature-creep-client:
-    build: ./client
+    image: ghcr.io/niekcandaele/featurecreep-client:latest
     ports:
       - 127.0.0.1:3000:5000
 volumes:
