@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import styled from 'styled';
 import { useNavigate } from 'react-router-dom';
+import { Color } from 'styled/types';
 
-const Container = styled.div<{ isDisabled: boolean, isLink: boolean }>`
+const Container = styled.div<{ isDisabled: boolean, isLink: boolean, color: Color }>`
   width: fit-content;
   padding: 1rem 2rem;
   display: flex;
@@ -14,7 +15,7 @@ const Container = styled.div<{ isDisabled: boolean, isLink: boolean }>`
   transition: border-color .150s ease-in-out;
   cursor: ${({ isLink }) => isLink ? 'pointer' : 'inherit'};
   &:hover {
-    border-color: ${({ isDisabled, theme }) => isDisabled ? null : theme.colors.primary};
+    border-color: ${({ color, isDisabled, theme }): string => isDisabled ? '' : theme.colors[color]};
   }
   a{
     display: inline;
@@ -24,19 +25,20 @@ const Container = styled.div<{ isDisabled: boolean, isLink: boolean }>`
 export interface CardProps {
   to?: string;
   disabled?: boolean;
+  color?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'white'
 }
 
-export const Card: FC<CardProps> = ({ to, disabled = false, children }) => {
+export const Card: FC<CardProps> = ({ to, disabled = false, color = 'primary', children }) => {
   const navigate = useNavigate();
   if (to) {
     return (
-      <Container data-href={to} isDisabled={disabled} isLink onClick={() => navigate(to)} role="link">
+      <Container color={color} data-href={to} isDisabled={disabled} isLink onClick={() => navigate(to)} role="link">
         {children}
       </Container>
     );
   }
   return (
-    <Container isDisabled={disabled} isLink={false}>
+    <Container color={color} isDisabled={disabled} isLink={false}>
       {children}
     </Container>
   );
