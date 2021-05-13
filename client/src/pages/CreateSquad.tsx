@@ -1,4 +1,5 @@
 import { FC, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { Button, SubPage, TextField } from 'components';
 import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
 import { gql, useMutation } from '@apollo/client';
@@ -37,13 +38,12 @@ export const CreateSquad: FC = () => {
   const { control, handleSubmit, formState, reset } = useForm<FormFields>({ resolver, defaultValues: { squadName: '' } });
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const [createSquad, { error, loading, data }] = useMutation<Squad, { squad: CreateSquadMutationType }>(CREATE_SQUAD);
+  const [createSquad, { error, loading, data }] = useMutation<{ createSquad: Squad }, { squad: CreateSquadMutationType }>(CREATE_SQUAD);
 
   useEffect(() => {
     if (!loading && data) {
       enqueueSnackbar('Squad successfully created!', { variant: 'success' });
-      // check this
-      navigate(`/squad/${data.id}`);
+      navigate(`/squad/${data.createSquad.id}`);
     }
   }, [data]);
 
@@ -57,25 +57,30 @@ export const CreateSquad: FC = () => {
   }
 
   return (
-    <SubPage title="Create a new squad">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* FUN TODO: Generate a custom placeholder */}
-        <TextField
-          control={control}
-          error={formState.errors.squadName}
-          labelText="Squad name"
-          name="squadName"
-          placeholder="Gryffindor"
-        />
-        <Button
-          isLoading={loading}
-          onClick={() => { /* dummy */ }}
-          size="large"
-          text="Create squad"
-          type="submit"
-          variant="default"
-        />
-      </form>
-    </SubPage>
+    <>
+      <Helmet>
+        <title>Feature Creep | Create Squad</title>
+      </Helmet>
+      <SubPage title="Create a new squad">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* FUN TODO: Generate a custom placeholder */}
+          <TextField
+            control={control}
+            error={formState.errors.squadName}
+            labelText="Squad name"
+            name="squadName"
+            placeholder="Gryffindor"
+          />
+          <Button
+            isLoading={loading}
+            onClick={() => { /* dummy */ }}
+            size="large"
+            text="Create squad"
+            type="submit"
+            variant="default"
+          />
+        </form>
+      </SubPage>
+    </>
   );
 };
