@@ -46,6 +46,8 @@ export type Mutation = {
   addQuestion?: Maybe<Question>;
   answerQuestion?: Maybe<Answer>;
   endSession?: Maybe<Session>;
+  /** Sets a squad to "open" for 30 minutes, which means anyone with a link can join the squad */
+  setSquadOpen?: Maybe<Squad>;
 };
 
 
@@ -88,6 +90,11 @@ export type MutationEndSessionArgs = {
   input?: Maybe<EndSession>;
 };
 
+
+export type MutationSetSquadOpenArgs = {
+  input?: Maybe<SetOpenStatusInput>;
+};
+
 /** A person */
 export type Person = {
   id?: Maybe<Scalars['String']>;
@@ -100,6 +107,8 @@ export type Query = {
   ping?: Maybe<Scalars['String']>;
   person?: Maybe<Person>;
   squads?: Maybe<Array<Maybe<Squad>>>;
+  squad?: Maybe<Squad>;
+  session?: Maybe<Session>;
 };
 
 
@@ -107,9 +116,20 @@ export type QuerySquadsArgs = {
   filter?: Maybe<GetSquadInput>;
 };
 
+
+export type QuerySquadArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QuerySessionArgs = {
+  id: Scalars['String'];
+};
+
 export type Question = {
   id?: Maybe<Scalars['String']>;
   question?: Maybe<Scalars['String']>;
+  total?: Maybe<Scalars['Int']>;
   answers?: Maybe<Array<Maybe<Answer>>>;
 };
 
@@ -123,7 +143,11 @@ export type Session = {
   id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   active?: Maybe<Scalars['Boolean']>;
-  questions?: Maybe<Question>;
+  questions?: Maybe<Array<Maybe<Question>>>;
+};
+
+export type SetOpenStatusInput = {
+  squadId: Scalars['String'];
 };
 
 /** A squad */
@@ -131,12 +155,15 @@ export type Squad = {
   id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   members?: Maybe<Array<Maybe<Scalars['String']>>>;
+  open?: Maybe<Scalars['Boolean']>;
+  activeSession?: Maybe<Session>;
+  sessions?: Maybe<Array<Maybe<Session>>>;
 };
 
-export const enum SquadFilterType {
+export enum SquadFilterType {
   Memberof = 'MEMBEROF',
   All = 'ALL'
-};
+}
 
 export type AddQuestion = {
   sessionId: Scalars['String'];
@@ -159,13 +186,12 @@ export type EndSession = {
 };
 
 
-      export interface PossibleTypesResultData {
-        possibleTypes: {
-          [key: string]: string[]
-        }
-      }
-      const result: PossibleTypesResultData = {
+export interface PossibleTypesResultData {
+  possibleTypes: {
+    [key: string]: string[]
+  }
+}
+const result: PossibleTypesResultData = {
   "possibleTypes": {}
 };
-      export default result;
-    
+export default result;

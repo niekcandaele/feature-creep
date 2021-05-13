@@ -11,7 +11,7 @@ generates:
       namingConvention:
         transformUnderscore: true # Disable default behavior that preserve underscores.
       skipTypename: true # Remove the __typename from the generated types, only add if specified.
-      constEnums: true # Will prefix every generated with const.
+      constEnums: false # Will prefix every generated with const.
   ./graphql.schema.json:
     plugins:
       - "introspection"
