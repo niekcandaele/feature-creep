@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
-import { Squad, GetSquadInput } from 'generated';
+import { Squad, } from 'generated';
 import { Spinner, SubPage, Button } from 'components';
 import styled from 'styled';
+
+import pensive from 'images/pensive.png';
 
 const Container = styled.div`
   display: flex;
@@ -31,20 +33,29 @@ const ContainerLoad = styled.div`
 `;
 
 const GET_SQUAD_STATUS = gql`
-query GET_SQUAD_STATUS($id: GetSquadInput) {
-  squads(id: $id){
+query GET_SQUAD_STATUS($id: String!) {
+  squad(id: $id){
     name,
+    open,
     members
   }
 }
 `;
 
 export const JoinSquad: FC = () => {
-  const open = true;
-  const loading = true;
-
   const { id } = useParams();
-  //const { loading, data } = useQuery<{ squad: Squad }, GetSquadInput>(GET_SQUAD_STATUS, { variables: { filter: { ALL } } });
+  const [open, setOpen] = useState(false);
+  const { loading, data, error } = useQuery<{ squad: Squad }>(GET_SQUAD_STATUS, { variables: { id } });
+
+  useEffect(() => {
+    if (data) {
+      // join squad
+      const { squad } = data;
+      if (squad.open) {
+        setOpen(true);
+      }
+    }
+  }, [data]);
 
   if (loading) {
     return (
@@ -73,11 +84,11 @@ export const JoinSquad: FC = () => {
   }
 
   return (
-    <SubPage title="Create a squad">
+    <SubPage title="Join a squad">
       <Container>
-        <h2>😓</h2>
-        <h3>link expired</h3>
-        <p>contact your squad leader.</p>
+        <img alt="pensive face" src={pensive} />
+        <h3>Link expired</h3>
+        <p>Contact your squad leader.</p>
       </Container>
     </SubPage>
   );
