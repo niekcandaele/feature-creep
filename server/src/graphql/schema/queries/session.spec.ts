@@ -4,7 +4,8 @@ import { testClient } from '../../../test/testClient.spec';
 import { setUpTestData, wait } from '../../../test/util';
 
 describe('QUERY session', () => {
-  it('Returns a bunch of data', async () => {
+  it('Returns a bunch of data', async function () {
+    this.timeout(10000);
     const { sessions } = await setUpTestData();
     console.log('created test data');
 
