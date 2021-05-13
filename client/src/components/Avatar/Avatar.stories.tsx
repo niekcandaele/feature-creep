@@ -1,5 +1,11 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { Avatar, AvatarProps } from 'components';
+import styled from 'styled';
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr
+`;
 
 export default {
   title: 'Components/Avatar',
@@ -9,19 +15,12 @@ export default {
   }
 } as Meta;
 
-const Template: Story<AvatarProps> = (args) => <Avatar{...args} />;
-
-export const Small = Template.bind({});
-Small.args = {
-  size: 'small',
-};
-
-export const Medium = Template.bind({});
-Medium.args = {
-  size: 'medium',
-};
-
-export const Large = Template.bind({});
-Large.args = {
-  size: 'large',
+export const Sizes: Story<AvatarProps> = (args) => {
+  return (
+    <Grid>
+      <Avatar{...args} size="small" />
+      <Avatar{...args} size="medium" />
+      <Avatar{...args} size="large" />
+    </Grid>
+  );
 };

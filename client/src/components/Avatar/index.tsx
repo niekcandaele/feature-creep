@@ -1,51 +1,47 @@
 import { FC } from 'react';
 import styled from 'styled';
+import { Size } from 'styled/types';
 
 const Container = styled.div<{
-  // size: 'small' | 'medium' | 'large',
   src: string;
   loading: boolean;
+  size: Size
 }>`
   border-radius: 50%;
   background-image: ${({ src }): string => `url(${src})`};
   background-size: cover;
-`;
 
-const SmallContainer = styled(Container)`
-    width: 30px;
-    height: 30px;
-`;
-const MediumContainer = styled(Container)`
-    width: 60px;
-    height: 60px;
-`;
-const LargeContainer = styled(Container)`
-    width: 100px;
-    height: 100px;
+  ${({ size }) => {
+    switch (size) {
+      case 'small':
+        return `
+        width: 30px;
+        height: 30px;
+        `;
+      case 'medium':
+        return `
+        width: 45px;
+        height: 45px;
+        `;
+      case 'large':
+        return `
+          width: 100px;
+          height: 100px;
+          `;
+    }
+  }}
 `;
 
 export interface AvatarProps {
-  size: 'small' | 'medium' | 'large';
+  size: Size;
   alt?: string;
   loading?: boolean;
   src: string;
 }
 
-export const Avatar: FC<AvatarProps> = ({ size, src, loading = false, alt = 'avatar' }) => {
+export const Avatar: FC<AvatarProps> = ({ size, src, loading = false, alt = 'avatar', children }) => {
   // TODO: implement skeleton loading
-
-  switch (size) {
-    case 'small':
-      return (
-        <SmallContainer loading={loading} role="img" src={src} />
-      );
-    case 'medium':
-      return (
-        <MediumContainer loading={loading} role="img" src={src} />
-      );
-    case 'large':
-      return (
-        <LargeContainer loading={loading} role="img" src={src} />
-      );
-  };
+  return (
+    <Container loading={loading} role="img" size={size} src={src}>{children}</Container>
+  );
 };
