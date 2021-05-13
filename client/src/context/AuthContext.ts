@@ -35,6 +35,10 @@ export function authProvider(): IAuthContext {
     return;
   }
   async function isAuthenticated(): Promise<boolean> {
+    if (process.env.REACT_APP_SKIP_COGNITO === 'true') {
+      return true;
+    }
+
     // Check if user has a token.
     const token = localStorage.getItem('accessToken');
     if (!token) { return false; }
