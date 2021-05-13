@@ -1,4 +1,4 @@
-import { StrictMode, FC, useState, useMemo, useEffect } from 'react';
+import { StrictMode, FC, useState, useMemo } from 'react';
 import { Router } from './router';
 import { theme } from 'styled/theme';
 import { SnackbarProvider } from 'notistack';
@@ -10,13 +10,13 @@ import { AuthContext, authProvider } from 'context/AuthContext';
 import { UserContext, UserData } from 'context/UserContext';
 import { getSnackProps } from 'helpers/getSnackProps';
 
+// Custom scrollbar
+import 'simplebar/dist/simplebar.min.css';
+
 export const App: FC = () => {
   // const [isLoading, setLoading] = useState<boolean>(true);
   const [userData, setUserData] = useState<Partial<UserData>>({});
   const userDataProvider = useMemo(() => ({ userData, setUserData }), [userData, setUserData]);
-
-  useEffect(() => {
-  }, []);
 
   /*
   if (isLoading) {

@@ -1,14 +1,17 @@
-import { FC, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import styled from 'styled';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Header, Loading } from 'components';
-import { useUser } from 'hooks';
 import { gql, useQuery } from '@apollo/client';
+import { Header, Loading } from 'components';
+import { motion } from 'framer-motion';
 import { Person } from 'generated';
 import { setRedirect } from 'helpers';
+import { useUser } from 'hooks';
+import { FC, useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled';
 
-const Container = styled.div`
+/* custom scrollbar */
+import SimpleBar from 'simplebar-react';
+
+const Container = styled(motion.div)`
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -21,7 +24,7 @@ const ContentContainer = styled(motion.div)`
   width: 100%;
   height: calc(100vh - 100px);
   opacity: 0;
-  overflow-y: auto;
+  overflow-y: hidden;
   margin-bottom: 75px;
   border-bottom: 1px solid ${({ theme }): string => theme.colors.gray};
 `;
@@ -64,15 +67,21 @@ export const Frame: FC = () => {
   }
 
   return (
-    <Container>
+    <Container
+      animate={{ opacity: 1 }}
+      exit={{ opacity: .8 }}
+      initial={{ opacity: .8 }}
+    >
       <Header />
       <ContentContainer
         animate={{ opacity: 1 }}
         transition={{ delay: .3, duration: .5 }}
       >
-        <Page>
-          <Outlet />
-        </Page>
+        <SimpleBar style={{ maxHeight: '80vh' }}>
+          <Page>
+            <Outlet />
+          </Page>
+        </SimpleBar>
       </ContentContainer>
     </Container>
   );
