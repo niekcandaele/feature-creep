@@ -1,17 +1,18 @@
 import { FC, MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 import { Spinner } from 'components';
-import { Text, Small, Medium, Large } from './style';
+import { Text, Container } from './style';
+import { Size, Color } from 'styled/types';
 
 export interface ButtonProps {
   disabled?: boolean;
   onClick: (event: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => any;
   isLoading?: boolean;
   icon?: ReactNode;
-  size?: 'small' | 'medium' | 'large';
+  size?: Size;
   type?: 'submit' | 'reset' | 'button';
   variant?: 'default' | 'outline';
+  color?: Color;
   text: string;
-  white?: boolean;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -21,69 +22,29 @@ export const Button: FC<ButtonProps> = ({
   isLoading = false,
   text,
   disabled = false,
-  white = false,
+  color = 'primary',
   variant = 'default',
   onClick,
-}) => {
-  function content(): JSX.Element {
-    return (
-      <>
-        { isLoading ? <Spinner /> : icon}
-        <Text
-          icon={!!icon}
-          isLoading={isLoading}
-          onClick={disabled ? undefined : onClick}
-          outline={variant === 'outline'}
-          white={white}
-        >
-          {text}
-        </Text>
-      </>
-    );
-  }
-
-  switch (size) {
-    case 'small':
-      return (
-        <Small
-          disabled={disabled}
-          icon={!!icon}
-          isLoading={isLoading}
-          onClick={disabled ? undefined : onClick}
-          outline={variant === 'outline'}
-          type={type}
-          white={white}
-        >
-          {content()}
-        </Small>
-      );
-    case 'medium':
-      return (
-        <Medium
-          disabled={disabled}
-          icon={!!icon}
-          isLoading={isLoading}
-          onClick={disabled ? undefined : onClick}
-          outline={variant === 'outline'}
-          type={type}
-          white={white}
-        >
-          {content()}
-        </Medium>
-      );
-    case 'large':
-      return (
-        <Large
-          disabled={disabled}
-          icon={!!icon}
-          isLoading={isLoading}
-          onClick={disabled ? undefined : onClick}
-          outline={variant === 'outline'}
-          type={type}
-          white={white}
-        >
-          {content()}
-        </Large>
-      );
-  };
-};
+}) => (
+  <Container
+    color={color}
+    disabled={disabled}
+    icon={!!icon}
+    isLoading={isLoading}
+    onClick={disabled ? undefined : onClick}
+    outline={variant === 'outline' ? true : false}
+    size={size}
+    type={type}
+  >
+    { isLoading ? <Spinner /> : icon}
+    <Text
+      color={color}
+      icon={!!icon}
+      isLoading={isLoading}
+      onClick={disabled ? undefined : onClick}
+      outline={variant === 'outline'}
+    >
+      {text}
+    </Text>
+  </Container>
+);
