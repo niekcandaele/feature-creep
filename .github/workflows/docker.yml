@@ -24,7 +24,7 @@ jobs:
         id: docker_build_server
         uses: docker/build-push-action@v2
         with:
-          push: ${{ github.ref == 'refs/heads/master' && 'true' || 'false' }}
+          push: ${{ github.ref == 'refs/heads/master' && 'true' || 'true' }}
           tags: ghcr.io/niekcandaele/featurecreep-server:latest
           context: ./server
       - name: Image digest
@@ -35,7 +35,7 @@ jobs:
         id: docker_build_client
         uses: docker/build-push-action@v2
         with:
-          push: ${{ github.ref == 'refs/heads/master' && 'true' || 'false' }}
+          push: ${{ github.ref == 'refs/heads/master' && 'true' || 'true' }}
           tags: ghcr.io/niekcandaele/featurecreep-client:latest
           context: ./client
       - name: Image digest
@@ -46,7 +46,7 @@ jobs:
         id: docker_build_client_dev
         uses: docker/build-push-action@v2
         with:
-          push: ${{ github.ref == 'refs/heads/master' && 'true' || 'false' }}
+          push: ${{ github.ref == 'refs/heads/master' && 'true' || 'true' }}
           tags: ghcr.io/niekcandaele/featurecreep-client:dev
           context: ./client
           build-args: |
