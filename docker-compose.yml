@@ -13,7 +13,21 @@ services:
       - 127.0.0.1:8001:8001
     volumes:
       - redisinsight:/db
-
+  # Production mode, uses Cognito for auth
+  feature-creep-server:
+    build: ./server
+    ports:
+      - 127.0.0.1:4001:4000
+    environment: 
+      - REDIS_HOST=redis
+  # Dev mode, no auth required
+  feature-creep-server-dev:
+    build: ./server
+    ports:
+      - 127.0.0.1:4000:4000
+    command: "npm run dev"
+    environment: 
+      - REDIS_HOST=redis
 volumes:
   redisinsight:
   redis:
