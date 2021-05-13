@@ -25,8 +25,12 @@ export const createSquad = {
     },
     context: IContext
   ) => {
-    return Squad.create({
+    const squad = await Squad.create({
       name: args.input.name,
     });
+    squad.open = true;
+    await squad.addMember(context.user);
+    squad.open = false;
+    return squad;
   },
 };
