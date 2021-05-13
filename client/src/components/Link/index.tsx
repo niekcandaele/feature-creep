@@ -1,13 +1,15 @@
 import { FC } from 'react';
-import styled from 'styled';
-import { Link as ReactRouterLink } from 'react-router-dom';
 import { AiOutlineArrowRight } from 'react-icons/ai';
+import { Link as ReactRouterLink } from 'react-router-dom';
+import styled from 'styled';
+
 const Container = styled.div <{ arrow: boolean }>`
   a {
     display: inline-flex;
     width: fit-content;
     align-items: center;
     justify-content: center;
+    transition: all .2s ease-in-out;
     &:hover {
       color: white;
       span {
@@ -33,7 +35,7 @@ export const Link: FC<LinkProps> = ({ className, to, arrow = false, external = f
       <Container arrow={arrow} className={className}>
         <a href={to} rel="noreferrer noopener" target="_blank" >
           {children}
-          {arrow ? <AiOutlineArrowRight size={24} /> : ''}
+          {arrow ? <AiOutlineArrowRight size={18} /> : ''}
         </a>
       </Container>
     );
@@ -43,7 +45,7 @@ export const Link: FC<LinkProps> = ({ className, to, arrow = false, external = f
     <Container arrow={arrow}>
       <ReactRouterLink to={to}>
         {children}
-        {arrow ? <AiOutlineArrowRight size={24} /> : ''}
+        {arrow ? <AiOutlineArrowRight size={18} /> : ''}
       </ReactRouterLink>
     </Container>
   );
