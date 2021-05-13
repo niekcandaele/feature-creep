@@ -25,7 +25,9 @@ async function clearRegistrations() {
 let Gears: GearsClient;
 
 describe('Redis Gears', () => {
-  beforeEach(async () => {
+  beforeEach(async function () {
+    // Gears client initialization needs to download pip dependencies, so can take a while
+    this.timeout(15000);
     await clearRegistrations();
     Gears = new GearsClient();
     await Gears.initialize();
