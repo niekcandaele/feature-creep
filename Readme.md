@@ -6,7 +6,27 @@
 
 ## Installation
 
+### Docker
+
+There are 2 Docker compose files available:
+
+- docker-compose.yml
+
+Production mode, authentication will happen via JWTs provided by AWS Cognito. See the folder `infra/auth` 
+for details on how its set up
+
+`docker-compose up -d`
+
+- docker-compose-dev.yml
+
+Development mode, any calls to the API are automatically authenticated
+This does mean only 1 user can exist in the database at any time, it might get lonely in your solo squad :(
+
+`docker-compose -f docker-compose-dev.yml up -d`
+
 ### Server
+
+We developed and tested on Linux systems, YMMV on other operating systems...
 
 ```sh
 docker-compose up -d 
@@ -14,20 +34,67 @@ cd server
 npm ci # Use "ci" so it respects the lockfile
 
 # When running "npm start" you will be running in production mode
-# This means, authentication will happen via JWTs provded by AWS Cognito
-# See the folder infra/auth for details on how its set up
 npm start
 
 # When running "npm run dev" you will be running in development mode
-# Any calls to the API are automatically authenticated
-# This does mean only 1 user can exist in the database at any time
-# It might get lonely in your solo squad :(
 npm run dev
 ```
 
+
 ### Client
 
-// TODO: Emiel
+We developed and tested on Linux systems, YMMV on other operating systems...
+
+
+```sh
+cd client
+npm ci # Use "ci" so it respects the lockfile
+
+# Some weird dependency issue... // TODO: Emiel explain better? :D
+export SKIP_PREFLIGHT_CHECK=true
+
+# Set the location of the GraphQL API (aka the server folder)
+export REACT_APP_APOLLO_HTTP_URI="http://localhost:4000"
+# The hostname where the app will run
+export REACT_APP_HOSTNAME="http://localhost:3000"
+
+npm start
+
+```
+
+#### Generating/updating GraphQL types
+
+We use Typescript extensively and since GraphQL APIs are strongly typed, we can take advantage of this in the frontend. These generated types are committed to the repo. It's not necessary to run this unless changes happened in the API.
+
+```sh
+npm run graphql:generate
+
+```
+
+#### Storybook
+
+Storybook helps developing components in isolation
+
+[Github Pages](https://niekcandaele.github.io/feature-creep)
+
+```sh
+npm run storybook
+# Visit http://localhost:6006/
+```
+
+### GraphQL Playground
+
+Once the server is started, you can find a GraphQL playground at `http://localhost:4000/`.
+
+When in development mode, you do not need to provide any authentication. Go crazy!
+
+In production mode, you must first obtain a valid JWT. Visit the Cognito login page and grab the tokens from the redirect URL. On the playground page, at the bottom you'll see a tab "HTTP Headers".
+
+```json
+{
+  "Authorization": "Bearer <jwt>"
+}
+```
 
 ### Features
 
