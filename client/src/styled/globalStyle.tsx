@@ -62,7 +62,6 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     user-select: none;
     padding: 0;
     box-sizing: border-box;
-    letter-spacing: 1px;
     line-height: 1.5;
     color: ${({ theme }) => theme.colors.gray};
   }
