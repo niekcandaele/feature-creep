@@ -18,7 +18,6 @@ COPY . .
 
 ENV SKIP_PREFLIGHT_CHECK=true
 ENV REACT_APP_APOLLO_HTTP_URI="http://localhost:4000"
-ENV REACT_APP_APOLLO_WS_URI="ws://localhost:4000"
 ENV REACT_APP_HOSTNAME="http://localhost:3000"
 
 RUN npm run build
