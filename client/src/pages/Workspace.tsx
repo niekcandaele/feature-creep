@@ -1,11 +1,12 @@
+import { gql, useQuery } from '@apollo/client';
 import { FC } from 'react';
 import styled from 'styled';
-import { SquadCards } from 'views/workspace';
+import { SquadCards, SquadList } from 'views/workspace';
 
 const Container = styled.div`
 
   h1 {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
   }
 `;
 
@@ -14,6 +15,7 @@ export const Workspace: FC = () => {
     <Container>
       <h1>Workspace</h1>
       <SquadCards />
+      <SquadList />
     </Container>
   );
 };
