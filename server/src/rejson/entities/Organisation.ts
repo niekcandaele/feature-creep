@@ -1,6 +1,7 @@
 import { BaseEntity } from './BaseEntity';
 
 interface OrganisationOpts {
+  id: string;
   name: string;
 }
 
@@ -11,7 +12,7 @@ export class Organisation extends BaseEntity {
   public name: string;
 
   constructor(opts: OrganisationOpts) {
-    super();
+    super(opts);
     this.name = opts.name;
   }
 
@@ -19,4 +20,6 @@ export class Organisation extends BaseEntity {
   // public methods
   //------------------------
   public async edit(): Promise<void> {}
+
+  async init() {}
 }

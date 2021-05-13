@@ -6,18 +6,19 @@ import { getDb } from '../db';
 /**
  * Base Modal for all models.
  */
-export class BaseEntity {
+export abstract class BaseEntity {
+  public isReady: Promise<unknown>;
+
+  constructor(opts: { id: string }) {
+    this.id = opts.id;
+    this.isReady = new Promise((resolve, reject) => {
+      this.initialize().then(resolve).catch(reject);
+    });
+  }
   //------------------------
   // Properties
   //------------------------
 
-  /**
-   * Typescript warns that property 'Id' could be undefined.
-   * But since an Id will be provided by parameters, or a new will be generated.
-   * We can safely disable this warning.
-   */
-
-  // @ts-expect-error
   public id: string;
 
   //------------------------
@@ -53,8 +54,8 @@ export class BaseEntity {
       return null;
     }
 
-    const instance = new this(JSON.parse(obj));
-    instance.id = id;
+    const instance = new this({ ...JSON.parse(obj), id });
+    await instance.isReady;
     return instance;
   }
 
@@ -71,8 +72,7 @@ export class BaseEntity {
         `${this.name}:${opts.id}`
       );
       if (obj) {
-        const instance = new this(JSON.parse(obj));
-        instance.id = opts.id;
+        const instance = new this({ ...JSON.parse(obj), id: opts.id });
         return instance;
       }
     } else {
@@ -85,8 +85,8 @@ export class BaseEntity {
       '.',
       JSON.stringify({ squads: [], ...opts })
     );
-    const instance = new this(opts);
-    instance.id = opts.id;
+    const instance = new this({ ...opts, id: opts.id });
+    await instance.isReady;
     return instance;
   }
 
@@ -104,7 +104,24 @@ export class BaseEntity {
     this: new (...args: any[]) => T
   ): Promise<T[]> {
     const obj = await getDb().scan('', 'MATCH', `${this.name}:*`);
-    const instances = obj[1].map((_: unknown) => new this(_));
-    return instances;
+    const data = obj[1].map((_) => getOne(_));
+    return (await Promise.all(data)).map((_) => new this(_));
   }
+
+  protected async initialize() {
+    await this.init();
+  }
+
+  abstract init<T extends BaseEntity>(): Promise<void>;
+}
+
+// TODO:
+// Its here because I had a bunch of trouble figuring out how to call a static method from another static method
+// Theres probably a better to do this
+async function getOne(key: string) {
+  const obj = await getDb().send_command(JsonCommands.Get, key);
+  if (!obj) {
+    return null;
+  }
+  return JSON.parse(obj);
 }

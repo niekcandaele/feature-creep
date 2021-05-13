@@ -4,6 +4,7 @@ import { Redis } from 'ioredis';
 import { createPerson } from '../../test/util';
 import { clearDb, getDb } from '../db';
 import { Person } from './Person';
+import { Session } from './Session';
 import { Squad } from './Squad';
 
 describe('Squad', () => {
@@ -32,13 +33,15 @@ describe('Squad', () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const result = await Squad.findOne(squad.id);
 
+    if (!result) throw new Error('boo query');
     expect(squad).to.be.instanceOf(Squad);
-    expect(result).to.be.eql(squad);
+    expect(result.id).to.be.eql(squad.id);
   });
 
   it('Should add a person to a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const person = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(person);
 
     const result = await client.send_command(
@@ -63,6 +66,7 @@ describe('Squad', () => {
   it('Should not add the same person twice to the same squad.', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const person = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(person);
     await squad.addMember(person);
 
@@ -95,6 +99,7 @@ describe('Squad', () => {
   it('Should delete a member from a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const person = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(person);
 
     let result = await client.send_command(
@@ -127,6 +132,7 @@ describe('Squad', () => {
   it('Should get a list of members of a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const harry = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(harry);
 
     const ron = await createPerson('ron');
@@ -143,6 +149,7 @@ describe('Squad', () => {
   it('Should delete a member from a squad', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const harry = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(harry);
 
     const ron = await createPerson('ron');
@@ -170,6 +177,7 @@ describe('Squad', () => {
   it('Should handle removing a member from a squad that is not part of that squad correctly', async () => {
     const squad = await Squad.create({ name: 'gryffindor' });
     const harry = await createPerson('harry');
+    await squad.setOpen();
     await squad.addMember(harry);
 
     const ron = await createPerson('ron');
@@ -196,6 +204,29 @@ describe('Squad', () => {
     expect(res).to.have.length(2);
     for (const x of res) {
       expect(x).to.be.instanceOf(Squad);
+      expect(res.find((_) => _.name === 'gryffindor')).to.not.be.undefined;
+      expect(res.find((_) => _.name === 'slytherin')).to.not.be.undefined;
     }
+  });
+
+  it('setOpen', async () => {
+    const squad = await Squad.create({ name: 'gryffindor' });
+
+    const redisOpenBefore = await getDb().get(`Squad:${squad.id}:open`);
+    expect(redisOpenBefore).to.be.null;
+    await squad.setOpen();
+
+    const redisOpenAfter = await getDb().get(`Squad:${squad.id}:open`);
+    expect(redisOpenAfter).to.be.equal('true');
+  });
+
+  it('activeSession', async () => {
+    const squad = await Squad.create({ name: 'gryffindor' });
+    const session = await Session.create({ squad });
+    expect(session.active).to.be.true;
+
+    const activeSession = await squad.getActiveSession();
+    if (!activeSession) throw new Error('activeSession undefined');
+    expect(activeSession.active).to.be.true;
   });
 });

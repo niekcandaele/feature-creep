@@ -1,4 +1,11 @@
-import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import {
+  GraphQLBoolean,
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
+
+import { sessionType } from './session';
 
 export const squadType = new GraphQLObjectType({
   name: 'Squad',
@@ -12,6 +19,15 @@ export const squadType = new GraphQLObjectType({
     },
     members: {
       type: new GraphQLList(GraphQLString),
+    },
+    open: {
+      type: GraphQLBoolean,
+    },
+    activeSession: {
+      type: sessionType,
+    },
+    sessions: {
+      type: new GraphQLList(sessionType),
     },
   },
 });

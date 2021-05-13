@@ -1,5 +1,6 @@
 import {
   GraphQLBoolean,
+  GraphQLInt,
   GraphQLList,
   GraphQLObjectType,
   GraphQLString,
@@ -31,6 +32,9 @@ export const questionType = new GraphQLObjectType({
     question: {
       type: GraphQLString,
     },
+    total: {
+      type: GraphQLInt,
+    },
     answers: {
       type: GraphQLList(answerType),
     },
@@ -51,7 +55,7 @@ export const sessionType = new GraphQLObjectType({
       type: GraphQLBoolean,
     },
     questions: {
-      type: questionType,
+      type: new GraphQLList(questionType),
     },
   },
 });
