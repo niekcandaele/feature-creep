@@ -22,6 +22,7 @@ export const Snack: Story = () => {
     <Wrapper>
       <button onClick={() => enqueueSnackbar('Success message!', { variant: 'success' })}>Success</button>
       <button onClick={() => enqueueSnackbar('Info message!', { variant: 'info' })}>Info</button>
+      <button onClick={() => enqueueSnackbar('Warning message!', { variant: 'warning' })}>Error</button>
       <button onClick={() => enqueueSnackbar('Error message!', { variant: 'error' })}>Error</button>
     </Wrapper>
   );
