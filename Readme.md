@@ -6,6 +6,7 @@
 
 ## Installation
 
+When evaluating this application and you do not require a production-grade setup, we highly recommend using the Docker compose installation method in development mode. Why development mode? Because it allows you to skip deploying the authentication stack to AWS :). 
 ### Docker
 
 There are 2 Docker compose files available:
@@ -82,9 +83,22 @@ npm run storybook
 # Visit http://localhost:6006/
 ```
 
-### GraphQL Playground
+### Authentication stack
 
-Once the server is started, you can find a GraphQL playground at `http://localhost:4000/`.
+The authentication stack is a [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) deployment of a Cognito user pool. We used Cognito because it provides us with instantly good authentication, allowing us to move faster wrt creating features.
+
+```sh
+# First you must install AWS credentials
+aws configure
+
+cd infra/auth
+npm i
+npm run cdk deploy
+```
+
+## GraphQL Playground
+
+Once the server is started, you can find the GraphQL playground at `http://localhost:4000/`.
 
 When in development mode, you do not need to provide any authentication. Go crazy!
 
@@ -96,7 +110,7 @@ In production mode, you must first obtain a valid JWT. Visit the Cognito login p
 }
 ```
 
-### Features
+## Features
 
 - Uses RedisJSON as main datastore
 - Uses Redis Streams to trigger BG processing
@@ -110,6 +124,6 @@ In production mode, you must first obtain a valid JWT. Visit the Cognito login p
 ![example Discord output](./docs/img/discord_report.png)
 
 
-### Squad health checks
+## Squad health checks
 
 [Health check model by Spotify](https://engineering.atspotify.com/2014/09/16/squad-health-check-model/)
