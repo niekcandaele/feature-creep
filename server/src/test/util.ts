@@ -69,10 +69,10 @@ export async function setUpTestData(amountOfSessions = 10) {
     sessions.push(session);
   }
 
-  return sessions;
+  return { sessions, squad, persons: { harry, ron, draco } };
 }
 
-export async function wait(seconds = 0.1) {
+export async function wait(seconds = 0.5) {
   return new Promise((resolve) => {
     setTimeout(resolve, seconds * 1000);
   });
