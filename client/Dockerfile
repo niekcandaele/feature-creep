@@ -20,6 +20,8 @@ ENV SKIP_PREFLIGHT_CHECK=true
 ENV REACT_APP_APOLLO_HTTP_URI="http://localhost:4000"
 ENV REACT_APP_HOSTNAME="http://localhost:3000"
 
+ARG REACT_APP_SKIP_COGNITO=false
+
 RUN npm run build
 
 FROM node:14-alpine as runtime

@@ -1,5 +1,5 @@
-import { createContext } from 'react';
 import { setRedirect } from 'helpers';
+import { createContext } from 'react';
 
 interface IAuthContext {
   signIn: (redirect: string) => void;
@@ -13,6 +13,12 @@ export const AuthContext = createContext<IAuthContext>(authProvider());
 export function authProvider(): IAuthContext {
   function signIn(redirect: string) {
     setRedirect(redirect);
+
+    if (process.env.REACT_APP_SKIP_COGNITO === 'true') {
+      window.location.href = redirect;
+      return;
+    }
+
     window.location.href = `https://feature-creep.auth.eu-west-1.amazoncognito.com/login?client_id=5mdqrbv4hchnh0v7dhh7isf2lb&response_type=token&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=${process.env.REACT_APP_HOSTNAME}/redirect`;
     return;
   }
