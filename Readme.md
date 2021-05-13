@@ -51,7 +51,8 @@ We developed and tested on Linux systems, YMMV on other operating systems...
 cd client
 npm ci # Use "ci" so it respects the lockfile
 
-# Some weird dependency issue... // TODO: Emiel explain better? :D
+# You might need this if you are using npm v7+
+# It's a weird dependency issue
 export SKIP_PREFLIGHT_CHECK=true
 
 # Set the location of the GraphQL API (aka the server folder)
