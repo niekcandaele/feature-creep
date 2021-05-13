@@ -3,6 +3,12 @@ export { AuthenticatedRoute } from './AuthenticatedRoute';
 export { Avatar } from './Avatar';
 export type { AvatarProps } from './Avatar';
 
+export { AvatarGroup } from './AvatarGroup';
+export type { AvatarGroupProps } from './AvatarGroup';
+
+export { Alert } from './Alert';
+export type { AlertProps } from './Alert';
+
 export { Card } from './Card';
 export type { CardProps } from './Card';
 
