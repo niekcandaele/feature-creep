@@ -59,7 +59,7 @@ export class Session extends BaseEntity {
 
   async afterCreate() {
     for (const question of defaultQuestions) {
-      this.addQuestion(question.q, question.descGood, question.descBad);
+      this.addQuestion(question.question, question.descriptionGood, question.descriptionBad);
     }
     return this;
   }

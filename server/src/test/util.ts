@@ -46,7 +46,7 @@ export async function setUpTestData(amountOfSessions = 10) {
   for (let i = 0; i < amountOfSessions; i++) {
     const session = await Session.create({ squad });
     for (const q of defaultQuestions) {
-      const question = await session.addQuestion(q.q, q.descGood, q.descBad);
+      const question = await session.addQuestion(q.question, q.descriptionGood, q.descriptionBad);
       for (const person of [harry, ron, draco]) {
         await session.answerQuestion(
           question.id,
