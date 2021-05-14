@@ -26,6 +26,10 @@ describe('Session', () => {
 
     expect(session.date).to.be.lessThanOrEqual(new Date());
     expect(session.questions).to.have.length(8);
+    for (const q of session.questions) {
+      expect(q.descriptionBad).to.be.ok;
+      expect(q.descriptionGood).to.be.ok;
+    }
   });
   it('Can add a question to the session', async () => {
     const squad = await Squad.create({ name: 'Gryffindor' });
