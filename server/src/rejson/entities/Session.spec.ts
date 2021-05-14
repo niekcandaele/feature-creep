@@ -58,9 +58,7 @@ describe('Session', () => {
     const createdQuestion = await created.addQuestion(
       'What is the answer to life, the universe and everything?'
     );
-    const question = createdQuestion;
-
-    await created.answerQuestion(question.id, harry.id, '42');
+    await created.answerQuestion(createdQuestion.id, harry.id, 1);
 
     const session = await Session.findOne(created.id);
     if (!session) throw new Error('No session');
@@ -74,8 +72,22 @@ describe('Session', () => {
     expect(questionAfter.answers).to.have.length(1);
 
     expect(questionAfter.answers[0].personId).to.be.equal(harry.id);
-    expect(questionAfter.answers[0].answer).to.be.equal('42');
+    expect(questionAfter.answers[0].answer).to.be.equal(1);
   });
+
+  it('Can add only add answers > 0 and < 3', async () => {
+    const squad = await Squad.create({ name: 'Gryffindor' });
+    const created = await Session.create({ squad });
+    const harry = await createPerson('harry');
+    const createdQuestion = await created.addQuestion(
+      'What is the answer to life, the universe and everything?'
+    );
+
+    await expect(
+      created.answerQuestion(createdQuestion.id, harry.id, 42)
+    ).to.eventually.be.rejectedWith('Answer must be a number 0-2');
+  });
+
   it('Errors when the session is inactive and try to add question', async () => {
     const squad = await Squad.create({ name: 'Gryffindor' });
     const created = await Session.create({ squad });
@@ -98,7 +110,7 @@ describe('Session', () => {
     const question = created.questions[0];
 
     await expect(
-      created.answerQuestion(question.id, harry.id, '42')
+      created.answerQuestion(question.id, harry.id, 1)
     ).to.eventually.be.rejectedWith('Session has ended');
   });
 });

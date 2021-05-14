@@ -25,7 +25,7 @@ interface IQuestion {
 
 interface IAnswer {
   personId: string;
-  answer: string;
+  answer: number;
 }
 
 export class Session extends BaseEntity {
@@ -136,10 +136,13 @@ export class Session extends BaseEntity {
     return questionData;
   }
 
-  async answerQuestion(questionId: string, personId: string, answer: string) {
+  async answerQuestion(questionId: string, personId: string, answer: number) {
     console.log(
       `Session: Person ${personId} is answering question ${questionId}`
     );
+
+    if (0 > answer || answer > 2)
+      throw new UserInputError('Answer must be a number 0-2');
 
     if (!this.active) throw new UserInputError('Session has ended');
     const question = this.questions.find((q) => q.id === questionId);
