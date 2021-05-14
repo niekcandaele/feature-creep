@@ -134,7 +134,6 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
     font-size: ${({ theme }) => theme.fontSize.small};
     margin: 15px 0;
     &::placeholder {
-      color: ${({ theme }): string => theme.colors.secondary};
       font-size: ${({ theme }) => theme.fontSize.small};
       font-weight: 600;
     }
