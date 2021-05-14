@@ -1,4 +1,4 @@
-# Feature creep
+#Feature creep
 
 ![Client ci](https://github.com/niekcandaele/feature-creep/actions/workflows/clientCi.yml/badge.svg)
 ![Server ci](https://github.com/niekcandaele/feature-creep/actions/workflows/serverCi.yml/badge.svg)
@@ -128,3 +128,6 @@ In production mode, you must first obtain a valid JWT. Visit the Cognito login p
 ## Squad health checks
 
 [Health check model by Spotify](https://engineering.atspotify.com/2014/09/16/squad-health-check-model/)
+
+ ![Feature creep icon](https://github.com/niekcandaele/feature-creep/blob/emielvanseveren-patch-1/docs/img/company-icon.svg)
+ # BOOOOOOOO
