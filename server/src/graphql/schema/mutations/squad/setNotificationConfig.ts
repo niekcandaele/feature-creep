@@ -56,7 +56,7 @@ export async function sendWebhookTestMessage(webhookUrl: string) {
   try {
     const res = await axios.post(webhookUrl, {
       content:
-        "This is a test message from Feature Creep, if you see this, it's working!",
+        'This is a test message from Feature Creep, if you see this, the Discord webhook works!',
       username: 'Feature Creep',
     });
 
