@@ -21,7 +21,7 @@ export interface AlertProps {
   title: string;
   text: string | string[];
   dismiss?: boolean;
-  action?: Action
+  action?: Action;
 }
 
 export const Alert: FC<AlertProps> = ({ variant, title, text, dismiss = false, action }) => {

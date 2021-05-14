@@ -7,18 +7,20 @@ export const Container = styled(motion.div) <{ variant: AlertVariants }>`
   width: 100%;
   padding: 1rem 1.2rem;
   border-radius: 1rem;
-  max-width: 600px;
   margin: 1.5rem auto 1.5rem auto;
 
   h2 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     display: flex;
     align-items: center;
     font-weight: 700;
     justify-content: flex-start;
   }
+  p {
+    margin-top: 1.5rem;
+  }
   p, li {
-    font-size: 1.225rem;
+    font-size: 1.325rem;
   }
   ul {
     margin-left: 15px;
@@ -66,10 +68,11 @@ export const ButtonContainer = styled.div<{ show: boolean, variant: AlertVariant
   display: ${({ show }): string => show ? 'flex' : 'none'};
 
   button {
+    margin-top: 2rem;
     margin-right: 2rem;
-    padding: 8px 0 2px 0;
-    background-color: transparent;
+    padding: .8rem .5rem .8rem .5rem;
     border-radius: .5rem;
+    background-color: ${({ theme, variant }): string => variant === 'success' ? lighten('0.2', theme.colors.secondary) : lighten('0.2', theme.colors[variant])};
     font-size: 1.3rem;
     border: none;
     cursor: pointer;
