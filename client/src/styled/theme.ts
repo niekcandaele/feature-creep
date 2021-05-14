@@ -12,7 +12,7 @@ export const theme = {
     title: '#ffffff',
     background: '#151317',
 
-    info: '#146aff',
+    info: '#a266df',
     success: '#2ea26f',
     error: '#FF4252',
     warning: '#f57c00'

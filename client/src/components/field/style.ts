@@ -36,6 +36,7 @@ export const InputContainer = styled.div`
     .icon path {
       transition: fill .2s ease-in-out;
       fill: ${({ theme }): string => theme.colors.primary};
+      stroke: ${({ theme }): string => theme.colors.primary};
     }
   }
 `;

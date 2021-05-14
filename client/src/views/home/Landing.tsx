@@ -4,12 +4,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import useSound from 'use-sound';
 
 // images
-import thumbsUp from 'images/thumbs-up.png';
-import thumbsDown from 'images/thumbs-down.png';
-import fire from 'images/fire.png';
-import sad from 'images/sad.png';
-import neutral from 'images/neutral.png';
-import ghost from 'images/ghost.png';
+import thumbsUp from 'images/emoji/thumbs-up.png';
+import thumbsDown from 'images/emoji/thumbs-down.png';
+import fire from 'images/emoji/fire.png';
+import sad from 'images/emoji/sad.png';
+import neutral from 'images/emoji/neutral.png';
+import ghost from 'images/emoji/ghost.png';
 import { Card } from './Card';
 import { useTheme } from 'hooks';
 import { AiOutlineArrowLeft as ArrowLeft, AiOutlineArrowRight as ArrowRight } from 'react-icons/ai';
