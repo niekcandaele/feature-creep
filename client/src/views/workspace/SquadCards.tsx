@@ -1,9 +1,11 @@
 import { FC } from 'react';
 import styled from 'styled';
 import { Button, Card } from 'components';
-import create from 'images/create.png';
-import people from 'images/people.png';
 import { useNavigate } from 'react-router';
+
+// images
+import create from 'images/emoji/create.png';
+import people from 'images/emoji/people.png';
 
 const Container = styled.div`
   display: flex;
@@ -33,10 +35,9 @@ export const SquadCards: FC = () => {
           <h2>Create a squad</h2>
           <img alt="Create a new squad" src={create} />
           <p>
-            You are probably part of an organisation.
-            Request the agile coach to join an existing squad.
+            Create a new Squad and invite your team! Enjoy our custom set of Agile tools!
           </p>
-          <Button onClick={() => navigate('/squad/create')} size="large" text="Create squad" variant="default" />
+          <Button onClick={() => navigate('/squad/create')} size="large" text="Create a new squad" variant="default" />
         </Inner>
       </Card>
       <Card disabled={true}>
@@ -47,7 +48,7 @@ export const SquadCards: FC = () => {
             You are probably part of an organisation.
             Request the agile coach to join an existing squad.
           </p>
-          <Button disabled onClick={() => { }} size="large" text="Coming soon" variant="outline" />
+          <Button disabled onClick={() => { }} size="large" text="Coming soon!" variant="outline" />
         </Inner>
       </Card>
     </Container>

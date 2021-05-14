@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { Card, CardProps, Button } from 'components';
-import create from 'images/create.png';
+import create from 'images/emoji/create.png';
 import styled from 'styled';
 
 const Inner = styled.div`

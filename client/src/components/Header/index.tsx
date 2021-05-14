@@ -3,7 +3,7 @@ import { Container, ContentContainer, Ghost, Nav, User, List } from './style';
 import { Avatar, Button, Link, MenuDropDown } from 'components';
 import { useUser } from 'hooks';
 import templatePerson from 'images/person.jpeg';
-import create from 'images/create.png';
+import create from 'images/emoji/create.png';
 
 export const Header: FC = () => {
   const { userData } = useUser();
