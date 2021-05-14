@@ -72,6 +72,7 @@ export const MemberList: FC<MemberListProps> = ({ squadId }) => {
             />
           );
         }
+        return null;
       });
     }
     return null;
