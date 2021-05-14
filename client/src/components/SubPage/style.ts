@@ -21,7 +21,4 @@ export const Title = styled.h2`
   }
 `;
 
-export const ContentContainer = styled.div`
-  height: 60vh;
-  overflow-y: auto;
-`;
+export const ContentContainer = styled.div``;

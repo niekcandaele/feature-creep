@@ -2,12 +2,12 @@ import { forwardRef, MutableRefObject, useState } from 'react';
 import { Button } from 'components';
 import { Container, Header, ActionContainer, Cancel, Description } from './style';
 import { useLockBodyScroll } from 'hooks';
-import { AiOutlinePlus as Plus } from 'react-icons/ai';
+import { AiOutlineClose as Close } from 'react-icons/ai';
 
 interface IProps {
   title: string;
   description?: string;
-  action: () => any;
+  action: any;
   actionText: string;
   icon?: React.ReactNode;
   close: () => void;
@@ -34,12 +34,12 @@ export const ConfirmationModal = forwardRef<HTMLDivElement, IProps>(({ title, de
     >
       <Header type={type}>
         <h2>{title}</h2>
-        <Plus onClick={close} />
+        <Close onClick={close} size={18} style={{ cursor: 'pointer' }} />
       </Header>
       <Description>{description}</Description>
       <ActionContainer type={type}>
         <Cancel onClick={close}>Cancel</Cancel>
-        <Button isLoading={loading} onClick={confirmAction} text={actionText} />
+        <Button isLoading={loading} onClick={confirmAction} size="large" text={actionText} />
       </ActionContainer>
     </Container>
   );
