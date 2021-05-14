@@ -7,8 +7,6 @@ import styled from 'styled';
 import people from 'images/emoji/people.png';
 
 import pensive from 'images/emoji/pensive.png';
-import { SquadCards } from 'views/workspace';
-import { useUser } from 'hooks';
 import { useSnackbar } from 'notistack';
 
 const Container = styled.div`

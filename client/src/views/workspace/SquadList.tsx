@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Avatar, AvatarGroup, Button, Link, Loading } from 'components';
 import { GetSquadInput, Squad, SquadFilterType } from 'generated';
 import { FC } from 'react';

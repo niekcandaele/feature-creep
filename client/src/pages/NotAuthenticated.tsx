@@ -8,7 +8,7 @@ export const NotAuthenticated: FC = () => {
   useEffect(() => {
     setTimeout(() => {
       setRedirect(location.pathname);
-      // routingService.navigateExternal('/naar-redirect');
+      //routingService.navigateExternal('/naar-redirect');
     }, 2000);
   }, []);
 

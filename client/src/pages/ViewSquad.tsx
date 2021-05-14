@@ -1,11 +1,11 @@
 import { gql, useQuery } from '@apollo/client';
 import { Helmet } from 'react-helmet';
-import { SubPage, Card } from 'components';
+import { SubPage } from 'components';
 import { Squad } from 'generated';
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled';
-import { DiscordWebhook, Registration } from 'views/squad';
+import { DiscordWebhook, InviteMembers } from 'views/squad';
 import { MemberList } from 'views/squad/MemberList';
 
 const Container = styled.div`
@@ -18,9 +18,11 @@ const Container = styled.div`
   }
 `;
 
-const Inner = styled.div`
+const TitleWrapper = styled.div` 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 //TODO
@@ -56,14 +58,15 @@ export const ViewSquad: FC = () => {
       </Helmet>
       <SubPage title="View Squad">
         <Container>
-          <h1>{data.squad.name}</h1>
-          <Card disabled>
-            <Inner>
-              <Registration squadId={id} />
-              <DiscordWebhook />
-            </Inner>
-          </Card>
+          <TitleWrapper >
+            <h1>{data.squad.name} Squad </h1>
+            <InviteMembers squadId={id} />
+          </TitleWrapper>
           <MemberList squadId={id} />
+
+          <h2> Services </h2>
+          <p>Automate your workflow!</p>
+          <DiscordWebhook squadId={id} />
         </Container>
       </SubPage>
     </>
