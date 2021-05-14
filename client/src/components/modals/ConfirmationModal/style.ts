@@ -11,7 +11,7 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.primary};
     font-weight: 700;
     .icon {
       margin-top: -3px;
@@ -40,7 +40,7 @@ export const Container = styled.div`
 export const Description = styled.p`
   margin-bottom: 35px;
   user-select: none;
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.gray};
   font-weight: 500;
 `;
 
@@ -57,7 +57,7 @@ export const Cancel = styled.div`
   cursor: pointer;
   user-select: none;
   margin-right: 15px;
-  font-size: 0.9rem;
+  font-size: 1.325rem;
   color: ${({ theme }) => theme.colors.gray};
 `;
 
