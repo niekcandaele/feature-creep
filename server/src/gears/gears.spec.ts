@@ -76,10 +76,7 @@ describe('Redis Gears', () => {
           const question = sessionAfter.questions.find((q) => q.id === key);
           if (!question) throw new Error('question undefined');
 
-          const total = question.answers.reduce(
-            (a, b) => a + parseInt(b.answer, 10),
-            0
-          );
+          const total = question.answers.reduce((a, b) => a + b.answer, 0);
           expect(total).to.be.equal(totals[key]);
         }
       }

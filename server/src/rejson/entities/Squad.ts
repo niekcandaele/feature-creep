@@ -125,4 +125,7 @@ export class Squad extends BaseEntity {
     const sessions = await Session.findAll();
     this.sessions = sessions.filter((s) => s.squad.id === this.id);
   }
+  async afterCreate() {
+    return this;
+  }
 }

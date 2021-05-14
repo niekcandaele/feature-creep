@@ -22,4 +22,7 @@ export class Organisation extends BaseEntity {
   public async edit(): Promise<void> {}
 
   async init() {}
+  async afterCreate() {
+    return this;
+  }
 }

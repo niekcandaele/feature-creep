@@ -62,7 +62,7 @@ export async function setUpTestData(amountOfSessions = 10) {
         await session.answerQuestion(
           question.id,
           person.id,
-          datatype.number({ min: 0, max: 3 }).toString()
+          datatype.number({ min: 0, max: 2 })
         );
       }
     }
