@@ -13,6 +13,8 @@ const SetNotificationConfigInput = new GraphQLInputObjectType({
   }),
 });
 
+const webhookRegex = /discord.com\/api\/webhooks\/([^\/]+)\/([^\/]+)/;
+
 export const setNotificationConfig = {
   type: squadType,
   description: 'Sets a notification config (currently Discord webhook)',
@@ -32,6 +34,9 @@ export const setNotificationConfig = {
 
     let squad = await Squad.findOne(args.input.squadId);
     if (!squad) throw new UserInputError('Invalid squad ID');
+
+    if (!webhookRegex.test(args.input.discordWebhook))
+      throw new UserInputError('Discord webhook failed validation');
 
     squad.notificationConfig.discordWebhook = args.input.discordWebhook;
     squad = await squad.save();
