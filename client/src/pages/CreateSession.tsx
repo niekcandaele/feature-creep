@@ -1,9 +1,9 @@
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { Button, SearchField, SubPage } from 'components';
-import { CreateSessionInput, Session } from 'generated';
+import { AddQuestion, CreateSessionInput, Question, Session } from 'generated';
 import { useDebounce } from 'hooks';
 import { FC, useEffect } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 import styled from 'styled';
 
@@ -28,26 +28,52 @@ const SEARCH = gql`
   }
 `;
 
+const ADD_QUESTION = gql`
+  mutation addQuestion($input: addQuestion) {
+    addQuestion(
+      input: $input
+    ) {
+      id
+      question
+      answers {
+        answer
+      }
+    }
+  }
+`;
+
 type FormFields = {
   search: string;
 }
 
+type QuestionInput = {
+  question: string;
+  descriptionBad: string;
+  descriptionGood: string
+}
+
 export const CreateSession: FC = () => {
   const { squadId } = useParams();
-  const { handleSubmit, control, formState: { errors } } = useForm<FormFields>();
+  const { control: searchControl } = useForm<FormFields>();
+  const { register, handleSubmit, formState: { errors, } } = useForm<QuestionInput>();
   const [createSession, { data: sessionMutation }] = useMutation<{ createSession: Session }, { input: CreateSessionInput }>(CREATE_SESSION);
+  const [addQuestion] = useMutation<{ questionResponse: Question }, { input: AddQuestion }>(ADD_QUESTION);
+
   const [searchQuery, { data: searchData }] = useLazyQuery(
     SEARCH,
     { variables: { input: 'english' } }
   );
   const navigate = useNavigate();
-  const searchTerm = useWatch({ control, name: 'search' });
+  const searchTerm = useWatch({ control: searchControl, name: 'search' });
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const onSubmit = () => {
-    console.log(sessionMutation);
-
+  const onSessionSubmit = () => {
     navigate(`/session/${sessionMutation?.createSession.id}`);
+  };
+
+  const onInputSubmit: SubmitHandler<QuestionInput> = ({ descriptionBad, descriptionGood, question }) => {
+    if (!sessionMutation || !sessionMutation.createSession.id) return;
+    addQuestion({ variables: { input: { sessionId: sessionMutation.createSession.id, question: { question, descriptionBad, descriptionGood } } } });
   };
 
   useEffect(() => {
@@ -57,9 +83,6 @@ export const CreateSession: FC = () => {
 
   // Execute search query
   useEffect(() => {
-    console.log(searchTerm);
-    console.log(debouncedSearchTerm);
-
     if (searchTerm) {
       searchQuery({ variables: { input: searchTerm } });
     }
@@ -69,24 +92,77 @@ export const CreateSession: FC = () => {
     <SubPage title="Create new session">
       <Container>
 
-        <form>
-          <SearchField
-            control={control}
-            name="search"
-            placeholder="Deploy"
-          />
-        </form>
+        <SearchField
+          control={searchControl}
+          name="search"
+          placeholder="Deploy"
+        />
 
         <Container>
-          {JSON.stringify(searchData, null, 4)}
+          <QuestionSuggestions searchData={searchData} session={sessionMutation}></QuestionSuggestions>
+        </Container>
+
+        <Container>
+          <form onSubmit={handleSubmit(onInputSubmit)}>
+            {/* register your input into the hook by invoking the "register" function */}
+
+            <input defaultValue="What do you think about ... " {...register('question', { required: true })} />
+            <input defaultValue="Its awesome!" {...register('descriptionGood', { required: true })} />
+            <input defaultValue="It sucks :(" {...register('descriptionBad', { required: true })} />
+
+            {/* errors will return when field validation fails  */}
+            {errors.question && <span>This field is required</span>}
+
+            <input type="submit" />
+          </form>
         </Container>
 
         <Button
-          onClick={() => onSubmit()}
+          onClick={() => onSessionSubmit()}
           size="large"
           text="Start session"
         />
       </Container>
     </SubPage>
   );
+};
+
+const QuestionContainer = styled.div`
+  background-color: red;
+`;
+
+const QuestionSuggestions: FC<{
+  searchData: { search: any },
+  session: { createSession: Session } | null | undefined
+}> = ({ searchData, session }) => {
+  const [addQuestion] = useMutation<{ questionResponse: Question }, { input: AddQuestion }>(ADD_QUESTION);
+  if (!searchData) return null;
+  if (!session) return null;
+
+  const { search } = searchData;
+
+  const onSubmit = ({ descriptionBad, descriptionGood, question }: { descriptionBad: string, descriptionGood: string, question: string }) => {
+    if (!session.createSession.id) return;
+    addQuestion({ variables: { input: { sessionId: session.createSession.id, question: { question, descriptionBad, descriptionGood } } } });
+  };
+
+  return search.map((s: any) => {
+    return (
+      <QuestionContainer>
+        <ul>
+          <li>{s.question}</li>
+          <li>{s.descriptionBad}</li>
+          <li>{s.descriptionGood}</li>
+        </ul>
+
+        <Button
+          onClick={() => onSubmit(s)}
+          size="large"
+          text="Add question"
+        />
+
+      </QuestionContainer>
+
+    );
+  });
 };

@@ -6,9 +6,7 @@ import {
 } from 'graphql';
 
 import { IContext } from '../..';
-import { RediSearch } from '../../../redisearch/client';
-
-const search = new RediSearch();
+import { getRediSearch } from '../../../redisearch/client';
 
 export const searchQuery = {
   type: new GraphQLList(
@@ -35,7 +33,8 @@ export const searchQuery = {
     args: { search: string },
     context: IContext
   ) => {
-    await search.init();
+    const search = await getRediSearch();
+
     const res = await search.search(args.search, { onlyTitle: false });
     return res;
   },
