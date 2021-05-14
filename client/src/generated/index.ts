@@ -121,7 +121,10 @@ export type Query = {
   squad?: Maybe<Squad>;
   session?: Maybe<Session>;
   search?: Maybe<Array<Maybe<SearchResponse>>>;
+<<<<<<< HEAD
   question?: Maybe<Question>;
+=======
+>>>>>>> create-session
 };
 
 
@@ -149,12 +152,15 @@ export type QuerySearchArgs = {
   search: Scalars['String'];
 };
 
+<<<<<<< HEAD
 
 export type QueryQuestionArgs = {
   questionId: Scalars['String'];
   sessionId: Scalars['String'];
 };
 
+=======
+>>>>>>> create-session
 export type Question = {
   id?: Maybe<Scalars['String']>;
   question?: Maybe<Scalars['String']>;
@@ -210,7 +216,11 @@ export enum SquadFilterType {
 
 export type AddQuestion = {
   sessionId: Scalars['String'];
+<<<<<<< HEAD
   question?: Maybe<Question>;
+=======
+  question?: Maybe<QuestionInput>;
+>>>>>>> create-session
 };
 
 export type AnswerQuestion = {
@@ -228,7 +238,11 @@ export type EndSession = {
   sessionId: Scalars['String'];
 };
 
+<<<<<<< HEAD
 export type Question = {
+=======
+export type QuestionInput = {
+>>>>>>> create-session
   question: Scalars['String'];
   descriptionGood?: Maybe<Scalars['String']>;
   descriptionBad?: Maybe<Scalars['String']>;

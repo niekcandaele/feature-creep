@@ -713,51 +713,6 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "question",
-            "description": null,
-            "args": [
-              {
-                "name": "questionId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "sessionId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Question",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -1244,7 +1199,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "question",
+              "name": "questionInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -1371,7 +1326,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "question",
+        "name": "questionInput",
         "description": null,
         "fields": null,
         "inputFields": [

@@ -143,6 +143,7 @@ export class RediSearch {
     // Recreate the index
     await this.createIndex(true);
     this.isReady = true;
+    console.log(`[RediSearch] initialized`);
   }
 
   public async getIndexStats() {
