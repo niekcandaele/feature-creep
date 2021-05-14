@@ -37,18 +37,6 @@ describe('INTEGRATION squad query gets', () => {
 
     await Squad.create({ name: 'unused squad' });
 
-    const getAllSquads = `query {
-            squads(filter: {filter: ALL}) {
-                name
-                id
-              }
-          }`;
-    const allSquadsRes = await testClient.query({ query: getAllSquads });
-
-    const allSquads = allSquadsRes.data.squads;
-    expect(allSquads).to.be.an('array');
-    expect(allSquads).to.have.length(2);
-
     const getMemberOfSquadsNoMember = `query {
             squads(filter: {filter: MEMBEROF}) {
                 name
@@ -61,7 +49,7 @@ describe('INTEGRATION squad query gets', () => {
 
     const memberOfSquadsNoMember = memberOfSquadsResNoMember.data.squads;
     expect(memberOfSquadsNoMember).to.be.an('array');
-    expect(memberOfSquadsNoMember).to.have.length(0);
+    expect(memberOfSquadsNoMember).to.have.length(1);
 
     const openSquadMutation = `mutation setSquadOpen {
       setSquadOpen(input:{
