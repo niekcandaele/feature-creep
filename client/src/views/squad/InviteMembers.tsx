@@ -4,7 +4,7 @@ import styled from 'styled';
 import { Button, ClipBoard, Spinner } from 'components';
 import { Squad, SetOpenStatusInput } from 'generated';
 import { useSnackbar } from 'notistack';
-import { useModal, useOutsideAlerter } from 'hooks';
+import { useModal } from 'hooks';
 import { ConfirmationModal } from 'components/modals';
 import { AiOutlineLink as Link } from 'react-icons/ai';
 
@@ -80,25 +80,18 @@ export const InviteMembers: FC<RegistrationProps> = ({ squadId }) => {
           type="info"
         />
       </ModalWrapper>
-
-      {open ?
-        <ClipBoard maxWidth={500} text={`${process.env.REACT_APP_HOSTNAME}/squad/join/${squadId}`} />
-        :
-        <Button
-          icon={<Link />}
-          onClick={openModal}
-          size="large"
-          text="Invite new members"
-        />
+      {
+        open
+          ?
+          <ClipBoard maxWidth={500} text={`${process.env.REACT_APP_HOSTNAME}/squad/join/${squadId}`} />
+          :
+          <Button
+            icon={<Link />}
+            onClick={openModal}
+            size="large"
+            text="Invite new members"
+          />
       }
     </Container>
   );
 };
-
-/*
-data.squad.open ?
-          <div>
-            <p>This squad will be open for 30 minutes. You will get a shareable link for squadmates to join.</p>
-            <ClipBoard maxWidth={500} text={`${process.env.REACT_APP_HOSTNAME}/squad/join/${squadId}`} />
-          </div>
-*/
