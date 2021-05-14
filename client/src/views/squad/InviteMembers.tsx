@@ -1,5 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { createRef, FC, useEffect } from 'react';
+import { useState, FC, useEffect } from 'react';
 import styled from 'styled';
 import { Button, ClipBoard, Spinner } from 'components';
 import { Squad, SetOpenStatusInput } from 'generated';
@@ -32,6 +32,8 @@ const SET_SQUAD_OPEN = gql`
 `;
 
 export const InviteMembers: FC<RegistrationProps> = ({ squadId }) => {
+  const [open, setOpen] = useState<boolean>(false);
+
   const { loading, data, error } = useQuery<{ squad: Squad }>(GET_SQUAD_STATUS, { variables: { id: squadId } });
   const [setSquadOpen, { called, data: newSquad }] = useMutation<{ setSquadOpen: Squad }, { input: SetOpenStatusInput }>(SET_SQUAD_OPEN);
   const { enqueueSnackbar } = useSnackbar();
@@ -44,12 +46,20 @@ export const InviteMembers: FC<RegistrationProps> = ({ squadId }) => {
         'The squad is open for new members. The invite link has been copied to your clipboard. The squad is accessible for 30 minutes.',
         { variant: 'success' }
       );
+      setOpen(true);
     }
     else if (called) {
       enqueueSnackbar('Something went wrong trying to open te squad. Please try again', { variant: 'error' });
     }
-    // check if open status is changed
   }, [newSquad]);
+
+  useEffect(() => {
+    if (data && data.squad) {
+      if (data.squad.open) {
+        setOpen(data.squad.open);
+      }
+    }
+  }, [data]);
 
   if (loading) {
     return <Spinner />;
@@ -71,7 +81,7 @@ export const InviteMembers: FC<RegistrationProps> = ({ squadId }) => {
         />
       </ModalWrapper>
 
-      {data.squad.open ?
+      {open ?
         <ClipBoard maxWidth={500} text={`${process.env.REACT_APP_HOSTNAME}/squad/join/${squadId}`} />
         :
         <Button
