@@ -34,6 +34,7 @@
       "no-return-assign": 2,
       "no-trailing-spaces": 2,
       "no-var": 2,
+      "no-useless-escape": 0,
       "no-void": 2,
       "semi": [
         2,
