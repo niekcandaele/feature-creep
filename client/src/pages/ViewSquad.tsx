@@ -1,12 +1,11 @@
 import { gql, useQuery } from '@apollo/client';
 import { Helmet } from 'react-helmet';
-import { SubPage } from 'components';
+import { SubPage, Spinner } from 'components';
 import { Squad } from 'generated';
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled';
-import { DiscordWebhook, InviteMembers } from 'views/squad';
-import { MemberList } from 'views/squad/MemberList';
+import { DiscordWebhook, InviteMembers, MemberList } from 'views/squad';
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +17,7 @@ const Container = styled.div`
   }
 `;
 
-const TitleWrapper = styled.div` 
+const TitleWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -47,8 +46,15 @@ export const ViewSquad: FC = () => {
       </SubPage>
     );
   }
+
   if (loading) {
-    return <div>loading...</div>;
+    return (
+      <SubPage title="View Squad">
+        <Container>
+          <Spinner />
+        </Container>
+      </SubPage>
+    );
   }
 
   return (

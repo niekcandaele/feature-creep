@@ -3,7 +3,7 @@ import { FaGhost as Ghost } from 'react-icons/fa';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, TextField } from 'components';
 import { Link, useNavigate } from 'react-router-dom';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useQuery, useMutation } from '@apollo/client';
 import { decode } from 'jsonwebtoken';
 import { Container, Content, ContentContainer, ContentWrapper, Image } from './style';
 import { Person, EditPersonType } from 'generated';
@@ -11,6 +11,7 @@ import { useUser } from 'hooks';
 import * as yup from 'yup';
 import { getRedirect } from 'helpers';
 import { useValidationSchema } from 'hooks/useValidationResolver';
+import { GET_PERSON } from 'queries';
 
 const ADD_USER_DETAILS = gql`
   mutation addUserDetails($person:EditPersonType!) {
@@ -39,6 +40,9 @@ export const OnBoarding: FC = () => {
   );
 
   const { control, handleSubmit, formState: { errors, isDirty }, setValue } = useForm<FormFields>({ resolver: useValidationSchema(validationSchema) });
+
+  const { data } = useQuery<{ person: Person }>(GET_PERSON);
+
   const [addUserDetails, { loading, error }] = useMutation<Person, { person: EditPersonType }>(ADD_USER_DETAILS);
   const { setUserData } = useUser();
   const navigate = useNavigate();
@@ -54,8 +58,19 @@ export const OnBoarding: FC = () => {
       const payload: any = decode(token);
       setValue('email', payload.email);
     }
+
     return () => { document.querySelector('body')?.classList.remove('dark'); };
   }, []);
+
+  // This catches a user manually browsing to this page.
+  useEffect(() => {
+    if (data && data.person && data.person.firstName) {
+      // check if firstname and lastname are set
+      if (data.person.firstName && data.person.lastName) {
+        navigate('/workspace');
+      }
+    }
+  }, [data]);
 
   const submit: SubmitHandler<FormFields> = async ({ firstName, lastName, email }) => {
     if (isDirty) {
