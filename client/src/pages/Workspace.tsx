@@ -1,4 +1,3 @@
-import { gql, useQuery } from '@apollo/client';
 import { FC } from 'react';
 import styled from 'styled';
 import { SquadCards, SquadList } from 'views/workspace';

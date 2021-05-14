@@ -1,14 +1,15 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { FC, useEffect } from 'react';
+import { createRef, FC, useEffect } from 'react';
 import styled from 'styled';
 import { Button, ClipBoard, Spinner } from 'components';
 import { Squad, SetOpenStatusInput } from 'generated';
 import { useSnackbar } from 'notistack';
+import { useModal, useOutsideAlerter } from 'hooks';
+import { ConfirmationModal } from 'components/modals';
+import { AiOutlineLink as Link } from 'react-icons/ai';
 
-const Container = styled.div`
-
-`;
 /*This will enable the squad url join link for 30 minutes.*/
+const Container = styled.div``;
 
 interface RegistrationProps {
   squadId: string;
@@ -30,11 +31,12 @@ const SET_SQUAD_OPEN = gql`
 }
 `;
 
-export const Registration: FC<RegistrationProps> = ({ squadId }) => {
-  console.log(squadId);
+export const InviteMembers: FC<RegistrationProps> = ({ squadId }) => {
   const { loading, data, error } = useQuery<{ squad: Squad }>(GET_SQUAD_STATUS, { variables: { id: squadId } });
   const [setSquadOpen, { called, data: newSquad }] = useMutation<{ setSquadOpen: Squad }, { input: SetOpenStatusInput }>(SET_SQUAD_OPEN);
   const { enqueueSnackbar } = useSnackbar();
+
+  const [ModalWrapper, openModal, closeModal] = useModal();
 
   useEffect(() => {
     if (called && newSquad?.setSquadOpen?.open) {
@@ -58,17 +60,35 @@ export const Registration: FC<RegistrationProps> = ({ squadId }) => {
 
   return (
     <Container>
-      { data.squad.open ?
-        <div>
-          <p>This squad will be open for 30 minutes. You will get a shareable link for squadmates to join.</p>
-          <ClipBoard maxWidth={300} text={`${process.env.REACT_APP_HOSTNAME}/squad/join/${squadId}`} />
-        </div>
+      <ModalWrapper >
+        <ConfirmationModal
+          action={() => setSquadOpen({ variables: { input: { squadId: squadId } } })}
+          actionText="Enable registration"
+          close={closeModal}
+          description="By clicking enable registration the squad will be open for 30 minutes. You will receive a shareable link for squadmates to join!"
+          title="Invite members"
+          type="info"
+        />
+      </ModalWrapper>
+
+      {data.squad.open ?
+        <ClipBoard maxWidth={500} text={`${process.env.REACT_APP_HOSTNAME}/squad/join/${squadId}`} />
         :
         <Button
-          onClick={() => setSquadOpen({ variables: { input: { squadId: squadId } } })}
-          text="Open registration"
+          icon={<Link />}
+          onClick={openModal}
+          size="large"
+          text="Invite new members"
         />
       }
     </Container>
   );
 };
+
+/*
+data.squad.open ?
+          <div>
+            <p>This squad will be open for 30 minutes. You will get a shareable link for squadmates to join.</p>
+            <ClipBoard maxWidth={500} text={`${process.env.REACT_APP_HOSTNAME}/squad/join/${squadId}`} />
+          </div>
+*/

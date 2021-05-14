@@ -9,7 +9,9 @@ const Container = styled.div<{
 }>`
   border-radius: 50%;
   background-image: ${({ src }): string => `url(${src})`};
-  background-size: cover;
+  background-size: 60%;
+  background-position: center center;
+  background-repeat: no-repeat;
 
   ${({ size }) => {
     switch (size) {

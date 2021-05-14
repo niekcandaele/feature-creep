@@ -56,11 +56,12 @@ export const Input = styled.input<{ hasIcon: boolean; hasError: boolean; }>`
   &:focus {
     border-color: ${({ theme, hasError }): string => hasError ? theme.colors.error : lighten('0.1', theme.colors.gray)};
   }
-  &::placeholder{
+  ::placeholder{
     text-transform: capitalize;
     font-weight: 600;
-    color: ${({ theme }) => theme.colors.gray};
+    color: ${({ theme }): string => theme.colors.gray};
   }
+
   &[readOnly]{
     opacity: .5;
   }

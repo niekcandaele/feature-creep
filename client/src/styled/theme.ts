@@ -1,4 +1,3 @@
-import { ListItemSecondaryAction } from '@material-ui/core';
 import baseStyled, { ThemedStyledInterface } from 'styled-components';
 
 export const theme = {
