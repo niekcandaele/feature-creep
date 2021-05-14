@@ -13,16 +13,17 @@ services:
       - 127.0.0.1:8001:8001
     volumes:
       - redisinsight:/db
-  # Production mode, uses Cognito for auth
-  feature-creep-server:
+  # Dev mode, no auth required
+  feature-creep-server-dev:
+    #build: ./server
     image: ghcr.io/niekcandaele/featurecreep-server:latest
     ports:
       - 127.0.0.1:4000:4000
     environment: 
       - REDIS_HOST=redis
-      - NODE_ENV=production
-  feature-creep-client:
-    image: ghcr.io/niekcandaele/featurecreep-client:latest
+      - NODE_ENV=development
+  feature-creep-client-dev:
+    image: ghcr.io/niekcandaele/featurecreep-client:dev
     ports:
       - 127.0.0.1:3000:5000
 volumes:

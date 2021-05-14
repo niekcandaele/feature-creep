@@ -85,10 +85,14 @@ export abstract class BaseEntity {
       '.',
       JSON.stringify({ squads: [], ...opts })
     );
-    const instance = new this({ ...opts, id: opts.id });
+    let instance = new this({ ...opts, id: opts.id });
     await instance.isReady;
+    instance = await instance.afterCreate();
+
     return instance;
   }
+
+  protected abstract afterCreate(): Promise<this>;
 
   /**
    * Remove an entity instance from the database based on Id.
@@ -103,8 +107,19 @@ export abstract class BaseEntity {
   public static async findAll<T extends BaseEntity>(
     this: new (...args: any[]) => T
   ): Promise<T[]> {
+    // TODO: This should be recursive to make sure we retrieve everything we need
+    // Scan is a cursor based iterator
+    // See Gears function send_notification.py
     const obj = await getDb().scan('', 'MATCH', `${this.name}:*`);
-    const data = obj[1].map((_) => getOne(_));
+
+    // We want to make sure we only get entities back
+    // If we retrieve keys with a different datatype than JSON, bad things happen
+    const keyRegex = new RegExp(
+      `${this.name}:[a-f\\d]{8}-[a-f\\d]{4}-[a-f\\d]{4}-[a-f\\d]{4}-[a-f\\d]{12}$`,
+      'i'
+    );
+
+    const data = obj[1].filter((k) => keyRegex.test(k)).map((_) => getOne(_));
     return (await Promise.all(data)).map((_) => new this(_));
   }
 

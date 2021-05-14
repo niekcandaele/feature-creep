@@ -85,7 +85,7 @@ describe('INTEGRATION session activity', () => {
     // Answer the question
     const answerQuestion = `mutation answerQuestion {
             answerQuestion(input:{
-              answer: "Just dandy!", 
+              answer: 1, 
               questionId:"${question.id}",
               sessionId:"${session.id}"
             }) {
@@ -103,7 +103,7 @@ describe('INTEGRATION session activity', () => {
 
     expect(answer.id).to.be.a('string');
     expect(answer.person.id).to.be.a('string');
-    expect(answer.answer).to.be.equal('Just dandy!');
+    expect(answer.answer).to.be.equal('1');
 
     // End the session
     const endSession = `mutation endSession {
@@ -124,7 +124,7 @@ describe('INTEGRATION session activity', () => {
     // Try to add an answer -> fails because session ended
     const answerQuestionAfterSessionEnded = `mutation answerQuestion {
             answerQuestion(input:{
-              answer: "Lemme sneak in another answer!", 
+              answer: 2, 
               questionId:"${question.id}",
               sessionId:"${endedSession.id}"
             }) {

@@ -8,6 +8,7 @@ import {
 } from 'graphql';
 
 import { IContext } from '../..';
+import { Person } from '../../../rejson/entities/Person';
 import { Squad } from '../../../rejson/entities/Squad';
 import { squadType } from '../types/squad';
 
@@ -40,24 +41,39 @@ export const squadsQuery = {
     if (args && args.filter) {
       filterMode = args.filter.filter;
     }
-
+    let res: Squad[] = [];
     switch (filterMode) {
       case 'memberof':
-        const squads = await Promise.all(
+        const squadsMemberOf = await Promise.all(
           context.user.squads.map((id) => Squad.findOne(id))
         );
-        const res: Squad[] = [];
-        for (const squad of squads) {
+        for (const squad of squadsMemberOf) {
           if (!squad) continue;
           await squad.getActiveSession();
           res.push(squad);
         }
-        return res;
+        break;
       case 'all':
-        return Squad.findAll();
+        const allSquads = await Squad.findAll();
+        res = res.concat(allSquads);
+        break;
       default:
         throw new UserInputError('Invalid filtermode');
     }
+
+    const squadsWithPersons = await Promise.all(
+      res.map(async (s) => {
+        const members: (Person | null)[] = await Promise.all(
+          s.members.map((p) => Person.findOne(p))
+        );
+        return {
+          ...s,
+          members,
+        };
+      })
+    );
+
+    return squadsWithPersons;
   },
 };
 
