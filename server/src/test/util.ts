@@ -1,5 +1,6 @@
 import { datatype } from 'faker';
 
+import { defaultQuestions } from '../redisearch/client';
 import { Person } from '../rejson/entities/Person';
 import { Session } from '../rejson/entities/Session';
 import { Squad } from '../rejson/entities/Squad';
@@ -40,24 +41,12 @@ export async function setUpTestData(amountOfSessions = 10) {
   const ron = await createPerson('ron');
   const draco = await createPerson('draco');
 
-  // Questions based on https://engineering.atspotify.com/2014/09/16/squad-health-check-model/
-  const questions = [
-    'Delivering value',
-    'Easy to release',
-    'Fun',
-    'Health of codebase',
-    'Learning',
-    'Mission',
-    'Pawns or players',
-    'Speed',
-  ];
-
   const sessions: Session[] = [];
 
   for (let i = 0; i < amountOfSessions; i++) {
     const session = await Session.create({ squad });
-    for (const q of questions) {
-      const question = await session.addQuestion(q);
+    for (const q of defaultQuestions) {
+      const question = await session.addQuestion(q.q, q.descGood, q.descBad);
       for (const person of [harry, ron, draco]) {
         await session.answerQuestion(
           question.id,
