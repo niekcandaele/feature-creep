@@ -1,7 +1,10 @@
 import { UserInputError } from 'apollo-server';
 import { v4 as uuid } from 'uuid';
 
-import { defaultQuestions } from '../../redisearch/client';
+import {
+  defaultQuestions,
+  IQuestion as ISearchQuestion,
+} from '../../redisearch/client';
 import { getDb } from '../db';
 import { BaseEntity } from './BaseEntity';
 import { Person } from './Person';
@@ -59,16 +62,16 @@ export class Session extends BaseEntity {
 
   async afterCreate() {
     for (const question of defaultQuestions) {
-      this.addQuestion(question.question, question.descriptionGood, question.descriptionBad);
+      this.addQuestion(question);
     }
     return this;
   }
 
-  async addQuestion(
-    question: string,
-    descriptionGood?: string,
-    descriptionBad?: string
-  ) {
+  async addQuestion({
+    descriptionBad,
+    descriptionGood,
+    question,
+  }: ISearchQuestion) {
     console.log(`Session: Adding a question to session ${this.id}`);
     if (!this.active) throw new UserInputError('Session has ended');
     const questionData: IQuestion = {
