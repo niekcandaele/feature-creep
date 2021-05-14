@@ -87,8 +87,10 @@
     "@types/styled-components": "^5.1.9",
     "@types/three": "^0.127.1",
     "@typescript-eslint/parser": "^4.22.0",
+    "babel-loader": "^8.1.0",
     "chromatic": "^5.8.0",
-    "sort-package-json": "^1.49.0"
+    "sort-package-json": "^1.49.0",
+    "webpack": "^4.44.2"
   },
   "eslintConfig": {
     "overrides": [
