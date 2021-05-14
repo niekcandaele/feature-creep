@@ -44,3 +44,6 @@ export type { ErrorProps } from './Error';
 
 export { MenuDropDown } from './MenuDropDown';
 export type { MenuDropDownProps } from './MenuDropDown';
+
+export { ClipBoard } from './ClipBoard';
+export type { ClipBoardProps } from './ClipBoard';
