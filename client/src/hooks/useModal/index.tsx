@@ -15,9 +15,9 @@ const Modal: React.FC<IModalProps> = ({ children, isOpen = false, elementId }) =
   return createPortal(
     <Overlay>
       <Container
-        animate={{ opacity: 1, top: 0, scale: 1 }}
-        initial={{ opacity: 0, top: 100, scale: .8 }}
-        transition={{ duration: 1, type: 'spring', bounce: .6, stiffness: 500 }}
+        animate={{ top: 0, scale: 1 }}
+        initial={{ top: 100, scale: .8 }}
+        transition={{ duration: .5, type: 'spring', bounce: .3, stiffness: 300 }}
       >
         {children}
       </Container>
@@ -26,7 +26,6 @@ const Modal: React.FC<IModalProps> = ({ children, isOpen = false, elementId }) =
   );
 };
 
-/* TODO: add types */
 export const useModal: any = () => {
   const [isOpen, setOpen] = React.useState(false);
 
