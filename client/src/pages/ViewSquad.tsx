@@ -1,16 +1,27 @@
 import { gql, useQuery } from '@apollo/client';
+import { Helmet } from 'react-helmet';
 import { SubPage, Card } from 'components';
 import { Squad } from 'generated';
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled';
+import { DiscordWebhook, Registration } from 'views/squad';
 import { MemberList } from 'views/squad/MemberList';
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: stretch;
+  h1 {
+    text-align: center;
+  }
+`;
 
-const Inner = styled.div``;
-
-const OpenSquad = styled.div``;
+const Inner = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 //TODO
 const GET_SQUAD = gql`
@@ -39,19 +50,23 @@ export const ViewSquad: FC = () => {
   }
 
   return (
-    <SubPage title="View Squad">
-      <Container>
-        <Card>
-          <Inner>
-            inner
-          </Inner>
-        </Card>
-        <OpenSquad>
-          open squad
-        </OpenSquad>
-        <MemberList squadId={id} />
-      </Container>
-    </SubPage>
+    <>
+      <Helmet>
+        <title>Feature Creep | {data.squad.name}</title>
+      </Helmet>
+      <SubPage title="View Squad">
+        <Container>
+          <h1>{data.squad.name}</h1>
+          <Card disabled>
+            <Inner>
+              <Registration squadId={id} />
+              <DiscordWebhook />
+            </Inner>
+          </Card>
+          <MemberList squadId={id} />
+        </Container>
+      </SubPage>
+    </>
   );
 };
 
