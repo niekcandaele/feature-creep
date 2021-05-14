@@ -1,0 +1,41 @@
+{
+    "app_name": "Feature Creep",
+    "description": "Squad health checks made easy",
+    "hidden": "false",
+    "rank": "21",
+    "type": "Full App",
+    "contributed_by": "Community",
+    "repo_url": "https://github.com/niekcandaele/feature-creep",
+    "download_url": "https://github.com/niekcandaele/feature-creep/archive/refs/heads/master.zip",
+    "hosted_url": "",
+    "quick_deploy": "False",
+    "deploy_buttons": [],
+    "language": [
+        "TypeScript"
+    ],
+    "redis_commands": [
+        "GET",
+        "SET",
+        "JSON.GET",
+        "JSON.DEL",
+        "JSON.SET",
+        "JSON.MGET",
+        "RG.DUMPREGISTRATIONS",
+        "RG.PYEXECUTE",
+        "XADD"
+    ],
+    "redis_features": [
+        "Redis Streams"
+    ],
+    "redis_modules": [
+        "RediJSON",
+        "RedisGears"
+    ],
+    "app_image_urls": [],
+    "youtube_url": "",
+    "special_tags": [
+        "Hackathon"
+    ],
+    "verticals": [],
+    "markdown": "https://raw.githubusercontent.com/niekcandaele/feature-creep/master/Readme.md"
+}
