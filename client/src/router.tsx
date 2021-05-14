@@ -27,7 +27,7 @@ export const Router: FC = () => (
         <Route element={<ViewSquad />} path="/squad/:id" />
 
         <Route element={<CreateSession />} path="/session/create/:squadId" />
-        <Route element={<Session />} path="/session/:sessionId" />
+        <Route element={<Session />} path="/session/:sessionId/:squadId" />
       </AuthenticatedRoute>
 
       {/* Should remain the last route, since it matches with every path */}
