@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import styled from 'styled';
 import { useController, Control } from 'react-hook-form';
+import { Input } from '../field/style';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 const Container = styled.div`
@@ -9,15 +10,9 @@ const Container = styled.div`
 const SearchIcon = styled(AiOutlineSearch)`
   position: absolute;
   right: 10px;
-  top: 7px;
-  fill: ${({ theme }): string => theme.colors.secondary};
-`;
-const Input = styled.input`
-  padding-right: 35px;
-
-  &::placeholder {
-    font-weight: 600;
-  }
+  top: 50%;
+  transform: translateY(-50%);
+  fill: ${({ theme }): string => theme.colors.primary};
 `;
 
 export type SearchFieldProps = {
@@ -33,6 +28,8 @@ export const SearchField: FC<SearchFieldProps> = ({ name, control, placeholder =
     <Container>
       <Input
         autoComplete="off"
+        hasError={false}
+        hasIcon={false}
         type="text"
         {...inputProps}
         placeholder={placeholder}
