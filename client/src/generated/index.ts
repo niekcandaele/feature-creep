@@ -120,6 +120,8 @@ export type Query = {
   squads?: Maybe<Array<Maybe<Squad>>>;
   squad?: Maybe<Squad>;
   session?: Maybe<Session>;
+  search?: Maybe<Array<Maybe<SearchResponse>>>;
+  question?: Maybe<Question>;
 };
 
 
@@ -142,9 +144,22 @@ export type QuerySessionArgs = {
   id: Scalars['String'];
 };
 
+
+export type QuerySearchArgs = {
+  search: Scalars['String'];
+};
+
+
+export type QueryQuestionArgs = {
+  questionId: Scalars['String'];
+  sessionId: Scalars['String'];
+};
+
 export type Question = {
   id?: Maybe<Scalars['String']>;
   question?: Maybe<Scalars['String']>;
+  descriptionGood?: Maybe<Scalars['String']>;
+  descriptionBad?: Maybe<Scalars['String']>;
   total?: Maybe<Scalars['Int']>;
   answers?: Maybe<Array<Maybe<Answer>>>;
 };
@@ -152,6 +167,12 @@ export type Question = {
 export type RemoveMemberType = {
   personId: Scalars['String'];
   squadId: Scalars['String'];
+};
+
+export type SearchResponse = {
+  question?: Maybe<Scalars['String']>;
+  descriptionBad?: Maybe<Scalars['String']>;
+  descriptionGood?: Maybe<Scalars['String']>;
 };
 
 /** A sesion */
@@ -189,7 +210,7 @@ export enum SquadFilterType {
 
 export type AddQuestion = {
   sessionId: Scalars['String'];
-  question: Scalars['String'];
+  question?: Maybe<Question>;
 };
 
 export type AnswerQuestion = {
@@ -205,6 +226,12 @@ export type CreateSessionInput = {
 /** Ends a session. After this, no new questions or answers can be added */
 export type EndSession = {
   sessionId: Scalars['String'];
+};
+
+export type Question = {
+  question: Scalars['String'];
+  descriptionGood?: Maybe<Scalars['String']>;
+  descriptionBad?: Maybe<Scalars['String']>;
 };
 
 
