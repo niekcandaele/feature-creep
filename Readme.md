@@ -1,4 +1,4 @@
-#Feature creep
+# Feature creep
 
 ![Client ci](https://github.com/niekcandaele/feature-creep/actions/workflows/clientCi.yml/badge.svg)
 ![Server ci](https://github.com/niekcandaele/feature-creep/actions/workflows/serverCi.yml/badge.svg)
