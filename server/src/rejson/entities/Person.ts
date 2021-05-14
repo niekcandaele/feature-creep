@@ -61,4 +61,7 @@ export class Person extends BaseEntity {
   }
 
   async init() {}
+  async afterCreate() {
+    return this;
+  }
 }

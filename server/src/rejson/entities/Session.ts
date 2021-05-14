@@ -43,7 +43,7 @@ export class Session extends BaseEntity {
         'Must provide a squad when creating a new session'
       );
     }
-    this.date = opts.date || new Date();
+    this.date = new Date(opts.date) || new Date();
     this.active = opts.active === undefined ? true : opts.active;
     this.questions = opts.questions || [];
     this.squad = opts.squad;
@@ -52,6 +52,24 @@ export class Session extends BaseEntity {
     this.isReady = new Promise((resolve, reject) => {
       this.initialize().then(resolve).catch(reject);
     });
+  }
+
+  async afterCreate() {
+    // Questions based on https://engineering.atspotify.com/2014/09/16/squad-health-check-model/
+    const questions = [
+      'Delivering value',
+      'Easy to release',
+      'Fun',
+      'Health of codebase',
+      'Learning',
+      'Mission',
+      'Pawns or players',
+      'Speed',
+    ];
+    for (const question of questions) {
+      this.addQuestion(question);
+    }
+    return this;
   }
 
   async addQuestion(question: string) {

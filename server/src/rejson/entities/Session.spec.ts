@@ -17,11 +17,21 @@ describe('Session', () => {
 
     expect(session.date).to.be.lessThanOrEqual(new Date());
   });
+
+  it('Loads default questions into sessions', async () => {
+    const squad = await Squad.create({ name: 'Gryffindor' });
+    const created = await Session.create({ squad });
+    const session = await Session.findOne(created.id);
+    if (!session) throw new Error('No session');
+
+    expect(session.date).to.be.lessThanOrEqual(new Date());
+    expect(session.questions).to.have.length(8);
+  });
   it('Can add a question to the session', async () => {
     const squad = await Squad.create({ name: 'Gryffindor' });
     const created = await Session.create({ squad });
 
-    await created.addQuestion(
+    const createdQuestion = await created.addQuestion(
       'What is the answer to life, the universe and everything?'
     );
 
@@ -29,8 +39,11 @@ describe('Session', () => {
     if (!session) throw new Error('No session');
 
     expect(session.questions).to.be.an('array');
-    expect(session.questions).to.have.length(1);
-    expect(session.questions[0].question).to.be.equal(
+    // 8 default questions + 1 added
+    expect(session.questions).to.have.length(9);
+    const question = session.questions.find((q) => q.id === createdQuestion.id);
+    if (!question) throw new Error('question undefined');
+    expect(question.question).to.be.equal(
       'What is the answer to life, the universe and everything?'
     );
   });
@@ -38,21 +51,26 @@ describe('Session', () => {
     const squad = await Squad.create({ name: 'Gryffindor' });
     const created = await Session.create({ squad });
     const harry = await createPerson('harry');
-    await created.addQuestion(
+    const createdQuestion = await created.addQuestion(
       'What is the answer to life, the universe and everything?'
     );
-    const question = created.questions[0];
+    const question = createdQuestion;
 
     await created.answerQuestion(question.id, harry.id, '42');
 
     const session = await Session.findOne(created.id);
     if (!session) throw new Error('No session');
 
-    expect(session.questions[0].answers).to.be.an('array');
-    expect(session.questions[0].answers).to.have.length(1);
+    const questionAfter = session.questions.find(
+      (q) => q.id === createdQuestion.id
+    );
+    if (!questionAfter) throw new Error('question undefined');
 
-    expect(session.questions[0].answers[0].personId).to.be.equal(harry.id);
-    expect(session.questions[0].answers[0].answer).to.be.equal('42');
+    expect(questionAfter.answers).to.be.an('array');
+    expect(questionAfter.answers).to.have.length(1);
+
+    expect(questionAfter.answers[0].personId).to.be.equal(harry.id);
+    expect(questionAfter.answers[0].answer).to.be.equal('42');
   });
   it('Errors when the session is inactive and try to add question', async () => {
     const squad = await Squad.create({ name: 'Gryffindor' });

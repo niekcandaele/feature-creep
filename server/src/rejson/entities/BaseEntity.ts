@@ -85,10 +85,14 @@ export abstract class BaseEntity {
       '.',
       JSON.stringify({ squads: [], ...opts })
     );
-    const instance = new this({ ...opts, id: opts.id });
+    let instance = new this({ ...opts, id: opts.id });
     await instance.isReady;
+    instance = await instance.afterCreate();
+
     return instance;
   }
+
+  protected abstract afterCreate(): Promise<this>;
 
   /**
    * Remove an entity instance from the database based on Id.
