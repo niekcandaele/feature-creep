@@ -161,3 +161,6 @@ Inside the integration folder, you'll find scripts that simulate how a client mi
 ## Squad health checks
 
 [Health check model by Spotify](https://engineering.atspotify.com/2014/09/16/squad-health-check-model/)
+
+ ![Feature creep icon](https://github.com/niekcandaele/feature-creep/blob/emielvanseveren-patch-1/docs/img/company-icon.svg)
+ # BOOOOOOOO
