@@ -1,10 +1,10 @@
 {
   "files": {
-    "0.10b83260.iframe.bundle.js": "./0.10b83260.iframe.bundle.js",
-    "main.js": "./main.0727a3ed.iframe.bundle.js",
-    "runtime~main.js": "./runtime~main.a3823f71.iframe.bundle.js",
-    "vendors~main.js": "./vendors~main.39ccdad7.iframe.bundle.js",
-    "vendors~main.js.map": "./vendors~main.39ccdad7.iframe.bundle.js.map",
+    "0.c263411d.iframe.bundle.js": "./0.c263411d.iframe.bundle.js",
+    "main.js": "./main.7746f015.iframe.bundle.js",
+    "runtime~main.js": "./runtime~main.fb66641d.iframe.bundle.js",
+    "vendors~main.js": "./vendors~main.054b07c4.iframe.bundle.js",
+    "vendors~main.js.map": "./vendors~main.054b07c4.iframe.bundle.js.map",
     "4.cbcda6eb.iframe.bundle.js": "./4.cbcda6eb.iframe.bundle.js",
     "4.cbcda6eb.iframe.bundle.js.map": "./4.cbcda6eb.iframe.bundle.js.map",
     "5.6d30be53.iframe.bundle.js": "./5.6d30be53.iframe.bundle.js",
@@ -27,11 +27,11 @@
     "static/media/sheesh.8144f6a0.mp3": "./static/media/sheesh.8144f6a0.mp3",
     "static/media/thumbs-down.68938795.png": "./static/media/thumbs-down.68938795.png",
     "static/media/thumbs-up.583f94b5.png": "./static/media/thumbs-up.583f94b5.png",
-    "vendors~main.39ccdad7.iframe.bundle.js.LICENSE.txt": "./vendors~main.39ccdad7.iframe.bundle.js.LICENSE.txt"
+    "vendors~main.054b07c4.iframe.bundle.js.LICENSE.txt": "./vendors~main.054b07c4.iframe.bundle.js.LICENSE.txt"
   },
   "entrypoints": [
-    "runtime~main.a3823f71.iframe.bundle.js",
-    "vendors~main.39ccdad7.iframe.bundle.js",
-    "main.0727a3ed.iframe.bundle.js"
+    "runtime~main.fb66641d.iframe.bundle.js",
+    "vendors~main.054b07c4.iframe.bundle.js",
+    "main.7746f015.iframe.bundle.js"
   ]
 }
