@@ -4,10 +4,9 @@ on:
   push:
 
 jobs:
-  docker:
+  featurecreep-server:
     runs-on: ubuntu-latest
     steps:
-      # TODO: Parallel with matrix cause this is slow as :)
       - uses: actions/checkout@v2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -30,6 +29,21 @@ jobs:
       - name: Image digest
         run: echo ${{ steps.docker_build_server.outputs.digest }}
 
+  featurecreep-client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push featurecreep-client:latest
         id: docker_build_client
         uses: docker/build-push-action@v2
@@ -39,6 +53,21 @@ jobs:
           context: ./client
       - name: Image digest
         run: echo ${{ steps.docker_build_client.outputs.digest }}
+
+  featurecreep-client-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push featurecreep-client:dev
         id: docker_build_client_dev
