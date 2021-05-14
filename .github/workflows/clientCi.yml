@@ -3,7 +3,6 @@ name: Frontend CI
 on:
   workflow_dispatch:
   push:
-  pull_request:
 
 defaults:
   run:
