@@ -1,39 +1,8 @@
-import { FC, useState, useEffect, useContext } from 'react';
-import styled from 'styled';
-import { ThemeType } from 'styled/theme';
+import { FC, useState, useEffect } from 'react';
+import { Container, IconContainer } from './style';
 import { BiClipboard as ClipBoardIcon } from 'react-icons/bi';
 import { AiOutlineCheck as CheckMarkIcon } from 'react-icons/ai';
-import { ThemeContext } from 'styled-components';
 import { useSnackbar } from 'notistack';
-
-const Container = styled.div<{ maxWidth: number }>`
-  position: relative;
-  padding: 0;
-  outline: 0;
-  width: fit-content;
-  input {
-    display: block;
-    max-width: ${({ maxWidth }): number => maxWidth}px;
-    padding: 8px 30px 8px 8px;
-    border: 1px solid ${({ theme }): string => theme.colors.gray};
-    color: gray;
-    cursor: default;
-    &:hover {
-      cursor: default;
-    }
-  }
-`;
-
-const IconContainer = styled.div`
-  position: absolute;
-  top: 7px;
-  right: 7px;
-  svg {
-    fill: ${({ theme }): string => theme.colors.primary};
-    stroke: ${({ theme }): string => theme.colors.primary};
-    cursor: pointer;
-  }
-`;
 
 export interface ClipBoardProps {
   text: string;
@@ -61,10 +30,11 @@ export const ClipBoard: FC<ClipBoardProps> = ({ text, maxWidth }) => {
   }, [copied]);
 
   return (
-    <Container maxWidth={maxWidth} role="button" tabIndex={-1} >
+    <Container copied={copied} maxWidth={maxWidth} role="button" tabIndex={-1} >
       <input
         aria-describedby="clipboard-input-error"
         aria-invalid="false"
+        onClick={(e: any) => e.target.select()}
         readOnly
         type="text"
         value={text}
