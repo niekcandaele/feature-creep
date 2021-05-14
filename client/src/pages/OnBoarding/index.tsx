@@ -1,15 +1,16 @@
-import { FC, useEffect } from 'react';
-import styled from 'styled';
+import { FC, useEffect, useMemo } from 'react';
 import { FaGhost as Ghost } from 'react-icons/fa';
-import { hovering } from 'animations';
-import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, TextField } from 'components';
 import { Link, useNavigate } from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
 import { decode } from 'jsonwebtoken';
+import { Container, Content, ContentContainer, ContentWrapper, Image } from './style';
 import { Person, EditPersonType } from 'generated';
 import { useUser } from 'hooks';
+import * as yup from 'yup';
 import { getRedirect } from 'helpers';
+import { useValidationSchema } from 'hooks/useValidationResolver';
 
 const ADD_USER_DETAILS = gql`
   mutation addUserDetails($person:EditPersonType!) {
@@ -21,111 +22,28 @@ const ADD_USER_DETAILS = gql`
   }
 `;
 
-const Container = styled.div`
-  height: 100vh;
-  position: relative;
-  background:#141628;
- svg.link {
-    position: absolute;
-    left: 10%;
-    top: 125px;
-    animation: ${hovering(10, 10)} 2s alternate infinite ease-in-out;
-    fill: white;
-  }
-`;
-
-const ContentWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ContentContainer = styled.div`
-box-shadow: ${({ theme }) => theme.shadow};
-border-radius: 2rem;
-width: 1000px;
-height: 700px;
-display: flex;
-flex-direction:row;
-align-items: center;
-`;
-
-const Image = styled.div`
-  background:${({ theme }): string => theme.gradient.primary};
-  width: 400px;
-  height: 100%;
-  border-top-left-radius: 3rem;
-  border-bottom-left-radius: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-align: center;
-  font-size: ${({ theme }) => theme.fontSize.huge};
-  font-weight: 900;
-`;
-const Content = styled.div`
-  background-color: ${({ theme }): string => theme.colors.background};
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 8rem 0;
-  border-top-right-radius: 3rem;
-  border-bottom-right-radius: 3rem;
-
-  form {
-    width: 80%;
-    margin: 0 auto;
-  }
-
-  h2 {
-    font-size: 4rem;
-    margin-bottom: 2.5rem;
-  }
-  p {
-    color: white;
-    width: 62%; // fix this
-    margin: 0 auto;
-    text-align: center;
-    margin-bottom: 5rem;
-  }
-`;
-
 type FormFields = {
   email: string;
   firstName: string;
   lastName: string;
 }
 
-const resolver: Resolver<FormFields> = async (values) => {
-  return {
-    values: !values.firstName ? {} : values,
-    errors: !values.firstName
-      ? {
-        firstName: {
-          type: 'required',
-          message: 'Your firstname is required'
-        },
-        lastName: {
-          type: 'required',
-          message: 'This is required.'
-        }
-      }
-      : {}
-  };
-};
-
 export const OnBoarding: FC = () => {
-  const { control, handleSubmit, formState: { errors, isDirty }, setValue } = useForm<FormFields>({ resolver });
+  const validationSchema = useMemo(
+    () =>
+      yup.object({
+        firstName: yup.string().required('Firstname is required.'),
+        lastName: yup.string().required('Lastname is required.')
+      }),
+    []
+  );
+
+  const { control, handleSubmit, formState: { errors, isDirty }, setValue } = useForm<FormFields>({ resolver: useValidationSchema(validationSchema) });
   const [addUserDetails, { loading, error }] = useMutation<Person, { person: EditPersonType }>(ADD_USER_DETAILS);
   const { setUserData } = useUser();
   const navigate = useNavigate();
 
-  // block leaving this page.
+  // TODO: block leaving this page (could break some stuff)
   // const blocker = useBlocker(() => 'hello');
 
   useEffect(() => {
