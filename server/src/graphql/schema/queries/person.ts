@@ -14,7 +14,9 @@ export const personQuery = {
     args: { id?: string },
     context: IContext
   ) => {
-    if (args.id) { return Person.findOne(args.id); }
+    if (args.id) {
+      return Person.findOne(args.id);
+    }
 
     return context.user;
   },
