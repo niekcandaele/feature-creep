@@ -1,16 +1,16 @@
-import { FC, useEffect } from 'react';
-import { SubPage, Button } from 'components';
-import styled from 'styled';
 import { gql, useMutation } from '@apollo/client';
+import { Button, SubPage } from 'components';
 import { CreateSessionInput, Session } from 'generated';
+import { FC, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
+import styled from 'styled';
 
 const Container = styled.div`
 `;
 
 const CREATE_SESSION = gql`
-  mutation CREATE_SESSION($input: CreateSessionInput){
+  mutation CREATE_SESSION($input: createSessionInput!){
     createSession(input: $input){
       id
     }
