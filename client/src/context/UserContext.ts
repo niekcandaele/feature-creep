@@ -9,6 +9,7 @@ export interface UserData {
   email: string;
   firstName: string;
   lastName: string;
+  avatar: string;
   emailVerified: boolean;
   accessToken: string
   squads: string[];

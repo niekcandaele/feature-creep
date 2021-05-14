@@ -64,7 +64,9 @@ export const OnBoarding: FC = () => {
       if (errors) {
         /* Handle */
       }
-      setUserData({ firstName, lastName, email });
+
+      // generate random number between 1 and 5 (currently only 5 avatars);
+      setUserData({ firstName, lastName, email, avatar: `images/avatars/avatar-${Math.floor((Math.random() * 5) + 1)}` });
       navigate(getRedirect());
     }
   };
