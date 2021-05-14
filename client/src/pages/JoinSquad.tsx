@@ -1,11 +1,15 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client';
-import { Squad, } from 'generated';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { AddMemberType, Person, Squad, } from 'generated';
 import { Spinner, SubPage, Button } from 'components';
 import styled from 'styled';
+import people from 'images/emoji/people.png';
 
-import pensive from 'images/pensive.png';
+import pensive from 'images/emoji/pensive.png';
+import { SquadCards } from 'views/workspace';
+import { useUser } from 'hooks';
+import { useSnackbar } from 'notistack';
 
 const Container = styled.div`
   display: flex;
@@ -13,13 +17,16 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 60%;
-  h2{
-    font-size: 6rem;
-  }
+
   h3{
     font-size: 3rem;
   }
-  .title-open{
+
+  p {
+    text-align: center;
+  }
+  
+  p, .title-open{
     margin-bottom: 2rem;
   }
 `;
@@ -39,23 +46,40 @@ query GET_SQUAD_STATUS($id: String!) {
     open,
     members
   }
+  person {
+    id
+  }
+}
+`;
+
+const ADD_MEMBER_TO_SQUAD = gql`
+mutation ADD_MEMBER_TO_SQUAD($input: AddMemberType) {
+  addMemberToSquad(input: $input){
+    name
+  }
 }
 `;
 
 export const JoinSquad: FC = () => {
   const { id } = useParams();
   const [open, setOpen] = useState(false);
-  const { loading, data, error } = useQuery<{ squad: Squad }>(GET_SQUAD_STATUS, { variables: { id } });
+  const { loading, data, error } = useQuery<{ squad: Squad, person: Person }>(GET_SQUAD_STATUS, { variables: { id } });
+  const [addMemberToSquad, { called, data: joinResult, error: joinError }] = useMutation<{ squad: Squad }, { input: AddMemberType }>(ADD_MEMBER_TO_SQUAD);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (data) {
-      // join squad
-      const { squad } = data;
-      if (squad.open) {
-        setOpen(true);
-      }
-    }
+    if (data && data.squad && data.squad.open)
+      setOpen(true);
   }, [data]);
+
+  useEffect(() => {
+    if (called && joinResult)
+      enqueueSnackbar(`You have successfully joined ${data?.squad.name}`, { variant: 'success' });
+  }, [joinResult]);
+
+  if (error || joinError) {
+    return <div>error</div>;
+  }
 
   if (loading) {
     return (
@@ -67,13 +91,22 @@ export const JoinSquad: FC = () => {
 
   if (open) {
     return (
-      <SubPage title="Home">
+      <SubPage title="Join squad">
         <Container>
-          <h2>⚔️</h2>
-          <h3 className="title-open">join Gryffindor's squad</h3>
+          <img alt="squad" src={people} />
+          <h3 className="title-open">Join {data?.squad.name}!</h3>
+          <p>
+            Are you sure you want to join this squad?
+            <br />
+            People in this squad will be able to see your name and e-mail.</p>
           <Button
             isLoading={loading}
-            onClick={() => { /* dummy */ }}
+            onClick={() => {
+              if (data && data.person && data.person.id) {
+                addMemberToSquad({ variables: { input: { personId: data?.person.id, squadId: id } } });
+              }
+              // maybe add error message here if somehow person is not correctly defined.
+            }}
             size="large"
             text="join squad"
             variant="default"

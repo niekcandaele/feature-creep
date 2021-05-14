@@ -6,7 +6,7 @@ import { FC } from 'react';
 import styled from 'styled';
 
 const Container = styled.div`
-
+  width: 100%;
 `;
 
 interface MemberListProps {
@@ -25,18 +25,24 @@ export const MemberList: FC<MemberListProps> = ({ squadId }) => {
 
   return (
     <Container>
-      {
-        data.squad.members?.map((id) => {
-          if (id) {
-            return <MemberItem id={id} key={id} />;
-          }
-        })}
+      <ul>
+        {
+          data.squad.members?.map((id) => {
+            if (id) {
+              return <MemberItem id={id} key={id} />;
+            }
+            return null;
+          })}
+      </ul>
     </Container>
   );
 };
 
 const ItemContainer = styled.li`
-
+  border: 2px solid ${({ theme }): string => theme.colors.gray};
+  border-radius: 1rem;
+  padding: .5rem;
+  margin: 2rem 0;
 `;
 
 interface MemberItemProps {
@@ -49,17 +55,17 @@ const MemberItem: FC<MemberItemProps> = ({ id }) => {
   if (error) {
     return <ItemContainer>error</ItemContainer>;
   }
+  if (loading) {
+    return (
+      <ItemContainer>
+        <Spinner />
+      </ItemContainer>
+    );
+  }
 
   return (
     <ItemContainer>
-      {loading || !data
-        ?
-        <Spinner />
-        :
-        <>
-          <div>{data?.person.firstName} {data?.person.lastName}</div>
-        </>
-      }
+      <div>{data?.person.firstName} {data?.person.lastName}</div>
     </ItemContainer>
   );
 };
