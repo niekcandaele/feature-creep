@@ -1,8 +1,9 @@
-import { gql, useMutation } from '@apollo/client';
-import { Button, SubPage } from 'components';
+import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import { Button, SearchField, SubPage } from 'components';
 import { CreateSessionInput, Session } from 'generated';
+import { useDebounce } from 'hooks';
 import { FC, useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 import styled from 'styled';
 
@@ -17,40 +18,74 @@ const CREATE_SESSION = gql`
   }
 `;
 
+const SEARCH = gql`
+  query SEARCH($input: String!) {
+    search(search: $input) {
+    	question
+      descriptionBad
+      descriptionGood
+    }
+  }
+`;
+
 type FormFields = {
-  question: string;
+  search: string;
 }
 
 export const CreateSession: FC = () => {
   const { squadId } = useParams();
   const { handleSubmit, control, formState: { errors } } = useForm<FormFields>();
-  const [createSession, { loading, data }] = useMutation<{ session: Session }, { input: CreateSessionInput }>(CREATE_SESSION);
+  const [createSession, { data: sessionMutation }] = useMutation<{ createSession: Session }, { input: CreateSessionInput }>(CREATE_SESSION);
+  const [searchQuery, { data: searchData }] = useLazyQuery(
+    SEARCH,
+    { variables: { input: 'english' } }
+  );
   const navigate = useNavigate();
-  const onSubmit: SubmitHandler<FormFields> = ({ question }) => { };
+  const searchTerm = useWatch({ control, name: 'search' });
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  const onSubmit = () => {
+    console.log(sessionMutation);
+
+    navigate(`/session/${sessionMutation?.createSession.id}`);
+  };
 
   useEffect(() => {
+    // TODO: only do this once
     createSession({ variables: { input: { squadId } } });
   }, []);
 
+  // Execute search query
   useEffect(() => {
-    if (data && data.session) {
-      // navigate after session is created.
-      navigate(`session/${data.session.id}`);
+    console.log(searchTerm);
+    console.log(debouncedSearchTerm);
+
+    if (searchTerm) {
+      searchQuery({ variables: { input: searchTerm } });
     }
-    // show error
-  }, [data]);
+  }, [debouncedSearchTerm]);
 
   return (
     <SubPage title="Create new session">
       <Container>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Button
-            isLoading={loading}
-            onClick={() => { /* dummy */ }}
-            size="large"
-            text="Create session"
+
+        <form>
+          <SearchField
+            control={control}
+            name="search"
+            placeholder="Deploy"
           />
         </form>
+
+        <Container>
+          {JSON.stringify(searchData, null, 4)}
+        </Container>
+
+        <Button
+          onClick={() => onSubmit()}
+          size="large"
+          text="Start session"
+        />
       </Container>
     </SubPage>
   );
