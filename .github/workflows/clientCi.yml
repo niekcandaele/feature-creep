@@ -3,11 +3,7 @@ name: Frontend CI
 on:
   workflow_dispatch:
   push:
-    paths:
-      - "client/**"
   pull_request:
-    paths:
-      - "client/**"
 
 defaults:
   run:
