@@ -15,13 +15,13 @@ services:
       - redisinsight:/db
   # Dev mode, no auth required
   feature-creep-server-dev:
-    build: ./server
-    #image: ghcr.io/niekcandaele/featurecreep-server:latest
+    #build: ./server
+    image: ghcr.io/niekcandaele/featurecreep-server:latest
     ports:
       - 127.0.0.1:4000:4000
-    command: "npm run dev"
     environment: 
       - REDIS_HOST=redis
+      - NODE_ENV=development
   feature-creep-client-dev:
     image: ghcr.io/niekcandaele/featurecreep-client:dev
     ports:

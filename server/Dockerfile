@@ -13,12 +13,22 @@ RUN npm ci
 # Bundle app source
 COPY . .
 
-CMD [ "npm", "run", "build" ]
+RUN npm run build
+
+RUN ls -la
 
 FROM node:14-alpine as runner
 
-COPY --from=builder /app /app
 WORKDIR /app
+
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/build ./build
+RUN npm ci --only=prod
+
+
+
+RUN ls -la
+
 
 USER node
 
