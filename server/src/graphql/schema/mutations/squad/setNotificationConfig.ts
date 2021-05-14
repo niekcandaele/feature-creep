@@ -1,4 +1,5 @@
 import { UserInputError } from 'apollo-server';
+import axios from 'axios';
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../../..';
@@ -38,9 +39,29 @@ export const setNotificationConfig = {
     if (!webhookRegex.test(args.input.discordWebhook))
       throw new UserInputError('Discord webhook failed validation');
 
+    const check = await sendWebhookTestMessage(args.input.discordWebhook);
+    if (!check)
+      throw new UserInputError(
+        'Discord webhook correct form but cannot send a message'
+      );
+
     squad.notificationConfig.discordWebhook = args.input.discordWebhook;
     squad = await squad.save();
 
     return squad;
   },
 };
+
+export async function sendWebhookTestMessage(webhookUrl: string) {
+  try {
+    const res = await axios.post(webhookUrl, {
+      content:
+        "This is a test message from Feature Creep, if you see this, it's working!",
+      username: 'Feature Creep',
+    });
+
+    return 200 <= res.status && res.status < 400;
+  } catch (error) {
+    return false;
+  }
+}
