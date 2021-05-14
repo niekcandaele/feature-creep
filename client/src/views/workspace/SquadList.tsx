@@ -74,7 +74,7 @@ const Header = styled.div`
 export const SquadList: FC = () => {
   const { loading, error, data } = useQuery<{ squads: Squad[] }, GetSquadInput>(
     GET_OWN_SQUADS,
-    { variables: { filter: SquadFilterType.Memberof } }
+    { variables: { filter: SquadFilterType.Memberof }, fetchPolicy: 'no-cache' }
   );
 
   if (loading && !data) {
