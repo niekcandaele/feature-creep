@@ -119,10 +119,16 @@ export class RediSearch {
       .filter((_: unknown) => Array.isArray(_))
       .map(
         (_: string[]): IQuestion => {
+          const questionIdx = _.findIndex((_) => _ === 'question');
+          const descriptionBadIdx = _.findIndex((_) => _ === 'descriptionBad');
+          const descriptionGoodIdx = _.findIndex(
+            (_) => _ === 'descriptionGood'
+          );
+
           return {
-            question: _[1],
-            descriptionBad: _[5],
-            descriptionGood: _[3],
+            question: _[questionIdx + 1],
+            descriptionBad: _[descriptionBadIdx + 1],
+            descriptionGood: _[descriptionGoodIdx + 1],
           };
         }
       );

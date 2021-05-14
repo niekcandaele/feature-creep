@@ -1,6 +1,7 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql';
 
 import { personQuery } from './queries/person';
+import { searchQuery } from './queries/searchQuestion';
 import { sessionQuery } from './queries/session';
 import { squadQuery, squadsQuery } from './queries/squad';
 
@@ -18,5 +19,6 @@ export const queryType = new GraphQLObjectType({
     squads: squadsQuery,
     squad: squadQuery,
     session: sessionQuery,
+    search: searchQuery,
   }),
 });
