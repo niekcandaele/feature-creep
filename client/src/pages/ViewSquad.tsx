@@ -29,7 +29,6 @@ const GET_SQUAD = gql`
 query GET_SQUAD($id: String!) {
     squad(id: $id) {
       name
-      members
       open
     }
   }

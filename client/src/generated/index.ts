@@ -48,6 +48,8 @@ export type Mutation = {
   endSession?: Maybe<Session>;
   /** Sets a squad to "open" for 30 minutes, which means anyone with a link can join the squad */
   setSquadOpen?: Maybe<Squad>;
+  /** Sets a notification config (currently Discord webhook) */
+  setNotificationConfig?: Maybe<Squad>;
 };
 
 
@@ -95,6 +97,15 @@ export type MutationSetSquadOpenArgs = {
   input?: Maybe<SetOpenStatusInput>;
 };
 
+
+export type MutationSetNotificationConfigArgs = {
+  input?: Maybe<SetNotificationConfigInput>;
+};
+
+export type NotificationConfig = {
+  discordWebhook?: Maybe<Scalars['String']>;
+};
+
 /** A person */
 export type Person = {
   id?: Maybe<Scalars['String']>;
@@ -109,6 +120,11 @@ export type Query = {
   squads?: Maybe<Array<Maybe<Squad>>>;
   squad?: Maybe<Squad>;
   session?: Maybe<Session>;
+};
+
+
+export type QueryPersonArgs = {
+  id?: Maybe<Scalars['String']>;
 };
 
 
@@ -146,6 +162,11 @@ export type Session = {
   questions?: Maybe<Array<Maybe<Question>>>;
 };
 
+export type SetNotificationConfigInput = {
+  squadId: Scalars['String'];
+  discordWebhook?: Maybe<Scalars['String']>;
+};
+
 export type SetOpenStatusInput = {
   squadId: Scalars['String'];
 };
@@ -154,10 +175,11 @@ export type SetOpenStatusInput = {
 export type Squad = {
   id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  members?: Maybe<Array<Maybe<Scalars['String']>>>;
+  members?: Maybe<Array<Maybe<Person>>>;
   open?: Maybe<Scalars['Boolean']>;
   activeSession?: Maybe<Session>;
   sessions?: Maybe<Array<Maybe<Session>>>;
+  notificationConfig?: Maybe<NotificationConfig>;
 };
 
 export enum SquadFilterType {
@@ -171,7 +193,7 @@ export type AddQuestion = {
 };
 
 export type AnswerQuestion = {
-  answer: Scalars['String'];
+  answer: Scalars['Int'];
   questionId: Scalars['String'];
   sessionId: Scalars['String'];
 };
@@ -186,12 +208,13 @@ export type EndSession = {
 };
 
 
-export interface PossibleTypesResultData {
-  possibleTypes: {
-    [key: string]: string[]
-  }
-}
-const result: PossibleTypesResultData = {
+      export interface PossibleTypesResultData {
+        possibleTypes: {
+          [key: string]: string[]
+        }
+      }
+      const result: PossibleTypesResultData = {
   "possibleTypes": {}
 };
-export default result;
+      export default result;
+    

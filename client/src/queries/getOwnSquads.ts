@@ -5,7 +5,9 @@ export const GET_OWN_SQUADS = gql`
     squads(filter: $input){
     name
     id
-    members
+    members {
+      id
+    }
     activeSession {
       id
     }
