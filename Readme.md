@@ -35,10 +35,21 @@ cd server
 npm ci # Use "ci" so it respects the lockfile
 
 # When running "npm start" you will be running in production mode
-npm start
+npm run build && npm start
 
 # When running "npm run dev" you will be running in development mode
 npm run dev
+```
+
+#### Running the tests
+
+```sh
+# Make sure a redis instance is running 
+# Warning: the tests will write and remove data from Redis
+# DO NOT run this on a production database!
+
+cd server
+npm test
 ```
 
 
@@ -103,7 +114,7 @@ Once the server is started, you can find the GraphQL playground at `http://local
 
 When in development mode, you do not need to provide any authentication. Go crazy!
 
-In production mode, you must first obtain a valid JWT. Visit the Cognito login page and grab the tokens from the redirect URL. On the playground page, at the bottom you'll see a tab "HTTP Headers".
+In production mode, you must first obtain a valid JWT. Visit the Cognito login page and grab the tokens from the redirect URL. On the playground page, at the bottom you'll see a tab "HTTP Headers". Make sure you use the **access token** here, not the id token.
 
 ```json
 {
@@ -124,6 +135,28 @@ In production mode, you must first obtain a valid JWT. Visit the Cognito login p
 
 ![example Discord output](./docs/img/discord_report.png)
 
+
+## Backend architecture
+
+Inside the folder `server/src` you will find the backend code.
+
+### gears
+
+Contains our Redis Gears functions. The file `gears.ts` includes a client to interact with Redis Gears. It supports running functions directly and registering background functions. 
+
+### graphql
+
+Contains the GraphQL API, created with Apollo.
+
+### resjon
+
+Contains a very rudimentary (it's a hackathon after all :)) ORM. This is where most of the business logic lives. 
+
+### test
+
+The tests! This folder contains some helper functions used during the tests.
+
+Inside the integration folder, you'll find scripts that simulate how a client might use the API. There are also tests for individual files, these live next to the files they're testing.
 
 ## Squad health checks
 
