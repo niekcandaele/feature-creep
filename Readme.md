@@ -35,7 +35,7 @@ cd server
 npm ci # Use "ci" so it respects the lockfile
 
 # When running "npm start" you will be running in production mode
-npm start
+npm run build && npm start
 
 # When running "npm run dev" you will be running in development mode
 npm run dev
