@@ -1,10 +1,4 @@
-import {
-  GraphQLBoolean,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'graphql';
+import { GraphQLBoolean, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
 import { personType } from './person';
 
@@ -30,6 +24,12 @@ export const questionType = new GraphQLObjectType({
       type: GraphQLString,
     },
     question: {
+      type: GraphQLString,
+    },
+    descriptionGood: {
+      type: GraphQLString,
+    },
+    descriptionBad: {
       type: GraphQLString,
     },
     total: {
