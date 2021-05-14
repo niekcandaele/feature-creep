@@ -35,9 +35,9 @@ describe('Session', () => {
     const squad = await Squad.create({ name: 'Gryffindor' });
     const created = await Session.create({ squad });
 
-    const createdQuestion = await created.addQuestion(
-      'What is the answer to life, the universe and everything?'
-    );
+    const createdQuestion = await created.addQuestion({
+      question: 'What is the answer to life, the universe and everything?',
+    });
 
     const session = await Session.findOne(created.id);
     if (!session) throw new Error('No session');
@@ -55,9 +55,9 @@ describe('Session', () => {
     const squad = await Squad.create({ name: 'Gryffindor' });
     const created = await Session.create({ squad });
     const harry = await createPerson('harry');
-    const createdQuestion = await created.addQuestion(
-      'What is the answer to life, the universe and everything?'
-    );
+    const createdQuestion = await created.addQuestion({
+      question: 'What is the answer to life, the universe and everything?',
+    });
     await created.answerQuestion(createdQuestion.id, harry.id, 1);
 
     const session = await Session.findOne(created.id);
@@ -79,9 +79,9 @@ describe('Session', () => {
     const squad = await Squad.create({ name: 'Gryffindor' });
     const created = await Session.create({ squad });
     const harry = await createPerson('harry');
-    const createdQuestion = await created.addQuestion(
-      'What is the answer to life, the universe and everything?'
-    );
+    const createdQuestion = await created.addQuestion({
+      question: 'What is the answer to life, the universe and everything?',
+    });
 
     await expect(
       created.answerQuestion(createdQuestion.id, harry.id, 42)
@@ -94,18 +94,18 @@ describe('Session', () => {
     await created.end();
 
     await expect(
-      created.addQuestion(
-        'What is the answer to life, the universe and everything?'
-      )
+      created.addQuestion({
+        question: 'What is the answer to life, the universe and everything?',
+      })
     ).to.eventually.be.rejectedWith('Session has ended');
   });
   it('Errors when the session is inactive and try to add answer', async () => {
     const squad = await Squad.create({ name: 'Gryffindor' });
     const created = await Session.create({ squad });
     const harry = await createPerson('harry');
-    await created.addQuestion(
-      'What is the answer to life, the universe and everything?'
-    );
+    await created.addQuestion({
+      question: 'What is the answer to life, the universe and everything?',
+    });
     await created.end();
     const question = created.questions[0];
 

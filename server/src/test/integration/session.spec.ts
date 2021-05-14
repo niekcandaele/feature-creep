@@ -63,7 +63,7 @@ describe('INTEGRATION session activity', () => {
           mutation addQuestion {
             addQuestion(
               input: {
-                question: "How you doin ?"
+                question: {question: "How you doin"}
                 sessionId: "${session.id}"
               }
             ) {
@@ -78,7 +78,7 @@ describe('INTEGRATION session activity', () => {
     const question = addQuestionRes.data.addQuestion;
 
     expect(question.id).to.be.a('string');
-    expect(question.question).to.be.equal('How you doin ?');
+    expect(question.question).to.be.equal('How you doin');
     expect(question.answers).to.be.an('array');
     expect(question.answers).to.have.length(0);
 
@@ -149,7 +149,7 @@ describe('INTEGRATION session activity', () => {
         mutation addQuestion {
           addQuestion(
             input: {
-              question: "How you doin' ?"
+              question:  {question: "How you doin"}
               sessionId: "${session.id}"
             }
           ) {
