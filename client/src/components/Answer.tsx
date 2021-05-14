@@ -3,7 +3,7 @@ import styled from 'styled';
 export const Answer = styled.div<{ answer: undefined | 0 | 1 | 2 }>`
 
   width: 100%;
-  height: 100px;
+  height: 100%;
   border-radius: 50%;
 
   ${({ answer, theme }) => {

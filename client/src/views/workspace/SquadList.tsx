@@ -136,9 +136,14 @@ const SquadItem: FC<SquadItemProps> = ({ squad }) => {
       {getMembers()}
       <Button
         color="quaternary"
-        disabled={!hasActiveSession}
-        onClick={() => navigate(`/session/${squad.activeSession?.id}`)}
-        text={hasActiveSession ? 'Join session' : 'No active session'}
+        onClick={() => {
+          if (hasActiveSession) {
+            navigate(`/session/${squad.activeSession?.id}/${squad.id}`);
+          } else {
+            navigate(`/session/create/${squad.id}`);
+          }
+        }}
+        text={hasActiveSession ? 'Join session' : 'Create a new session'}
         variant="outline"
       />
       <Link arrow to={`/squad/${squad.id}`}>View more</Link>

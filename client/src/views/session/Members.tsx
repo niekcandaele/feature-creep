@@ -1,18 +1,27 @@
 import { gql, useQuery } from '@apollo/client';
-import { Answer } from 'components';
+import { Answer, Card } from 'components';
 import { Answer as AnswerType, Question, Squad } from 'generated';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import styled from 'styled';
 
+const Inner = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  h4 {
+    margin-bottom: 1.5rem;
+  }
+`;
 /* Contains the members that are part of the session */
 const GET_SQUAD = gql`
   query GET_SQUAD ($id: String!){
-    Squad(id: $id){
+    squad(id: $id){
       name
       members {
         id
-        firstname
-        lastname
+        firstName
+        lastName
       }
     }
   }
@@ -23,7 +32,9 @@ const GET_ANSWERS = gql`
     question(questionId: $questionId, sessionId: $sessionId){
       answers {
         answer
-        person
+        person {
+          id
+        }
       }
     }
   }
@@ -40,7 +51,7 @@ export const Members: FC<MemberProps> = ({ questionId, sessionId }) => {
     GET_ANSWERS,
     {
       variables: { sessionId: sessionId, questionId: questionId },
-      pollInterval: 1000
+      pollInterval: 5000
     }
   );
 
@@ -54,20 +65,39 @@ export const Members: FC<MemberProps> = ({ questionId, sessionId }) => {
   }
 
   return (
-    <div>
-      { data.squad.members?.map((person) => (
-        <Member
-          id={person?.id}
-          firstName={person?.firstName!}
-          lastName={person?.lastName!}
-          // @ts-ignore
-          answerList={questionData?.question.answers}
-        />
-      ))
-      }
-    </div>
+    <Card disabled>
+      <Inner>
+        <h4>Member Answer status</h4>
+        {data.squad.members?.map((person) => (
+          <Member
+            // @ts-ignore
+            answerList={questionData?.question.answers}
+            firstName={person?.firstName!}
+            // @ts-ignore
+            id={person?.id}
+            lastName={person?.lastName!}
+          />
+        ))
+        }
+      </Inner>
+    </Card>
   );
 };
+////////////////////////////////////////////////:
+// MEMBER
+/////////////////////////////////////////////////
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const AnswerWrapper = styled.div`
+  width: 20px;
+  height: 20px;
+  margin-left: 2rem;
+`;
 
 interface MemberProps {
   id: string;
@@ -90,10 +120,10 @@ const Member: FC<MemberProps> = ({ id, firstName, lastName, answerList }) => {
   useEffect(() => { getAnswer(); }, [answerList]);
 
   return (
-    <div>
+    <Container>
       <p>{firstName} {lastName}</p>
       { /* @ts-ignore */}
-      <Answer answer={answer} />
-    </div>
+      <AnswerWrapper><Answer answer={answer} /></AnswerWrapper>
+    </Container>
   );
 };

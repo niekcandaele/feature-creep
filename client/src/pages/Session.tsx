@@ -6,13 +6,21 @@ import styled from 'styled';
 import { Members, Question } from 'views/session';
 
 const Container = styled.div``;
-
-
+const Inner = styled.div`
+  display: flex;
+  align-items: stretch;
+  justify-content: space-evenly;
+`;
 
 const GET_SESSION = gql`
-  query GET_SESSIOn ($id: String!){
-    Session(id: $id){
-       questions
+  query GET_SESSION ($id: String!){
+    session(id: $id){
+       questions {
+         id
+         question
+         descriptionGood
+         descriptionBad
+       }
     }
   }
 `;
@@ -34,8 +42,8 @@ type SessionState = {
 }
 
 export const Session: FC = () => {
-  const { sessionId, squadId } = useParams();
-  const initialState: SessionState = { currentQuestion: 0, sessionId }
+  const { sessionId } = useParams();
+  const initialState: SessionState = { currentQuestion: 0, sessionId };
   const [state, dispatch] = useReducer(sessionReducer, initialState);
 
   // get squad information & session information
@@ -53,15 +61,20 @@ export const Session: FC = () => {
   if (sessionData && sessionData.session && sessionData.session.questions) {
     return (
       <Container>
+        <Inner>
 
-        {/* @ts-ignore */}
-        <Members questionId={sessionData.session.questions[state.currentQuestion]} sessionId={state.sessionId} />
-        <Question
-          dispatch={dispatch}
-          sessionId={state.sessionId}
-          {/* @ts-ignore */}
-          question={sessionData?.session.questions[state.currentQuestion]}
-        />
+          <Members
+            // @ts-ignore
+            questionId={sessionData.session.questions[state.currentQuestion].id}
+            sessionId={state.sessionId}
+          />
+          <Question
+            dispatch={dispatch}
+            // @ts-ignore
+            question={sessionData.session.questions[state.currentQuestion]}
+            sessionId={state.sessionId}
+          />
+        </Inner>
       </Container>
     );
   }

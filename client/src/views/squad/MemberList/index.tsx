@@ -1,6 +1,6 @@
 import { useMutation, useQuery, gql } from '@apollo/client';
-import { Squad, RemoveMemberType } from 'generated';
-import { GET_SQUAD_MEMBER_IDS } from 'queries';
+import { Squad, RemoveMemberType, Person } from 'generated';
+import { GET_SQUAD_MEMBERS } from 'queries';
 import { FC, useEffect, useState } from 'react';
 import styled from 'styled';
 import { MemberListItem } from './MemberListItem';
@@ -10,7 +10,9 @@ const REMOVE_MEMBER_FROM_SQUAD = gql`
     removeMemberFromSquad(input: $input){
         id
         name
-        members
+        members {
+          id
+        }
   }
 }
 `;
@@ -36,7 +38,7 @@ interface MemberListProps {
 
 export const MemberList: FC<MemberListProps> = ({ squadId }) => {
   const [squad, setSquad] = useState<Squad>();
-  const { data, loading, error } = useQuery<{ squad: Squad }>(GET_SQUAD_MEMBER_IDS, { variables: { id: squadId } });
+  const { data, loading, error } = useQuery<{ squad: Squad }>(GET_SQUAD_MEMBERS, { variables: { id: squadId } });
 
   const [removeMemberFromSquad, { loading: removedLoading, data: newSquad, error: newSquadError }] = useMutation<{ removeMemberFromSquad: Squad }, { input: RemoveMemberType }>(REMOVE_MEMBER_FROM_SQUAD);
 
@@ -47,6 +49,12 @@ export const MemberList: FC<MemberListProps> = ({ squadId }) => {
       setSquad(data.squad);
     }
   }, [newSquad]);
+
+  useEffect(() => {
+    if (data) {
+      setSquad(data.squad);
+    }
+  }, [data]);
 
   if (loading || removedLoading) {
     return <div>loading..</div>;
@@ -59,14 +67,16 @@ export const MemberList: FC<MemberListProps> = ({ squadId }) => {
   function getMembers() {
     if (squad && squad.members) {
       // @ts-ignore
-      return squad.members.map((id: string, index: number) => {
-        if (id) {
+      return squad.members.map((person: Person, index: number) => {
+        if (person && person.id && person.firstName && person.lastName) {
           return (
             <MemberListItem
+              firstName={person.firstName}
+              id={person.id}
               index={index}
-              key={id}
+              key={person.id}
+              lastName={person.lastName}
               loading={removedLoading}
-              personId={id}
               removeMember={removeMemberFromSquad}
               squadId={squadId}
             />

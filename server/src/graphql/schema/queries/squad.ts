@@ -90,7 +90,8 @@ export const squadQuery = {
     const squad = await Squad.findOne(args.id);
     if (!squad) throw new UserInputError('Invalid squad ID');
     await squad.isReady;
+    const members = await squad.getMembers();
     await squad.getActiveSession();
-    return squad;
+    return { ...squad, members };
   },
 };

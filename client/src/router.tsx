@@ -1,14 +1,18 @@
 import { AuthenticatedRoute } from 'components';
 import { FC } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import {
-  Home,
-  Redirect,
+  CreateSession,
+  CreateSquad,
   Frame,
-  PageNotFound,
+  Home,
+  JoinSquad,
   OnBoarding,
-  ViewSquad, CreateSquad, JoinSquad,
-  CreateSession, Session,
+  PageNotFound,
+  Redirect,
+  Session,
+  ViewSquad,
   Workspace,
 } from './pages';
 
