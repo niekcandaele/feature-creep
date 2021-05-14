@@ -5,7 +5,7 @@ export { Redirect } from './Redirect';
 export { Session } from './Session';
 export { Frame } from './Frame';
 export { Workspace } from './Workspace';
-export { OnBoarding } from './onBoarding';
+export { OnBoarding } from './OnBoarding';
 export { ViewSquad } from './ViewSquad';
 export { CreateSquad } from './CreateSquad';
 export { JoinSquad } from './JoinSquad';
