@@ -20,12 +20,14 @@ export const sessionQuery = {
     if (!session) throw new UserInputError('Session not found');
     await session.isReady;
 
-    const answers = await Promise.all(session.activeQuestion.answers.map(async a => {
-      const person = await Person.findOne(a.personId);
-      return { ...a, person };
-    }));
+    const answers = await Promise.all(
+      session.activeQuestion.answers.map(async (a) => {
+        const person = await Person.findOne(a.personId);
+        return { ...a, person };
+      })
+    );
 
-    session.activeQuestion.answers = answers
+    session.activeQuestion.answers = answers;
 
     return session;
   },

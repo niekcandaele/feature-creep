@@ -184,7 +184,7 @@ export class RediSearch {
 export const defaultQuestions = [
   {
     descriptionGood:
-      "We deliver great stuff ! Were proud of  it and our stakeholders are really happy",
+      'We deliver great stuff ! Were proud of  it and our stakeholders are really happy',
     descriptionBad:
       'We deliver crap. We feel ashamed to deliver it. Our stakeholders hate us.',
     question: 'Delivering value',
@@ -204,7 +204,7 @@ export const defaultQuestions = [
   },
   {
     descriptionGood:
-      "Were proud of  the quality of  our code! It is clean, easy to read and has great test coverage. ",
+      'Were proud of  the quality of  our code! It is clean, easy to read and has great test coverage. ',
     descriptionBad:
       'Our code is a pile of  dung and technical debt is raging out of  control. ',
     question: 'Health of codebase',

@@ -1,7 +1,10 @@
 import { UserInputError } from 'apollo-server';
 import { v4 as uuid } from 'uuid';
 
-import { defaultQuestions, IQuestion as ISearchQuestion } from '../../redisearch/client';
+import {
+  defaultQuestions,
+  IQuestion as ISearchQuestion,
+} from '../../redisearch/client';
 import { getDb } from '../db';
 import { BaseEntity } from './BaseEntity';
 import { Person } from './Person';

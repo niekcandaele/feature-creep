@@ -14,20 +14,22 @@ export const questionQuery = {
   },
   resolve: async (
     parent: Record<string, never>,
-    args: { questionId: string, sessionId: string },
+    args: { questionId: string; sessionId: string },
     context: IContext
   ) => {
     const session = await Session.findOne(args.sessionId);
     if (!session) throw new UserInputError('Invalid session ID');
 
-    const question = session.questions.find(q => q.id === args.questionId);
+    const question = session.questions.find((q) => q.id === args.questionId);
 
     if (!question) throw new UserInputError('Invalid question ID');
 
-    question.answers = await Promise.all(question.answers.map(async a => {
-      const person = await Person.findOne(a.personId);
-      return { ...a, person };
-    }));
+    question.answers = await Promise.all(
+      question.answers.map(async (a) => {
+        const person = await Person.findOne(a.personId);
+        return { ...a, person };
+      })
+    );
 
     return question;
   },

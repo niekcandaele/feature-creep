@@ -21,6 +21,6 @@ export const queryType = new GraphQLObjectType({
     squad: squadQuery,
     session: sessionQuery,
     search: searchQuery,
-    question: questionQuery
+    question: questionQuery,
   }),
 });
