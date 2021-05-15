@@ -4,6 +4,32 @@
 ![Server ci](https://github.com/niekcandaele/feature-creep/actions/workflows/serverCi.yml/badge.svg)
 
 
+An application for [squad health checks](https://engineering.atspotify.com/2014/09/16/squad-health-check-model/). 
+Built for [Redis Hackathon 2021](https://redislabs.com/hackathon-2021/).
+
+## Demo
+[![Video](https://img.youtube.com/vi/Kmqr_M1B9R4/0.jpg)](https://www.youtube.com/watch?v=Kmqr_M1B9R4 "Video Title")
+
+
+## Features
+
+- Uses RedisJSON as main datastore
+- Uses Redis Streams to trigger BG processing
+- Uses RediSearch for storing and searching previous questions
+- Users can create "Squads"
+- Users can invite other users to join their Squad
+- Users can start a Session in the context of a Squad
+- A Session starts with some default questions, but users can add their own questions as well. 
+- When a user adds a custom question, it is added to a list of questions which is indexed by RediSearch
+- This search index is used to recommend questions to users.
+- A Session currently is a healthcheck, but can be expanded to other agile meetings in the future
+- After a Session ends, background processing of the data happens (powered by Redis Gears). 
+- After background processing, a report is sent to Discord 
+- After background processing, data is saved to Redis Timeseries
+
+![example Discord output](https://raw.githubusercontent.com/niekcandaele/feature-creep/master/docs/img/discord_report.png)
+
+
 ## Installation
 
 When evaluating this application and you do not require a production-grade setup, we highly recommend using the Docker compose installation method in development mode. Why development mode? Because it allows you to skip deploying the authentication stack to AWS :). 
@@ -123,23 +149,6 @@ In production mode, you must first obtain a valid JWT. Visit the Cognito login p
 }
 ```
 
-## Features
-
-- Uses RedisJSON as main datastore
-- Uses Redis Streams to trigger BG processing
-- Uses RediSearch for storing and searching previous questions
-- Users can create "Squads"
-- Users can invite other users to join their Squad
-- Users can start a Session in the context of a Squad
-- A Session starts with some default questions, but users can add their own questions as well. 
-- When a user adds a custom question, it is added to a list of questions which is indexed by RediSearch
-- This search index is used to recommend questions to users.
-- A Session currently is a healthcheck, but can be expanded to other agile meetings in the future
-- After a Session ends, background processing of the data happens (powered by Redis Gears). 
-- After background processing, a report is sent to Discord 
-
-![example Discord output](https://raw.githubusercontent.com/niekcandaele/feature-creep/master/docs/img/discord_report.png)
-
 
 ## Backend architecture
 
@@ -193,9 +202,7 @@ Github Actions runs scripts for us on every commit.
 - [Chromatic](https://www.chromatic.com/) is used for reviewing UI changes
 - On the master branch, Storybook is built and deployed to Github Pages
 
-## Squad health checks
 
-[Health check model by Spotify](https://engineering.atspotify.com/2014/09/16/squad-health-check-model/)
 
  ![Feature creep icon](https://raw.githubusercontent.com/niekcandaele/feature-creep/master/docs/img/company-icon.svg)
  # BOOOOOOOO
