@@ -209,32 +209,32 @@ export const defaultQuestions = [
       'Our code is a pile of  dung and technical debt is raging out of  control. ',
     question: 'Health of codebase',
   },
-  {
-    descriptionGood: "Were learning lots of  interesting stuff  all the time!",
-    descriptionBad: 'We never have time to learn anything.',
-    question: 'Learning',
-  },
-  {
-    descriptionGood:
-      'We know exactly why we are here and were really excited about it! ',
-    descriptionBad:
-      "We have no idea why we are here, theres no high lever picture or focus. Our so called mission is completely unclear and uninspiring. ",
-    question: 'Mission',
-  },
-  {
-    descriptionGood:
-      'We are in control of  our own destiny! We decide what to build and how to build it. ',
-    descriptionBad:
-      'We are just pawns in a game of  chess with no influence over what we build or how we build it. ',
-    question: 'Pawns or players',
-  },
-  {
-    descriptionGood:
-      'We get stuff  done really quickly! No waiting and no delays. ',
-    descriptionBad:
-      'We never seem to get anything done. We keep getting stuck or interrupted. Stories keep getting stuck on dependencies. ',
-    question: 'Speed',
-  },
+  /*   {
+      descriptionGood: "Were learning lots of  interesting stuff  all the time!",
+      descriptionBad: 'We never have time to learn anything.',
+      question: 'Learning',
+    },
+    {
+      descriptionGood:
+        'We know exactly why we are here and were really excited about it! ',
+      descriptionBad:
+        "We have no idea why we are here, theres no high lever picture or focus. Our so called mission is completely unclear and uninspiring. ",
+      question: 'Mission',
+    },
+    {
+      descriptionGood:
+        'We are in control of  our own destiny! We decide what to build and how to build it. ',
+      descriptionBad:
+        'We are just pawns in a game of  chess with no influence over what we build or how we build it. ',
+      question: 'Pawns or players',
+    },
+    {
+      descriptionGood:
+        'We get stuff  done really quickly! No waiting and no delays. ',
+      descriptionBad:
+        'We never seem to get anything done. We keep getting stuck or interrupted. Stories keep getting stuck on dependencies. ',
+      question: 'Speed',
+    }, */
 ];
 
 let instance: RediSearch;

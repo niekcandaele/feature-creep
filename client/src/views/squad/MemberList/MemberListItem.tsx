@@ -1,10 +1,7 @@
+import { Avatar, Button, Card } from 'components';
+import avatar from 'images/avatars/avatar-03.png';
 import { FC } from 'react';
 import styled from 'styled';
-import { Avatar, Button, Card, Spinner } from 'components';
-import { useQuery } from '@apollo/client';
-import { GET_PERSON } from 'queries';
-import avatar from 'images/avatars/avatar-03.png';
-import { Person } from 'generated';
 
 const ItemContainer = styled.li`
   padding: .5rem;
