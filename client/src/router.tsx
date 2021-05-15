@@ -1,14 +1,19 @@
 import { AuthenticatedRoute } from 'components';
 import { FC } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 import {
-  Home,
-  Redirect,
+  CreateSession,
+  CreateSquad,
   Frame,
-  PageNotFound,
+  Home,
+  JoinSquad,
   OnBoarding,
-  ViewSquad, CreateSquad, JoinSquad,
-  CreateSession, Session,
+  PageNotFound,
+  Redirect,
+  Session,
+  SessionComplete,
+  ViewSquad,
   Workspace,
 } from './pages';
 
@@ -27,7 +32,8 @@ export const Router: FC = () => (
         <Route element={<ViewSquad />} path="/squad/:id" />
 
         <Route element={<CreateSession />} path="/session/create/:squadId" />
-        <Route element={<Session />} path="/session/:sessionId" />
+        <Route element={<Session />} path="/session/:sessionId/:squadId" />
+        <Route element={<SessionComplete />} path="/session/complete/:sessionId" />
       </AuthenticatedRoute>
 
       {/* Should remain the last route, since it matches with every path */}

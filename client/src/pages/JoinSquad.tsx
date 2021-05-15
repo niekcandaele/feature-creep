@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { AddMemberType, Person, Squad, } from 'generated';
 import { Spinner, SubPage, Button } from 'components';
@@ -23,7 +23,7 @@ const Container = styled.div`
   p {
     text-align: center;
   }
-  
+
   p, .title-open{
     margin-bottom: 2rem;
   }
@@ -42,7 +42,6 @@ query GET_SQUAD_STATUS($id: String!) {
   squad(id: $id){
     name,
     open,
-    members
   }
   person {
     id
@@ -53,6 +52,7 @@ query GET_SQUAD_STATUS($id: String!) {
 const ADD_MEMBER_TO_SQUAD = gql`
 mutation ADD_MEMBER_TO_SQUAD($input: AddMemberType) {
   addMemberToSquad(input: $input){
+    id
     name
   }
 }
@@ -60,9 +60,10 @@ mutation ADD_MEMBER_TO_SQUAD($input: AddMemberType) {
 
 export const JoinSquad: FC = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { loading, data, error } = useQuery<{ squad: Squad, person: Person }>(GET_SQUAD_STATUS, { variables: { id } });
-  const [addMemberToSquad, { called, data: joinResult, error: joinError }] = useMutation<{ squad: Squad }, { input: AddMemberType }>(ADD_MEMBER_TO_SQUAD);
+  const [addMemberToSquad, { called, data: joinResult, error: joinError }] = useMutation<{ addMemberToSquad: Squad }, { input: AddMemberType }>(ADD_MEMBER_TO_SQUAD);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -71,8 +72,10 @@ export const JoinSquad: FC = () => {
   }, [data]);
 
   useEffect(() => {
-    if (called && joinResult)
+    if (called && joinResult) {
       enqueueSnackbar(`You have successfully joined ${data?.squad.name}`, { variant: 'success' });
+      navigate(`/squad/${joinResult.addMemberToSquad.id}`);
+    }
   }, [joinResult]);
 
   if (error || joinError) {

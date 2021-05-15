@@ -11,3 +11,4 @@ export { JoinSquad } from './JoinSquad';
 
 export { Session } from './Session';
 export { CreateSession } from './CreateSession';
+export { SessionComplete } from './SessionComplete';

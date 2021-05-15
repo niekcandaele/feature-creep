@@ -47,3 +47,5 @@ export type { MenuDropDownProps } from './MenuDropDown';
 
 export { ClipBoard } from './ClipBoard';
 export type { ClipBoardProps } from './ClipBoard';
+
+export { Answer } from './Answer';

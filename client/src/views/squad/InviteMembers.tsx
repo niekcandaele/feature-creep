@@ -16,7 +16,7 @@ interface RegistrationProps {
 }
 
 const GET_SQUAD_STATUS = gql`
-  query GET_SQUAD_STATUS ($id: String){
+  query GET_SQUAD_STATUS ($id: String!){
     squad(id: $id) {
       open
     }

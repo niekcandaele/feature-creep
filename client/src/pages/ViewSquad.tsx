@@ -24,7 +24,6 @@ const TitleWrapper = styled.div`
   justify-content: space-between;
 `;
 
-//TODO
 const GET_SQUAD = gql`
 query GET_SQUAD($id: String!) {
     squad(id: $id) {

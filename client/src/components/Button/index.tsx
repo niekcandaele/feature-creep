@@ -41,7 +41,6 @@ export const Button: FC<ButtonProps> = ({
       color={color}
       icon={!!icon}
       isLoading={isLoading}
-      onClick={disabled ? undefined : onClick}
       outline={variant === 'outline'}
     >
       {text}

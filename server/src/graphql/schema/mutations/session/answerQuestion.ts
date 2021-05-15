@@ -33,11 +33,11 @@ export const answerQuestion = {
   ) => {
     const session = await Session.findOne(args.input.sessionId);
     if (!session) throw new UserInputError('Invalid session ID');
-
-    return session.answerQuestion(
+    const res = await session.answerQuestion(
       args.input.questionId,
       context.user.id,
       args.input.answer
     );
+    return res;
   },
 };

@@ -14,7 +14,7 @@ const addQuestionType = new GraphQLInputObjectType({
     sessionId: { type: new GraphQLNonNull(GraphQLString) },
     question: {
       type: new GraphQLInputObjectType({
-        name: 'question',
+        name: 'questionInput',
         fields: () => ({
           question: { type: new GraphQLNonNull(GraphQLString) },
           descriptionGood: { type: GraphQLString },

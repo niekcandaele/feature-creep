@@ -143,6 +143,7 @@ export class RediSearch {
     // Recreate the index
     await this.createIndex(true);
     this.isReady = true;
+    console.log(`[RediSearch] initialized`);
   }
 
   public async getIndexStats() {
@@ -183,7 +184,7 @@ export class RediSearch {
 export const defaultQuestions = [
   {
     descriptionGood:
-      "We deliver great stuff ! We're proud of  it and our stakeholders are really happy",
+      "We deliver great stuff ! Were proud of  it and our stakeholders are really happy",
     descriptionBad:
       'We deliver crap. We feel ashamed to deliver it. Our stakeholders hate us.',
     question: 'Delivering value',
@@ -203,37 +204,37 @@ export const defaultQuestions = [
   },
   {
     descriptionGood:
-      "We're proud of  the quality of  our code! It is clean, easy to read and has great test coverage. ",
+      "Were proud of  the quality of  our code! It is clean, easy to read and has great test coverage. ",
     descriptionBad:
       'Our code is a pile of  dung and technical debt is raging out of  control. ',
     question: 'Health of codebase',
   },
-  {
-    descriptionGood: "We're learning lots of  interesting stuff  all the time!",
-    descriptionBad: 'We never have time to learn anything.',
-    question: 'Learning',
-  },
-  {
-    descriptionGood:
-      'We know exactly why we are here and we’re really excited about it! ',
-    descriptionBad:
-      "We have no idea why we are here, there's no high lever picture or focus. Our so called mission is completely unclear and uninspiring. ",
-    question: 'Mission',
-  },
-  {
-    descriptionGood:
-      'We are in control of  our own destiny! We decide what to build and how to build it. ',
-    descriptionBad:
-      'We are just pawns in a game of  chess with no influence over what we build or how we build it. ',
-    question: 'Pawns or players',
-  },
-  {
-    descriptionGood:
-      'We get stuff  done really quickly! No waiting and no delays. ',
-    descriptionBad:
-      'We never seem to get anything done. We keep getting stuck or interrupted. Stories keep getting stuck on dependencies. ',
-    question: 'Speed',
-  },
+  /*   {
+      descriptionGood: "Were learning lots of  interesting stuff  all the time!",
+      descriptionBad: 'We never have time to learn anything.',
+      question: 'Learning',
+    },
+    {
+      descriptionGood:
+        'We know exactly why we are here and were really excited about it! ',
+      descriptionBad:
+        "We have no idea why we are here, theres no high lever picture or focus. Our so called mission is completely unclear and uninspiring. ",
+      question: 'Mission',
+    },
+    {
+      descriptionGood:
+        'We are in control of  our own destiny! We decide what to build and how to build it. ',
+      descriptionBad:
+        'We are just pawns in a game of  chess with no influence over what we build or how we build it. ',
+      question: 'Pawns or players',
+    },
+    {
+      descriptionGood:
+        'We get stuff  done really quickly! No waiting and no delays. ',
+      descriptionBad:
+        'We never seem to get anything done. We keep getting stuck or interrupted. Stories keep getting stuck on dependencies. ',
+      question: 'Speed',
+    }, */
 ];
 
 let instance: RediSearch;
