@@ -3,7 +3,7 @@ import IORedis from 'ioredis';
 import { v4 as uuid } from 'uuid';
 
 import { getDb } from '../rejson/db';
-import { wait } from '../test/util';
+import { wait } from '../util';
 
 export interface IQuestion {
   question: string;
