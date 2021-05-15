@@ -139,7 +139,7 @@ In production mode, you must first obtain a valid JWT. Visit the Cognito login p
 - After a Session ends, background processing of the data happens (powered by Redis Gears). 
 - After background processing, a report is sent to Discord 
 
-![example Discord output](./docs/img/discord_report.png)
+![example Discord output](https://raw.githubusercontent.com/niekcandaele/feature-creep/master/docs/img/discord_report.png)
 
 
 ## Backend architecture
@@ -182,5 +182,5 @@ Github Actions runs scripts for us on every commit.
 
 [Health check model by Spotify](https://engineering.atspotify.com/2014/09/16/squad-health-check-model/)
 
- ![Feature creep icon](https://github.com/niekcandaele/feature-creep/blob/emielvanseveren-patch-1/docs/img/company-icon.svg)
+ ![Feature creep icon](https://raw.githubusercontent.com/niekcandaele/feature-creep/master/docs/img/company-icon.svg)
  # BOOOOOOOO
