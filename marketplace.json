@@ -25,10 +25,15 @@
         "RG.DUMPREGISTRATIONS",
         "RG.PYEXECUTE",
         "XADD",
+        "XACK",
+        "XREADGROUP",
+        "XGROUP",
         "FT.INFO",
         "FT.CREATE",
+        "FT.SEARCH",
         "HSET",
-        "FT.SEARCH"
+        "TS.CREATE",
+        "TS.RANGE"
     ],
     "redis_features": [
         "Redis Streams"
@@ -36,7 +41,8 @@
     "redis_modules": [
         "RediJSON",
         "RedisGears",
-        "RediSearch"
+        "RediSearch",
+        "RedisTimeseries"
     ],
     "app_image_urls": [],
     "youtube_url": "https://www.youtube.com/watch?v=Kmqr_M1B9R4",

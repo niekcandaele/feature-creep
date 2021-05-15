@@ -81,7 +81,6 @@ We use Typescript extensively and since GraphQL APIs are strongly typed, we can 
 
 ```sh
 npm run graphql:generate
-
 ```
 
 #### Storybook
@@ -150,9 +149,16 @@ Inside the folder `server/src` you will find the backend code.
 
 Contains our Redis Gears functions. The file `gears.ts` includes a client to interact with Redis Gears. It supports running functions directly and registering background functions. 
 
+
+After a session ends, background processing happens. Currently these result in "average" and "total" but in later stages we could run more complicated machine learning stuff here...
+
+The results are pushed to streams to be picked up by 
+
+- send_notification.py which sends out a Discord notification
+- Timeseries module
 ### graphql
 
-Contains the GraphQL API, created with Apollo.
+Contains the GraphQL API, created with Apollo. When the application is running, you can visit `http://localhost:4000/` to see the API playground.
 
 ### resjon
 
@@ -161,6 +167,15 @@ Contains a very rudimentary (it's a hackathon after all :)) ORM. This is where m
 ### redisearch
 
 Contains a client and the logic for searching existing questions. When a user creates a session and adds their own question(s), these questions are stored and indexed by RediSearch. Users who later want to search for questions will see these as recommendations. These recommendations can easily be added to a new session.
+
+### timeseries
+
+Contains a client and logic for our Redis Timeseries integration. After a session ends, background processing happens with Redis Gears. The results from that are handled by this module. It uses Redis streams to handle the incoming data
+
+Unfortunately, this module did not make it to the frontend.
+
+![timeseries graph](https://raw.githubusercontent.com/niekcandaele/feature-creep/master/docs/img/timeseries.png)
+![timeseries GraphQL API](https://raw.githubusercontent.com/niekcandaele/feature-creep/master/docs/img/timeseries_graphql.png)
 
 ### test
 
