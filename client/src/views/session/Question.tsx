@@ -1,9 +1,9 @@
 import { gql, useMutation } from '@apollo/client';
-import { Button, Card, Answer } from 'components';
+import { Answer, Button, Card } from 'components';
 import { Answer as AnswerType, AnswerQuestion, Question as QuestionType } from 'generated';
 import { SessionAction } from 'pages/Session';
 import { darken } from 'polished';
-import { Dispatch, FC, useState, useEffect } from 'react';
+import { Dispatch, FC, useEffect, useState } from 'react';
 import styled from 'styled';
 
 const Description = styled.li<{ selected: boolean }>`
@@ -35,7 +35,6 @@ interface QuestionProps {
   question: QuestionType
   sessionId: string;
   dispatch: Dispatch<SessionAction>
-  answered: boolean;
 }
 
 const ANSWER_QUESTION = gql`
@@ -46,7 +45,7 @@ const ANSWER_QUESTION = gql`
   }
 `;
 
-export const Question: FC<QuestionProps> = ({ question, dispatch, sessionId, answered }) => {
+export const Question: FC<QuestionProps> = ({ question, dispatch, sessionId }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
   const [answerQuestion, { data, loading, error }] = useMutation<{ answer: AnswerType }, { input: AnswerQuestion }>(ANSWER_QUESTION);
 
@@ -58,6 +57,7 @@ export const Question: FC<QuestionProps> = ({ question, dispatch, sessionId, ans
 
   useEffect(() => {
     if (!error && data) {
+      //console.log('fire');
       dispatch({ type: 'answered' });
     }
   }, [data]);
@@ -92,7 +92,6 @@ export const Question: FC<QuestionProps> = ({ question, dispatch, sessionId, ans
       </Answers>
       {
         <Button
-          disabled={answered}
           isLoading={loading}
           onClick={submitAnswer}
           size="large"

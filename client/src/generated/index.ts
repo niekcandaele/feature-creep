@@ -50,6 +50,7 @@ export type Mutation = {
   setSquadOpen?: Maybe<Squad>;
   /** Sets a notification config (currently Discord webhook) */
   setNotificationConfig?: Maybe<Squad>;
+  setActiveQuestion?: Maybe<Session>;
 };
 
 
@@ -100,6 +101,11 @@ export type MutationSetSquadOpenArgs = {
 
 export type MutationSetNotificationConfigArgs = {
   input?: Maybe<SetNotificationConfigInput>;
+};
+
+
+export type MutationSetActiveQuestionArgs = {
+  input: SetActiveQuestionInput;
 };
 
 export type NotificationConfig = {
@@ -181,6 +187,7 @@ export type Session = {
   name?: Maybe<Scalars['String']>;
   active?: Maybe<Scalars['Boolean']>;
   questions?: Maybe<Array<Maybe<Question>>>;
+  activeQuestion?: Maybe<Question>;
 };
 
 export type SetNotificationConfigInput = {
@@ -232,6 +239,11 @@ export type QuestionInput = {
   question: Scalars['String'];
   descriptionGood?: Maybe<Scalars['String']>;
   descriptionBad?: Maybe<Scalars['String']>;
+};
+
+export type SetActiveQuestionInput = {
+  sessionId: Scalars['String'];
+  questionId: Scalars['String'];
 };
 
 

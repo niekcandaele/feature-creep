@@ -12,6 +12,7 @@ import {
   PageNotFound,
   Redirect,
   Session,
+  SessionComplete,
   ViewSquad,
   Workspace,
 } from './pages';
@@ -32,6 +33,7 @@ export const Router: FC = () => (
 
         <Route element={<CreateSession />} path="/session/create/:squadId" />
         <Route element={<Session />} path="/session/:sessionId/:squadId" />
+        <Route element={<SessionComplete />} path="/session/complete/:sessionId" />
       </AuthenticatedRoute>
 
       {/* Should remain the last route, since it matches with every path */}

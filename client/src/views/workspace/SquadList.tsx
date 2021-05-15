@@ -1,13 +1,12 @@
 import { useQuery } from '@apollo/client';
 import { Avatar, AvatarGroup, Button, Link, Spinner } from 'components';
 import { GetSquadInput, Squad, SquadFilterType } from 'generated';
+import harry from 'images/avatars/harry.jpg';
+import { GET_OWN_SQUADS } from 'queries';
 import { FC } from 'react';
 import { AiOutlineLink as LinkIcon } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled';
-
-import harry from 'images/avatars/harry.jpg';
-import { GET_OWN_SQUADS } from 'queries';
 
 const Container = styled.div``;
 const List = styled.ul`
@@ -15,6 +14,12 @@ const List = styled.ul`
   margin: 0 auto;
   margin-top: 5rem;
   width: 90%;
+
+  &.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   h2 {
     margin-bottom: 1.5rem;
@@ -78,13 +83,20 @@ export const SquadList: FC = () => {
   );
 
   if (loading && !data) {
-    return <Spinner />;
+    return (
+      <Container className="loading">
+        <h4>Your squads</h4>
+        <Spinner />
+      </Container>
+    );
   }
   if (error || !data) {
     return <Container>there was an error</Container>;
   }
   if (!data.squads.length) {
-    return (<div></div>);
+    return (
+      null
+    );
   }
 
   return (

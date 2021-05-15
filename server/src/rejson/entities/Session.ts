@@ -1,10 +1,7 @@
 import { UserInputError } from 'apollo-server';
 import { v4 as uuid } from 'uuid';
 
-import {
-  defaultQuestions,
-  IQuestion as ISearchQuestion,
-} from '../../redisearch/client';
+import { defaultQuestions, IQuestion as ISearchQuestion } from '../../redisearch/client';
 import { getDb } from '../db';
 import { BaseEntity } from './BaseEntity';
 import { Person } from './Person';
@@ -107,6 +104,7 @@ export class Session extends BaseEntity {
     if (!question) throw new UserInputError('Invalid question ID');
     const answerData = { answer, personId, id: uuid() };
     question.answers.push(answerData);
+    this.activeQuestion.answers.push(answerData);
     await this.save();
 
     const person = await Person.findOne(personId);
@@ -114,6 +112,7 @@ export class Session extends BaseEntity {
   }
 
   async end() {
+    if (!this.active) return;
     console.log(`Session: Ending session ${this.id}`);
 
     this.active = false;

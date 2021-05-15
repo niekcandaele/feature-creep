@@ -1,8 +1,8 @@
 import { gql, useQuery } from '@apollo/client';
 import { Answer, Card, Spinner } from 'components';
-import { Answer as AnswerType, Question, Squad } from 'generated';
+import { Answer as AnswerType, Squad } from 'generated';
 import { SessionAction } from 'pages/Session';
-import { Dispatch, FC, useEffect } from 'react';
+import { Dispatch, FC } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled';
 
@@ -28,55 +28,39 @@ const GET_SQUAD = gql`
   }
 `;
 
-const GET_ANSWERS = gql`
-  query GET_ANSWER($questionId: String!, $sessionId: String!){
-    question(questionId: $questionId, sessionId: $sessionId){
-      answers {
-        answer
-        person {
-          id
-        }
-      }
-    }
-  }
-`;
-
 interface MemberProps {
   questionId: string;
   sessionId: string;
   dispatch: Dispatch<SessionAction>;
+  answers: AnswerType[];
+  allAnswers: boolean;
 }
-export const Members: FC<MemberProps> = ({ questionId, sessionId, dispatch }) => {
+export const Members: FC<MemberProps> = ({ questionId, sessionId, dispatch, answers, allAnswers }) => {
   const { squadId } = useParams();
 
   // squad data
   const { loading, data, error } = useQuery<{ squad: Squad }, { id: string }>(GET_SQUAD, { variables: { id: squadId } });
 
-  // answer data
-  const { loading: questionLoading, data: questionData, error: questionError } = useQuery<{ question: Question }>(
-    GET_ANSWERS,
-    {
-      variables: { sessionId: sessionId, questionId: questionId },
-      pollInterval: 2000
-    }
-  );
+  // sorry :(
+  const unique: any[] = [];
+  answers.forEach(a => {
+    const pos = unique.find(u => u.person.id === a.person?.id);
+    if (!pos) unique.push(a);
+  });
 
-  useEffect(() => {
-    if (data && questionData && questionData.question.answers) {
-      if (questionData.question.answers.length === data?.squad.members?.length) {
-        dispatch({ type: 'ready' });
-      }
-    }
-  }, [data, questionData]);
+  // @ts-ignore
+  if (unique.length >= data?.squad.members?.length && !allAnswers) {
+    dispatch({ type: 'allAnswers' });
+  }
 
-  if (loading || questionLoading) {
+  if (loading) {
     return (
       <Card disabled>
-        loading members
+        <p>loading members</p>
       </Card>
     );
   }
-  if (error || !data || !data.squad || questionError) {
+  if (error || !data || !data.squad) {
     return <div>error</div>;
   }
 
@@ -87,12 +71,12 @@ export const Members: FC<MemberProps> = ({ questionId, sessionId, dispatch }) =>
         {data.squad.members?.map((person) => (
           <Member
             // @ts-ignore
-            answerList={questionData?.question.answers}
+            answerList={answers}
             firstName={person?.firstName!}
             // @ts-ignore
             id={person?.id}
             lastName={person?.lastName!}
-            loading={loading || questionLoading}
+            loading={loading}
           />
         ))
         }
