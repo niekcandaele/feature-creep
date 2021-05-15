@@ -158,7 +158,7 @@ Contains the GraphQL API, created with Apollo.
 
 Contains a very rudimentary (it's a hackathon after all :)) ORM. This is where most of the business logic lives. 
 
-# redisearch
+### redisearch
 
 Contains a client and the logic for searching existing questions. When a user creates a session and adds their own question(s), these questions are stored and indexed by RediSearch. Users who later want to search for questions will see these as recommendations. These recommendations can easily be added to a new session.
 
