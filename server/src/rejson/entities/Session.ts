@@ -67,6 +67,7 @@ export class Session extends BaseEntity {
     for (const question of defaultQuestions) {
       this.addQuestion(question);
     }
+    this.activeQuestion = this.questions[0];
     return this;
   }
 
