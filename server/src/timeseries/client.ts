@@ -21,6 +21,7 @@ export class Timeseries {
   async initialize() {
     this.client = await getDb();
     await this.createGroup();
+    console.log(`[TIMESERIES] initialized`);
   }
 
   private getTsName(squadId: string, question: string) {
