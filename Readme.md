@@ -97,7 +97,9 @@ npm run storybook
 
 ### Authentication stack
 
-The authentication stack is a [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) deployment of a Cognito user pool. We used Cognito because it provides us with instantly good authentication, allowing us to move faster wrt creating features.
+The authentication stack is a [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) deployment of a Cognito user pool. We used Cognito because it provides us with instantly good authentication, allowing us to move faster wrt creating features. Cognito takes care of things like email verification, "forgot your password", ...
+
+Please note that deploying this requires a valid AWS account. For local evaluation, this might not be feasible in which case we recommend running the stack in development mode.
 
 ```sh
 # First you must install AWS credentials
@@ -162,6 +164,16 @@ Contains a client and the logic for searching existing questions. When a user cr
 The tests! This folder contains some helper functions used during the tests.
 
 Inside the integration folder, you'll find scripts that simulate how a client might use the API. There are also tests for individual files, these live next to the files they're testing.
+
+## CI/CD
+
+Github Actions runs scripts for us on every commit.
+
+- Code is checked by a linter
+- Tests are ran
+- Docker images are built. If the pipeline runs on the master branch, these images are also pushed to the Github Container Registry
+- [Chromatic](https://www.chromatic.com/) is used for reviewing UI changes
+- On the master branch, Storybook is built and deployed to Github Pages
 
 ## Squad health checks
 
