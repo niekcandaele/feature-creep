@@ -16,6 +16,7 @@ interface SessionOpts {
   questions: IQuestion[];
   squad: Squad;
   date: Date;
+  activeQuestion: IQuestion;
 }
 
 interface IQuestion {
@@ -40,6 +41,7 @@ export class Session extends BaseEntity {
   public questions: IQuestion[] = [];
   public active: boolean;
   public squad: Squad;
+  public activeQuestion: IQuestion;
 
   constructor(opts: SessionOpts) {
     super(opts);
@@ -53,6 +55,7 @@ export class Session extends BaseEntity {
     this.active = opts.active === undefined ? true : opts.active;
     this.questions = opts.questions || [];
     this.squad = opts.squad;
+    this.activeQuestion = opts.activeQuestion || this.questions[0];
 
     // We reset this because it relies on data set after the super() call
     this.isReady = new Promise((resolve, reject) => {
@@ -65,6 +68,11 @@ export class Session extends BaseEntity {
       this.addQuestion(question);
     }
     return this;
+  }
+
+  async setActiveQuestion(q: IQuestion) {
+    this.activeQuestion = q;
+    return this.save();
   }
 
   async addQuestion({
