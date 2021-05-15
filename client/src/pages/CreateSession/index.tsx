@@ -7,7 +7,7 @@ import { useDebounce, useValidationSchema } from 'hooks';
 import { FC, useEffect, useMemo } from 'react';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
-import styled from 'styled';
+import { QuestionSuggestions } from './QuestionSuggestions';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
@@ -45,7 +45,7 @@ export const CreateSession: FC = () => {
   const [createSession, { data: sessionMutation }] = useMutation<{ createSession: Session }, { input: CreateSessionInput }>(CREATE_SESSION);
   const [addQuestion, { loading, called, data: createQuestionData }] = useMutation<{ questionResponse: Question }, { input: AddQuestion }>(ADD_QUESTION);
 
-  const [searchQuery, { data: searchData }] = useLazyQuery(
+  const [searchQuery, { data: searchData, loading: searchLoading }] = useLazyQuery(
     SEARCH,
     { variables: { input: 'english' } }
   );
@@ -88,11 +88,9 @@ export const CreateSession: FC = () => {
           name="search"
           placeholder="Release"
         />
-
         <Container>
-          <QuestionSuggestions searchData={searchData} session={sessionMutation!}></QuestionSuggestions>
+          <QuestionSuggestions loading={searchLoading} searchData={searchData} session={sessionMutation!}></QuestionSuggestions>
         </Container>
-
         <Container>
           <h2>Add a new question</h2>
           <form onSubmit={handleSubmit(onInputSubmit)}>
@@ -129,7 +127,6 @@ export const CreateSession: FC = () => {
             />
           </form>
         </Container>
-
         <ButtonContainer>
           <Button
             onClick={() => onSessionSubmit()}
@@ -139,63 +136,5 @@ export const CreateSession: FC = () => {
         </ButtonContainer>
       </Container>
     </SubPage>
-  );
-};
-
-const QuestionContainer = styled.div`
-  li {
-    color: white;
-  }
-`;
-
-const Wrapper = styled.div`
-  background-color: ${({ theme }): string => theme.colors.gray};
-  border-radius: 1rem;
-  min-height: 300px;
-`;
-
-interface QuestionSuggestionsProps {
-  searchData: { search: Question[] };
-  session: { createSession: Session }
-}
-const QuestionSuggestions: FC<QuestionSuggestionsProps> = ({ searchData, session }) => {
-  const [addQuestion] = useMutation<{ questionResponse: Question }, { input: AddQuestion }>(ADD_QUESTION);
-  if (!searchData) return null;
-  if (!session) return null;
-
-  const { search } = searchData;
-
-  const onSubmit = ({ descriptionBad, descriptionGood, question }: Question) => {
-    if (!session.createSession.id) return;
-
-    if (question && descriptionBad && descriptionGood) {
-      addQuestion({ variables: { input: { sessionId: session.createSession.id, question: { question, descriptionBad, descriptionGood } } } });
-    }
-  };
-
-  return (
-    <Wrapper>
-      {
-        search.slice(0, 3).map((s: Question) => {
-          return (
-            <QuestionContainer>
-              <ul>
-                <li>{s.question}</li>
-                <li>{s.descriptionBad}</li>
-                <li>{s.descriptionGood}</li>
-              </ul>
-
-              <Button
-                onClick={() => onSubmit(s)}
-                size="large"
-                text="Add question"
-              />
-
-            </QuestionContainer>
-
-          );
-        })
-      }
-    </Wrapper>
   );
 };

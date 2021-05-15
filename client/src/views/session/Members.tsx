@@ -1,7 +1,8 @@
 import { gql, useQuery } from '@apollo/client';
-import { Answer, Card } from 'components';
+import { Answer, Card, Spinner } from 'components';
 import { Answer as AnswerType, Question, Squad } from 'generated';
-import { FC, useEffect, useState } from 'react';
+import { SessionAction } from 'pages/Session';
+import { Dispatch, FC, useEffect } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled';
 
@@ -43,22 +44,37 @@ const GET_ANSWERS = gql`
 interface MemberProps {
   questionId: string;
   sessionId: string;
+  dispatch: Dispatch<SessionAction>;
 }
-export const Members: FC<MemberProps> = ({ questionId, sessionId }) => {
+export const Members: FC<MemberProps> = ({ questionId, sessionId, dispatch }) => {
   const { squadId } = useParams();
 
+  // squad data
+  const { loading, data, error } = useQuery<{ squad: Squad }, { id: string }>(GET_SQUAD, { variables: { id: squadId } });
+
+  // answer data
   const { loading: questionLoading, data: questionData, error: questionError } = useQuery<{ question: Question }>(
     GET_ANSWERS,
     {
       variables: { sessionId: sessionId, questionId: questionId },
-      pollInterval: 5000
+      pollInterval: 2000
     }
   );
 
-  const { loading, data, error } = useQuery<{ squad: Squad }, { id: string }>(GET_SQUAD, { variables: { id: squadId } });
+  useEffect(() => {
+    if (data && questionData && questionData.question.answers) {
+      if (questionData.question.answers.length === data?.squad.members?.length) {
+        dispatch({ type: 'ready' });
+      }
+    }
+  }, [data, questionData]);
 
   if (loading || questionLoading) {
-    return <div>loading members </div>;
+    return (
+      <Card disabled>
+        loading members
+      </Card>
+    );
   }
   if (error || !data || !data.squad || questionError) {
     return <div>error</div>;
@@ -76,6 +92,7 @@ export const Members: FC<MemberProps> = ({ questionId, sessionId }) => {
             // @ts-ignore
             id={person?.id}
             lastName={person?.lastName!}
+            loading={loading || questionLoading}
           />
         ))
         }
@@ -83,6 +100,7 @@ export const Members: FC<MemberProps> = ({ questionId, sessionId }) => {
     </Card>
   );
 };
+
 ////////////////////////////////////////////////:
 // MEMBER
 /////////////////////////////////////////////////
@@ -90,40 +108,42 @@ export const Members: FC<MemberProps> = ({ questionId, sessionId }) => {
 const Container = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
 `;
 
 const AnswerWrapper = styled.div`
-  width: 20px;
-  height: 20px;
   margin-left: 2rem;
 `;
 
 interface MemberProps {
   id: string;
   firstName: string;
+  loading: boolean;
   lastName: string;
   answerList: AnswerType[]
 }
 
-const Member: FC<MemberProps> = ({ id, firstName, lastName, answerList }) => {
-  const [answer, setAnswer] = useState<number | undefined>(undefined);
-
-  function getAnswer() {
+const Member: FC<MemberProps> = ({ id, firstName, lastName, answerList, loading }) => {
+  function getAnswer(): 0 | 1 | 2 | undefined {
     for (const { person, answer: temp } of answerList) {
-      if (person?.id === id && temp) {
-        setAnswer(temp as unknown as number);
+      if (person?.id === id) {
+        return Number(temp) as unknown as 0 | 1 | 2;
       }
     }
+    return undefined;
   }
-
-  useEffect(() => { getAnswer(); }, [answerList]);
 
   return (
     <Container>
       <p>{firstName} {lastName}</p>
       { /* @ts-ignore */}
-      <AnswerWrapper><Answer answer={answer} /></AnswerWrapper>
+      <AnswerWrapper>
+        {loading ?
+          <Spinner />
+          :
+          <Answer answer={getAnswer()} size="small" />
+        }
+      </AnswerWrapper>
     </Container>
   );
 };

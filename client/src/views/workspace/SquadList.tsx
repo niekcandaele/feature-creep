@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { Avatar, AvatarGroup, Button, Link, Loading } from 'components';
+import { Avatar, AvatarGroup, Button, Link, Spinner } from 'components';
 import { GetSquadInput, Squad, SquadFilterType } from 'generated';
 import { FC } from 'react';
 import { AiOutlineLink as LinkIcon } from 'react-icons/ai';
@@ -78,7 +78,7 @@ export const SquadList: FC = () => {
   );
 
   if (loading && !data) {
-    return <Loading />;
+    return <Spinner />;
   }
   if (error || !data) {
     return <Container>there was an error</Container>;

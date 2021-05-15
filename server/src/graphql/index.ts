@@ -38,8 +38,7 @@ export const server = new ApolloServer({
       const decoded: IJWT = await promisify(jwt.verify)(token, getKey, {
         algorithms: ['RS256'],
       });
-      console.log(decoded);
-
+      //console.log(decoded);
       const user = await Person.findOrCreate(decoded.sub, { id: decoded.sub });
       return { user };
     } catch (error) {
