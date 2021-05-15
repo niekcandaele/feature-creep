@@ -5,6 +5,7 @@ import { addQuestion } from './mutations/session/addQuestion';
 import { answerQuestion } from './mutations/session/answerQuestion';
 import { createSession } from './mutations/session/createSession';
 import { endSession } from './mutations/session/endSession';
+import { setActiveQuestionMutation } from './mutations/session/setActiveQuestion';
 import { addMemberToSquadMutation } from './mutations/squad/addMember';
 import { createSquad } from './mutations/squad/createSquad';
 import { removeMemberFromSquadMutation } from './mutations/squad/removeMember';
@@ -25,5 +26,6 @@ export const mutationType = new GraphQLObjectType({
     endSession: endSession,
     setSquadOpen: setSquadOpen,
     setNotificationConfig: setNotificationConfig,
+    setActiveQuestion: setActiveQuestionMutation,
   }),
 });

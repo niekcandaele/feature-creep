@@ -11,7 +11,9 @@
     "quick_deploy": "False",
     "deploy_buttons": [],
     "language": [
-        "TypeScript"
+        "TypeScript",
+        "Python",
+        "Docker"
     ],
     "redis_commands": [
         "GET",
@@ -22,14 +24,19 @@
         "JSON.MGET",
         "RG.DUMPREGISTRATIONS",
         "RG.PYEXECUTE",
-        "XADD"
+        "XADD",
+        "FT.INFO",
+        "FT.CREATE",
+        "HSET",
+        "FT.SEARCH"
     ],
     "redis_features": [
         "Redis Streams"
     ],
     "redis_modules": [
         "RediJSON",
-        "RedisGears"
+        "RedisGears",
+        "RediSearch"
     ],
     "app_image_urls": [],
     "youtube_url": "",

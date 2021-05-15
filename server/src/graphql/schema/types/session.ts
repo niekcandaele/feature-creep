@@ -57,5 +57,8 @@ export const sessionType = new GraphQLObjectType({
     questions: {
       type: new GraphQLList(questionType),
     },
+    activeQuestion: {
+      type: questionType,
+    },
   },
 });
