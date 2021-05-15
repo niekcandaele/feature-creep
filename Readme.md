@@ -132,6 +132,9 @@ In production mode, you must first obtain a valid JWT. Visit the Cognito login p
 - Users can create "Squads"
 - Users can invite other users to join their Squad
 - Users can start a Session in the context of a Squad
+- A Session starts with some default questions, but users can add their own questions as well. 
+- When a user adds a custom question, it is added to a list of questions which is indexed by RediSearch
+- This search index is used to recommend questions to users.
 - A Session currently is a healthcheck, but can be expanded to other agile meetings in the future
 - After a Session ends, background processing of the data happens (powered by Redis Gears). 
 - After background processing, a report is sent to Discord 
