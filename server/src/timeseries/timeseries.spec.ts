@@ -35,6 +35,8 @@ describe('timeseries', () => {
             }
           }`;
     const res = await testClient.query({ query });
+    console.log(JSON.stringify(res, null, 4));
+
     expect(res.data.timeseries).to.be.an('array');
     expect(res.data.timeseries.length).to.be.greaterThan(10);
   });
