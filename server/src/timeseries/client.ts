@@ -48,7 +48,6 @@ export class Timeseries {
 
     for (const question of session.questions) {
       const avg = await this.client?.get(`Question:${question.id}:average`);
-      console.log(avg);
 
       if (!avg) continue;
       await this.add(session.squad.id, question.question, parseFloat(avg));
