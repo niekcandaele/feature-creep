@@ -7,15 +7,11 @@ services:
       - 127.0.0.1:6379:6379
     volumes:
       - redis:/data
-  insight:
-    image: 'redislabs/redisinsight'
-    ports:
-      - 127.0.0.1:8001:8001
-    volumes:
-      - redisinsight:/db
   # Production mode, uses Cognito for auth
   feature-creep-server:
     image: ghcr.io/niekcandaele/featurecreep-server:latest
+    depends_on: 
+      - redis
     ports:
       - 127.0.0.1:4000:4000
     environment: 
@@ -23,8 +19,9 @@ services:
       - NODE_ENV=production
   feature-creep-client:
     image: ghcr.io/niekcandaele/featurecreep-client:latest
+    depends_on: 
+      - feature-creep-server
     ports:
       - 127.0.0.1:3000:5000
 volumes:
-  redisinsight:
   redis:

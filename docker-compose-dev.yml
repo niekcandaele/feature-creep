@@ -15,8 +15,8 @@ services:
       - redisinsight:/db
   # Dev mode, no auth required
   feature-creep-server-dev:
-    #build: ./server
-    image: ghcr.io/niekcandaele/featurecreep-server:latest
+    build: ./server
+    #image: ghcr.io/niekcandaele/featurecreep-server:latest
     ports:
       - 127.0.0.1:4000:4000
     environment: 

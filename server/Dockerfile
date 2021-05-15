@@ -23,6 +23,8 @@ WORKDIR /app
 
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/build ./build
+COPY ./src/gears/functions ./build/src/gears/functions
+
 RUN npm ci --only=prod
 
 
