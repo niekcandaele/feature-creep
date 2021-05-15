@@ -5,6 +5,7 @@ import { questionQuery } from './queries/questionQuery';
 import { searchQuery } from './queries/searchQuestion';
 import { sessionQuery } from './queries/session';
 import { squadQuery, squadsQuery } from './queries/squad';
+import { timeseriesQuery } from './queries/timeseries';
 
 export const queryType = new GraphQLObjectType({
   name: 'Query',
@@ -22,5 +23,6 @@ export const queryType = new GraphQLObjectType({
     session: sessionQuery,
     search: searchQuery,
     question: questionQuery,
+    timeseries: timeseriesQuery,
   }),
 });

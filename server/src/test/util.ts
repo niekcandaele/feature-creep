@@ -33,9 +33,10 @@ export async function createPerson(
   }
 }
 
-export async function setUpTestData(amountOfSessions = 10) {
-  // Since we use Redis Gears for generating session reports
-  // We need practically every test to have access to a completed session
+export async function setUpTestData(
+  amountOfSessions = 10,
+  endSessions = false
+) {
   const squad = await Squad.create({ name: 'testers' });
   const harry = await createPerson('harry');
   const ron = await createPerson('ron');
@@ -54,6 +55,10 @@ export async function setUpTestData(amountOfSessions = 10) {
           datatype.number({ min: 0, max: 2 })
         );
       }
+    }
+
+    if (endSessions) {
+      await session.end();
     }
     sessions.push(session);
   }

@@ -13,10 +13,17 @@ def process(x):
             total += int(answer["answer"])
         execute('SET', f"Question:{question['id']}:total", total)
         #log(f"Setting average {total / len(question['answers'])} for {question['id']}")
+        if len(question['answers']) == 0:
+            avg = 0
+        else:
+            avg = total / len(question['answers'])
+
         execute(
-            'SET', f"Question:{question['id']}:average", total / len(question['answers']))
+            'SET', f"Question:{question['id']}:average", avg)
     execute('XADD', 'Squad-report', '*', 'squad',
             json.dumps(ended_session['squad']))
+    execute('XADD', 'Squad-report-ts', '*', 'squad',
+            json.dumps(ended_session))
 
 
 # Whenever a session is ended, it sends out some data in a stream
