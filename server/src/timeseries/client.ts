@@ -102,7 +102,6 @@ export class Timeseries {
   }
 
   async listenForMessage() {
-    console.log('Checking for new stream data');
     const results = await this.client?.xreadgroup(
       'GROUP',
       this.groupName,
