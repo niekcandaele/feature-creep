@@ -22,7 +22,7 @@ describe('timeseries', () => {
     for (const session of sessions) {
       await session.end();
     }
-    await wait(2);
+    await wait(5);
 
     expect(stub).to.have.been.called;
 
