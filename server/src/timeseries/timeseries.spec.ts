@@ -2,26 +2,40 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { GearsClient } from '../gears/gears';
+import { getDb } from '../rejson/db';
+import { testClient } from '../test/testClient.spec';
 import { setUpTestData, wait } from '../test/util';
 import { Timeseries } from './client';
 
 describe('timeseries', () => {
-  it('triggers', async function () {
-    this.timeout(10000000);
+  it('processes stream, saves to timeseries and is queryable via gql', async function () {
+    this.timeout(60000);
+    const db = await getDb();
     const gears = new GearsClient();
     await gears.initialize();
     const client = new Timeseries();
-    //@ts-expect-error private
-    const stub = sinon.stub(client, 'acknowledge');
+    const stub = sinon.spy(db, 'xack');
     await client.initialize();
 
-    const { sessions } = await setUpTestData();
+    const { sessions, squad } = await setUpTestData();
 
     for (const session of sessions) {
       await session.end();
-      await wait(0.5);
     }
+    await wait(1);
 
     expect(stub).to.have.been.called;
+
+    const question = sessions[0].questions[0];
+
+    const query = `query test {
+            timeseries(squadId:"${squad.id}", questionName:"${question.question}") {
+              timestamp
+              value
+            }
+          }`;
+    const res = await testClient.query({ query });
+    expect(res.data.timeseries).to.be.an('array');
+    expect(res.data.timeseries.length).to.be.greaterThan(10);
   });
 });

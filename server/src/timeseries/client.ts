@@ -4,13 +4,19 @@ import IORedis from 'ioredis';
 import { getDb } from '../rejson/db';
 import { Session } from '../rejson/entities/Session';
 
+interface IQueryOptions {
+  from?: string;
+  to?: string;
+  count?: number;
+}
+
 export class Timeseries {
   client: IORedis.Redis | null = null;
 
   private listener = setInterval(() => this.listenForMessage(), 1000);
   private streamName = 'Squad-report-ts';
   private groupName = 'feature-creep-ts';
-  private tsPrefix = 'question:';
+  private isReady = false;
 
   async initialize() {
     this.client = await getDb();
@@ -18,7 +24,7 @@ export class Timeseries {
   }
 
   private getTsName(squadId: string, question: string) {
-    return `squad:${squadId}:question${hasha(question)}`;
+    return `squad:${squadId}:question:${hasha(question)}`;
   }
 
   private async createTimeseries(squadId: string, question: string) {
@@ -52,7 +58,6 @@ export class Timeseries {
       if (!avg) continue;
       await this.add(session.squad.id, question.question, parseFloat(avg));
     }
-
     await this.acknowledge(id);
   }
 
@@ -73,6 +78,27 @@ export class Timeseries {
       if (error.message !== 'BUSYGROUP Consumer Group name already exists')
         throw error;
     }
+  }
+
+  async query(
+    squadId: string,
+    questionName: string,
+    { count, from, to }: IQueryOptions
+  ) {
+    from = from || (Date.now() - 1000 * 60 * 60 * 24 * 30).toString();
+    to = to || Date.now().toString();
+    count = count || 100;
+
+    const res = await this.client?.send_command(
+      'TS.RANGE',
+      this.getTsName(squadId, questionName),
+      from,
+      to,
+      'COUNT',
+      count
+    );
+
+    return res.map((r: string[]) => ({ timestamp: r[0], value: r[1] }));
   }
 
   async listenForMessage() {
