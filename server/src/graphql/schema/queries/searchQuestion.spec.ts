@@ -24,7 +24,7 @@ describe('Query search', () => {
             }
           }`;
     const searchQuery = await testClient.query({ query });
-    expect(searchQuery.data.search).to.have.length(7);
+    expect(searchQuery.data.search).to.have.length(6);
   });
 
   it('Searches exact, few results', async () => {
